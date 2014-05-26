@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 		// Configuration for autoprefixer
 		autoprefixer: {
 			options: {
-				browsers: ['last 2 version', 'ie 8', 'ie 9'],
+				browsers: ['last 2 version', 'ie 8', 'ie 9']
 			},
 			dev: {
 				options: {
@@ -450,7 +450,7 @@ module.exports = function(grunt) {
 				},
 				name: 'Style Guide',
 				framework: {
-					name: 'kss',
+					name: 'kss'
 				}
 			},
 			all: {
