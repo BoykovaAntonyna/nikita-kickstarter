@@ -466,3 +466,4 @@ If you're asking yourself »Why not …?« have a look at my [WHYNOT.md](https:/
 - give _dist_ some love
 - give styleguide-template some default styling
 - build folder: to add all new files to svn and remove all removed files from svn (without svn rm)
+- define comment style `/** */` vs. `/* */` and `//`
