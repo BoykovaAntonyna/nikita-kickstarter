@@ -52,4 +52,9 @@ Because `mixins` contains all `@mixin` definitions in single files.
 Usage: `@include mixin-name(param1, param2)`
 
 Because `extends` contains all `%placeholder` definitions in single files.  
-Usage: `@extend %placeholder-name´
+Usage: `@extend %placeholder-name`
+
+## Why don't you put the breakpoints into the `_respond-to.scss`?
+
+Since the breakpoints are project specific, it's better to have them in the `variables` folder. Otherwise you cannot
+grap and copy the `_respond` mixin into your project, without modifiying it.
