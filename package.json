@@ -2,7 +2,6 @@
   "name": "project-kickstart-assemble",
   "description": "A Project-Setup for Assemble",
   "homepage": "https://github.com/rastersysteme/project-kickstart-assemble",
-  "version": "0.0.29",
   "license": "MIT",
   "readmeFilename": "README.md",
   "repository": {

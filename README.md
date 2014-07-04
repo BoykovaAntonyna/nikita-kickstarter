@@ -2,6 +2,7 @@
 
 This is how I start Assemble-Projects as a Frontend-Developer.
 
+Latest Release: [![GitHub version](https://badge.fury.io/gh/rastersysteme%2Fproject-kickstart-assemble.png)](https://github.com/rastersysteme/project-kickstart-assemble/releases)
 
 ## My Project-Setup
 
