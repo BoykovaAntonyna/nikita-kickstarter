@@ -36,6 +36,7 @@ compass-core (1.0.0.alpha.19)
 compass-import-once (1.0.3)
 sass (3.3.2)
 sass-globbing (1.1.0)
+scss-lint (0.25.1)
 ```
 
 For those RubyGems I included a Gemfile, so you can use [__Bundler__](http://bundler.io/) to get a consistent environment. Just type `gem install bundler` to install Bundler itself and then you can use `bundle install` to get the exact Compass and Sass Gems.
@@ -87,6 +88,7 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
 - [grunt-photobox](https://github.com/stefanjudis/grunt-photobox)
 - [grunt-prettify](https://github.com/jonschlinkert/grunt-prettify)
+- [grunt-scss-lint](https://github.com/ahmednuaman/grunt-scss-lint)
 - [grunt-string-replace](https://github.com/erickrdch/grunt-string-replace)
 - [grunt-styleguide](https://github.com/indieisaconcept/grunt-styleguide)
 - [grunt-svgmin](https://github.com/sindresorhus/grunt-svgmin)

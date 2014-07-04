@@ -35,4 +35,11 @@ then
 	exit 1
 fi
 
+if [ -z "`scss-lint --version 2>/dev/null`" ]
+then
+	echo "ERROR: scss-lint is missing"
+	echo "Please run 'sudo gem install scss-lint'"
+	exit 1
+fi
+
 npm install

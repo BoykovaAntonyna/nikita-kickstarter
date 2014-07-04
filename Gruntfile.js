@@ -404,7 +404,17 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
+        scsslint: {
+            allFiles: [
+                'source/sass/{mixins,blocks,extends,variables,styles.scss,_*.scss}'
+            ],
+            options: {
+                config: '.scss-lint.yml',
+                colorizeOutput: true
+            },
+        },
+
 		// Configuration for string-replacing the grunticon output
 		'string-replace': {
 			datasvg: {
@@ -620,6 +630,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-phantomas');
 	grunt.loadNpmTasks('grunt-photobox');
 	grunt.loadNpmTasks('grunt-prettify');
+    grunt.loadNpmTasks('grunt-scss-lint');
 	grunt.loadNpmTasks('grunt-string-replace');
 	grunt.loadNpmTasks('grunt-styleguide');
 	grunt.loadNpmTasks('grunt-svgmin');
@@ -647,6 +658,7 @@ module.exports = function(grunt) {
 		'prettify:dev',
 		'htmlhint',
 		'jshint',
+        'scsslint',
 		'connect:livereload',
 		'watch'
 	]);

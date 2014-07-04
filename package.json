@@ -2,7 +2,7 @@
   "name": "project-kickstart-assemble",
   "description": "A Project-Setup for Assemble",
   "homepage": "https://github.com/rastersysteme/project-kickstart-assemble",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "license": "MIT",
   "readmeFilename": "README.md",
   "repository": {
@@ -45,6 +45,7 @@
     "grunt-phantomas": "~0.5.3",
     "grunt-photobox": "~0.6.0",
     "grunt-prettify": "~0.3.4",
+    "grunt-scss-lint": "^0.1.12",
     "grunt-string-replace": "~0.2.7",
     "grunt-styleguide": "~0.2.15",
     "grunt-svgmin": "~0.3.0",
