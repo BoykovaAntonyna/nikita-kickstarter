@@ -24,37 +24,36 @@
 // then the variable below would be 10px.
 //
 
-$baseline_px: 16px;
+$baseline-px: 16px;
 
-@mixin rem($property, $px_values) {
+@mixin rem($property, $px-values) {
 	
 	// Convert the baseline into rems
-	$baseline_rem: ($baseline_px / 1rem);
+	$baseline-rem: ($baseline-px / 1rem);
 	
 	// Print the first line in pixel values
-	#{$property}: $px_values;
+	#{$property}: $px-values;
 	
 	// If there is only one (numeric) value, return the property/value line for it.
-	@if type-of($px_values) == 'number' {
-		#{$property}: $px_values / $baseline_rem;
-	} // If there is more than one value, create a list and perform equations on each value
-	@else {
+	@if type-of($px-values) == "number" {
+		#{$property}: $px-values / $baseline-rem;
+	} @else { // If there is more than one value, create a list and perform equations on each value
 		
 		// Create an empty list that we can dump values into
-		$rem_values: ();
+		$rem-values: ();
 		
-		@each $value in $px_values {
+		@each $value in $px-values {
 			
 			// If the value is zero, return 0
 			@if $value == 0 {
-				$rem_values: append($rem_values, $value);
+				$rem-values: append($rem-values, $value);
 			} // If the value is not zero, convert it from px to rem
 			@else {
-				$rem_values: append($rem_values, ($value / $baseline_rem));
+				$rem-values: append($rem-values, ($value / $baseline-rem));
 			}
 		}
 		
 		// Return the property and its list of converted values
-		#{$property}: $rem_values;
+		#{$property}: $rem-values;
 	}
 }

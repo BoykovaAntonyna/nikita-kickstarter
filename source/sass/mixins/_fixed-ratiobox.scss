@@ -14,7 +14,7 @@
 //
 // Sample input:
 // .element {
-//     @include fixed-ratiobox(4/3, 50%, 'img, figure');
+//     @include fixed-ratiobox(4/3, 50%, "img, figure");
 // }
 //
 // Sample output:
@@ -40,15 +40,14 @@
 
 $intrinsic-ratio: 16/9 !default;
 $intrinsic-ratio-width: 100% !default;
-$intrinsic-ratio-elements: '> *' !default;
+$intrinsic-ratio-elements: "> *" !default;
 $intrinsic-ratio-extend: true !default;
 $intrinsic-ratio-direction: top !default;
 
 @mixin intrinsic-ratio-parent($extend: $intrinsic-ratio-extend) {
 	@if $extend {
 		@extend %intrinsic-ratio-parent;
-	}
-	@else {
+	} @else {
 		display: block;
 		position: relative;
 		height: 0;
@@ -58,8 +57,7 @@ $intrinsic-ratio-direction: top !default;
 @mixin intrinsic-ratio-child($extend: $intrinsic-ratio-extend) {
 	@if $extend {
 		@extend %intrinsic-ratio-child;
-	}
-	@else {
+	} @else {
 		display: block;
 		position: absolute;
 		top: 0;
