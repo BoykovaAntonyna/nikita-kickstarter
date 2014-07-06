@@ -1,10 +1,14 @@
-build/photobox
+build
 dist
 node_modules
+.bat
+.bundle
 .cache
 .DS_Store
 .idea
 .log
 .sass-cache
+.sublime-project
+.sublime-workspace
 .temp
 .tmp

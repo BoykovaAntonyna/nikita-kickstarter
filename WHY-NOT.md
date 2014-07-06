@@ -1,22 +1,11 @@
 # Why Not?
 
-## Why do you put `build/` under version control?
 
-Wouldn't it be better to put them into `svn:ignore` or `.gitignore`?
+## Why don't you put `build/` and/or `dist/` under version control?
 
-Pre-build in VCS has the following advantages:
+Because the output build- and dist-files aren't always exactly the same if you work with multiple OS like Windows, Mac OS and Linux. This may cause conflicts or will end in commits with a large list of recurrently updated files.
 
-- You cannot guarantee, that the build will be exactly the same in the future (because of changing cli api's in node, grunt, sass etc.)
-  - Another solution would be to put the distribution build on a build server.
-- You have a pre build version in your version control system to show to the project manager / client.
-
-
-## Why don't you put `dist/` under version control, too?
-
-Because each committed version contains every source file and a fully updated build folder. The main difference between build and dist is, that dist has combined and minified css/js files, production ready images, no unnecessary files or code-comments.
-
-Because you don't create releases that often, those are tasks for a release script, and should be made on a build server
-or with an extra shell script.
+Those are tasks for a release script, and should be made on a build server.
 
 
 ## Why don't you remove the prefix from page, main, nav, header, aside, footer classes?
@@ -43,7 +32,7 @@ Don't even think about abusing `.header[role=banner]` as excuse! Count: 1 (incre
 
 ## Why do you use Compass, do we need it at all?
 
-At the moment I use Compass because of the feature to require SASS Globbing. If I could, I would use [grunt-sass](https://github.com/sindresorhus/grunt-sass) which ist based on [libsass](https://github.com/hcatlin/libsass) to get an immense performance boost in compiling SCSS to CSS. I hope the devs out there will implement a better partial-inclusion soon. Another issue: libsass won't properly compile @extends. :(
+At the moment I use Compass because of the feature to require SASS Globbing and SCSS Lint. If I could, I would use [grunt-sass](https://github.com/sindresorhus/grunt-sass) which ist based on [libsass](https://github.com/hcatlin/libsass) to get an immense performance boost in compiling SCSS to CSS. I hope the devs out there will implement a better partial-inclusion soon. Another issue: libsass won't properly compile @extends. :(
 
 
 ## Why `extends` instead of `placeholders` for the placeholders/extends folder?
@@ -54,7 +43,8 @@ Usage: `@include mixin-name(param1, param2)`
 Because `extends` contains all `%placeholder` definitions in single files.  
 Usage: `@extend %placeholder-name`
 
+
 ## Why don't you put the breakpoints into the `_respond-to.scss`?
 
 Since the breakpoints are project specific, it's better to have them in the `variables` folder. Otherwise you cannot
-grap and copy the `_respond` mixin into your project, without modifiying it.
+grap and copy the `_respond-to` mixin into your project, without modifiying it.

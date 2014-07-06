@@ -23,6 +23,7 @@ These are the minimum requirements for my project setup:
 - [__Grunt Command Line Interface__](http://gruntjs.com/getting-started) – `sudo npm install -g grunt-cli`
 - [__SASS 3.3__](http://rubygems.org/gems/sass/versions/) – `sudo gem install sass`
 - [__SASS Globbing 1.1__](http://rubygems.org/gems/sass-globbing/versions) – `sudo gem install sass-globbing`
+- [__SCSS Lint 0.25__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
 - [__Compass 1__](http://rubygems.org/gems/compass/versions) (atm in ALPHA-state) – `sudo gem install compass --pre`
 
 It's mandatory to use the latest versions of SASS and Compass if you want to work with [__CSS Source Maps__](https://developers.google.com/chrome-developer-tools/docs/css-preprocessors) in Google Chrome.
@@ -35,8 +36,8 @@ $ gem list
 compass (1.0.0.alpha.19)
 compass-core (1.0.0.alpha.19)
 compass-import-once (1.0.3)
-sass (3.3.2)
-sass-globbing (1.1.0)
+sass (3.3.9)
+sass-globbing (1.1.1)
 scss-lint (0.25.1)
 ```
 
@@ -105,12 +106,22 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 
 ## Project structure
 
-My kickstart-setup provides the two main folders `source` and `build`. All source-files will be put to the `source`-folder like templates, fonts, images, js- and sass-files. These files will be processed by several grunt tasks – e.g. compass: sass -> css – and then stored in the `build`-folder. From there you can view the generated html-files in the browser.
+My kickstart-setup provides the three main folders `source/`, `build/` and `dist/`. All source-files will be put to the `source`-folder like templates, fonts, images, js- and sass-files. These files will be processed by several grunt tasks – e.g. compass: sass -> css – and then stored in the `build`-folder. From there you can view the generated html-files in the browser. The `dist`-folder built up like the `build`-folder. The main difference between `build/` and `dist/` is, that `dist/` has combined and minified css/js files, no unnecessary files or code-comments. The `build`-folder is for debugging your files, the `dist-`folder should be used for production.
 
 ```
 $ tree -d -I node_modules
 .
 ├── build
+│   ├── ajax-content
+│   ├── css
+│   ├── fonts
+│   ├── img
+│   │   ├── bgs
+│   │   ├── icons
+│   │   │   └── png-fallback
+│   │   └── temp
+│   └── js
+├── dist
 │   ├── ajax-content
 │   ├── css
 │   ├── fonts
@@ -240,7 +251,7 @@ Page Layout Blocks:
 - b-page
 - b-page-header
 - b-page-nav
-- b-page-mai,
+- b-page-main
 - b-page-aside
 - b-page-footer
 
@@ -258,7 +269,7 @@ Component Blocks:
 
 There are two main SCSS-files `styles.scss` and `universal.scss`.
 
-The `styles.scss` imports all partials. `mixins`, `icons` and `blocks` will be imported with a globbing-pattern. It's important that _every block-component_ gets its own partial and is put into the `blocks`-folder!  
+The `styles.scss` imports all partials. `mixins`, `icons` and `blocks` will be imported with a globbing-pattern. It's important that _every block-component_ gets its own partial and is put into the `blocks`-folder! Use subfolders if your site uses lots of partials.  
 
 The `universal.scss` is a universal fallback stylesheet for older IE browsers mady by [Andy Clarke](http://code.google.com/p/universal-ie6-css/).
 
@@ -468,5 +479,4 @@ If you're asking yourself »Why not …?« have a look at my [WHYNOT.md](https:/
 - include JS, perhaps with bower
 - give _dist_ some love
 - give styleguide-template some default styling
-- build folder: to add all new files to svn and remove all removed files from svn (without svn rm)
 - define comment style `/** */` vs. `/* */` and `//`

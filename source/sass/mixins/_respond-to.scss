@@ -4,6 +4,8 @@
 // 
 // Usage:
 //
+// Define your breakpoints in variables/_breakpoints.scss, e.g.
+// 
 // $respond-to-no-mediaqueries-fallback: desktop;
 // $respond-to-fallback-class: lt-ie9;
 // $respond-to-breakpoints: (
@@ -11,15 +13,15 @@
 //     pad "(min-width: 569px) and (max-width: 920px)",
 //     phone "(max-width: 568px)"
 // );
-// @import("_respond-to");
 // 
-// Define your mediaqueries in a descending order:
+// 
+// Code your mediaqueries/styles in a descending order:
 // 
 // large viewport -> small viewport -> global styles
 // 
-// 
 // .my-class {
 //     
+//     // Media Queries
 //     @include respond-to(desktop, pad) {
 //         color: #ff0;
 //     }
@@ -28,9 +30,11 @@
 //         color: #f0f;
 //     }
 //     
+//     // Global Styles
 //     position: relative;
 //     
 // }
+// 
 
 @mixin respond-to($medias...) {
 	$breakpoints-length: length($respond-to-breakpoints);

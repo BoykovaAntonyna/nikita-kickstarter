@@ -404,17 +404,18 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
-        scsslint: {
-            allFiles: [
-                'source/sass/{mixins,blocks,extends,variables,styles.scss,_*.scss}'
-            ],
-            options: {
-                config: '.scss-lint.yml',
-                colorizeOutput: true
-            },
-        },
-
+		
+		// Configuration for SCSS linting
+		scsslint: {
+			allFiles: [
+				'source/sass/{mixins,blocks,extends,variables,styles.scss,_*.scss}'
+			],
+			options: {
+				colorizeOutput: true,
+				config: '.scss-lint.yml'
+			}
+		},
+		
 		// Configuration for string-replacing the grunticon output
 		'string-replace': {
 			datasvg: {
@@ -630,7 +631,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-phantomas');
 	grunt.loadNpmTasks('grunt-photobox');
 	grunt.loadNpmTasks('grunt-prettify');
-    grunt.loadNpmTasks('grunt-scss-lint');
+	grunt.loadNpmTasks('grunt-scss-lint');
 	grunt.loadNpmTasks('grunt-string-replace');
 	grunt.loadNpmTasks('grunt-styleguide');
 	grunt.loadNpmTasks('grunt-svgmin');
@@ -658,7 +659,6 @@ module.exports = function(grunt) {
 		'prettify:dev',
 		'htmlhint',
 		'jshint',
-        'scsslint',
 		'connect:livereload',
 		'watch'
 	]);
@@ -689,6 +689,11 @@ module.exports = function(grunt) {
 	// HTMLHint task
 	grunt.registerTask('check-html', [
 		'htmlhint'
+	]);
+	
+	// SCSSLint task (as long as there is no force: true; option, i put it here. otherwise it will be used in the build-task)
+	grunt.registerTask('check-scss', [
+		'scsslint'
 	]);
 	
 	// JSHint task

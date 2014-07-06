@@ -21,14 +21,18 @@ GEM
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
     multi_json (1.9.0)
+    rainbow (2.0.0)
     rb-fsevent (0.9.4)
     rb-inotify (0.9.3)
       ffi (>= 0.5.0)
     rb-kqueue (0.2.2)
       ffi (>= 0.5.0)
-    sass (3.3.2)
+    sass (3.3.9)
     sass-globbing (1.1.0)
       sass (>= 3.1)
+    scss-lint (0.25.0)
+      rainbow (~> 2.0)
+      sass (~> 3.3.0)
 
 PLATFORMS
   ruby
@@ -37,5 +41,6 @@ DEPENDENCIES
   compass (= 1.0.0.alpha.19)
   compass-core (= 1.0.0.alpha.19)
   compass-import-once (= 1.0.3)
-  sass (= 3.3.2)
+  sass (= 3.3.9)
   sass-globbing (= 1.1.0)
+  scss-lint (= 0.25)
