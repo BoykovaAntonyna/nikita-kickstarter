@@ -75,18 +75,6 @@ module.exports = function(grunt) {
 			}
 		},
 		
-		// Configuration for combining media-queries
-		cmq: {
-			options: {
-				log: false
-			},
-			dist: {
-				files: {
-					'dist/css/styles.css': ['dist/css/styles.css']
-				}
-			}
-		},
-		
 		// Configuration for compass
 		compass: {
 			options: {
@@ -192,6 +180,32 @@ module.exports = function(grunt) {
 		
 		// Configuration for minifying css-files
 		cssmin: {
+			dist: {
+				expand: true,
+				cwd: 'dist/css/',
+				dest: 'dist/css/',
+				src: ['*.css']
+			}
+		},
+		
+		// Configuration for splitting css-files (e.g. IE9)
+		csssplit: {
+			options: {
+				suffix: '-part',
+				maxRules: 500
+			},
+			dev: {
+				dest: 'build/css',
+				src: 'build/css/styles.css'
+			},
+			dist: {
+				dest: 'dist/css',
+				src: 'dist/css/styles.css'
+			}
+		},
+		
+		// Configuration for grouping media queries
+		group_css_media_queries: {
 			dist: {
 				files: {
 					'dist/css/styles.css': ['dist/css/styles.css']
@@ -327,18 +341,6 @@ module.exports = function(grunt) {
 			}
 		},
 		
-		// Configuration for packager
-		packager: {
-			all: {
-				options: {
-					config: 'source/js/project.jspackcfg',
-					cwd: 'source/js/',
-					dest: 'source/js/',
-					src: ['**/*']
-				}
-			}
-		},
-		
 		// Configuration for measuring frontend performance
 		phantomas: {
 			all : {
@@ -371,7 +373,12 @@ module.exports = function(grunt) {
 				preserve_newlines: true,
 				unformatted: [
 					"a",
+					"b",
 					"code",
+					"em",
+					"i",
+					"mark",
+					"strong",
 					"pre"
 				]
 			},
@@ -615,7 +622,6 @@ module.exports = function(grunt) {
 	// Where we tell Grunt we plan to use this plug-in.
 	grunt.loadNpmTasks('assemble');
 	grunt.loadNpmTasks('grunt-autoprefixer');
-	grunt.loadNpmTasks('grunt-combine-media-queries');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-connect');
@@ -624,10 +630,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-csssplit');
+	grunt.loadNpmTasks('grunt-group-css-media-queries');
 	grunt.loadNpmTasks('grunt-grunticon');
 	grunt.loadNpmTasks('grunt-htmlhint');
 	grunt.loadNpmTasks('grunt-newer');
-	grunt.loadNpmTasks('grunt-packager');
 	grunt.loadNpmTasks('grunt-phantomas');
 	grunt.loadNpmTasks('grunt-photobox');
 	grunt.loadNpmTasks('grunt-prettify');
@@ -636,6 +643,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-styleguide');
 	grunt.loadNpmTasks('grunt-svgmin');
 	grunt.loadNpmTasks('grunt-sync');
+	
 	
 	// Where we tell Grunt what to do when we type "grunt" into the terminal.
 	
@@ -653,7 +661,7 @@ module.exports = function(grunt) {
 		'newer:imagemin:dev',
 		'compass:dev',
 		'autoprefixer:dev',
-		'packager',
+		'csssplit:dev',
 		'sync',
 		'newer:assemble:dev',
 		'prettify:dev',
@@ -672,18 +680,16 @@ module.exports = function(grunt) {
 		'imagemin:dist',
 		'compass:dist',
 		'autoprefixer:dist',
-		'cmq',
+		'csssplit:dist',
+		'group_css_media_queries',
 		'cssmin',
-		'packager',
 		'copy:ajax',
 		'copy:fonts',
 		'copy:js',
 		'assemble:dist',
 		'prettify:dist',
 		'htmlhint',
-		'jshint',
-		'styleguide',
-		'copy:styleguide'
+		'jshint'
 	]);
 	
 	// HTMLHint task

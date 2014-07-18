@@ -33,15 +33,15 @@ If you're experiencing problems with Compass, it could be related to the fact, t
 ```
 $ gem list
 
-compass (1.0.0.alpha.19)
-compass-core (1.0.0.alpha.19)
-compass-import-once (1.0.3)
-sass (3.3.9)
+compass (1.0.0.alpha.21)
+compass-core (1.0.0.alpha.21)
+compass-import-once (1.0.4)
+sass (3.3.10)
 sass-globbing (1.1.1)
 scss-lint (0.25.1)
 ```
 
-For those RubyGems I included a Gemfile, so you can use [__Bundler__](http://bundler.io/) to get a consistent environment. Just type `gem install bundler` to install Bundler itself and then you can use `bundle install` to get the exact Compass and Sass Gems.
+For those RubyGems I included a Gemfile, so you can use [__Bundler__](http://bundler.io/) to get a consistent environment. Just type `gem install bundler` to install Bundler itself and then you can use `bundle install` to get the exact Gems.
 
 If you want to use the browser-auto-refresh-feature, get [__LiveReload.js__](https://github.com/livereload/livereload-js) and install it to the root-folder of localhost.
 
@@ -75,7 +75,6 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [connect-livereload](https://github.com/intesso/connect-livereload)
 - [grunt](https://github.com/gruntjs/grunt)
 - [grunt-autoprefixer](https://github.com/nDmitry/grunt-autoprefixer)
-- [grunt-combine-media-queries](https://github.com/buildingblocks/grunt-combine-media-queries)
 - [grunt-contrib-clean](https://github.com/gruntjs/grunt-contrib-clean)
 - [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass)
 - [grunt-contrib-connect](https://github.com/gruntjs/grunt-contrib-connect)
@@ -84,9 +83,10 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [grunt-contrib-imagemin](https://github.com/gruntjs/grunt-contrib-imagemin)
 - [grunt-contrib-jshint](https://github.com/gruntjs/grunt-contrib-jshint)
 - [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
+- [grunt-csssplit](https://github.com/project-collins/grunt-csssplit)
+- [grunt-group-css-media-queries](https://github.com/Se7enSky/grunt-group-css-media-queries)
 - [grunt-htmlhint](https://github.com/yaniswang/grunt-htmlhint)
 - [grunt-newer](https://github.com/tschaub/grunt-newer)
-- [grunt-packager](https://github.com/bobbor/grunt-packager)
 - [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
 - [grunt-photobox](https://github.com/stefanjudis/grunt-photobox)
 - [grunt-prettify](https://github.com/jonschlinkert/grunt-prettify)
@@ -117,9 +117,8 @@ $ tree -d -I node_modules
 │   ├── fonts
 │   ├── img
 │   │   ├── bgs
-│   │   ├── icons
-│   │   │   └── png-fallback
-│   │   └── temp
+│   │   └── icons
+│   │       └── png-fallback
 │   └── js
 ├── dist
 │   ├── ajax-content
@@ -127,9 +126,8 @@ $ tree -d -I node_modules
 │   ├── fonts
 │   ├── img
 │   │   ├── bgs
-│   │   ├── icons
-│   │   │   └── png-fallback
-│   │   └── temp
+│   │   └── icons
+│   │       └── png-fallback
 │   └── js
 └── source
     ├── ajax-content
@@ -310,6 +308,7 @@ This is how the `sass`-folder looks like:
 ├── styles.scss
 ├── universal.scss
 └── variables
+    ├── _breakpoints.scss
     ├── _color.scss
     ├── _typography.scss
     └── …

@@ -48,3 +48,8 @@ Usage: `@extend %placeholder-name`
 
 Since the breakpoints are project specific, it's better to have them in the `variables` folder. Otherwise you cannot
 grap and copy the `_respond-to` mixin into your project, without modifiying it.
+
+
+## Why not call assemble-folder "templates"?
+
+Because pages, partials etc. is way more explicit.
