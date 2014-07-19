@@ -82,10 +82,14 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [grunt-contrib-cssmin](https://github.com/gruntjs/grunt-contrib-cssmin)
 - [grunt-contrib-imagemin](https://github.com/gruntjs/grunt-contrib-imagemin)
 - [grunt-contrib-jshint](https://github.com/gruntjs/grunt-contrib-jshint)
+- [grunt-contrib-uglify](https://github.com/gruntjs/grunt-contrib-uglify)
 - [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
 - [grunt-csssplit](https://github.com/project-collins/grunt-csssplit)
 - [grunt-group-css-media-queries](https://github.com/Se7enSky/grunt-group-css-media-queries)
 - [grunt-htmlhint](https://github.com/yaniswang/grunt-htmlhint)
+- [grunt-includes](https://github.com/vanetix/grunt-includes)
+- [grunt-jsdoc](https://github.com/krampstudio/grunt-jsdoc)
+- [grunt-modernizr](https://github.com/Modernizr/grunt-modernizr)
 - [grunt-newer](https://github.com/tschaub/grunt-newer)
 - [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
 - [grunt-photobox](https://github.com/stefanjudis/grunt-photobox)
@@ -106,7 +110,7 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 
 ## Project structure
 
-My kickstart-setup provides the three main folders `source/`, `build/` and `dist/`. All source-files will be put to the `source`-folder like templates, fonts, images, js- and sass-files. These files will be processed by several grunt tasks – e.g. compass: sass -> css – and then stored in the `build`-folder. From there you can view the generated html-files in the browser. The `dist`-folder built up like the `build`-folder. The main difference between `build/` and `dist/` is, that `dist/` has combined and minified css/js files, no unnecessary files or code-comments. The `build`-folder is for debugging your files, the `dist-`folder should be used for production.
+My kickstart-setup provides the three main folders `source/`, `build/` and `dist/`. All source-files will be put to the `source`-folder like templates, fonts, images, js- and sass-files. These files will be processed by several grunt tasks – e.g. compass: sass -> css – and then stored in the `build`-folder. From there you can view the generated html-files in the browser. The `dist`-folder is built up like the `build`-folder. The main difference between `build/` and `dist/` is, that `dist/` has combined and minified css/js files, no unnecessary files or code-comments. The `build`-folder is for debugging your files, the `dist-`folder should be used for production.
 
 ```
 $ tree -d -I node_modules
@@ -118,8 +122,12 @@ $ tree -d -I node_modules
 │   ├── img
 │   │   ├── bgs
 │   │   └── icons
-│   │       └── png-fallback
+│   │       └── png-fallback
 │   └── js
+│       ├── modules
+│       ├── templates
+│       └── vendor
+│           └── plugins
 ├── dist
 │   ├── ajax-content
 │   ├── css
@@ -127,8 +135,19 @@ $ tree -d -I node_modules
 │   ├── img
 │   │   ├── bgs
 │   │   └── icons
-│   │       └── png-fallback
-│   └── js
+│   │       └── png-fallback
+│   ├── js
+│   │   ├── modules
+│   │   ├── templates
+│   │   └── vendor
+│   │       └── plugins
+│   ├── jsdocs
+│   │   ├── scripts
+│   │   │   └── prettify
+│   │   └── styles
+│   └── styleguide
+│       ├── css
+│       └── public
 └── source
     ├── ajax-content
     ├── assemble
@@ -146,9 +165,14 @@ $ tree -d -I node_modules
     │   │   └── svgmin
     │   └── temp
     ├── js
+    │   ├── modules
+    │   ├── templates
+    │   └── vendor
+    │       └── plugins
     ├── sass
     │   ├── blocks
     │   ├── extends
+    │   │   └── ui-components
     │   ├── grunticon
     │   ├── icons
     │   ├── mixins
@@ -450,6 +474,11 @@ __Maximum Nesting: three levels deep__
 ```
 
 
+## Javascript
+
+For the Javascript setup and structure have a look at the [README.md](https://github.com/rastersysteme/project-kickstart-assemble/tree/master/source/js/README.md) laying in `source/js`.
+
+
 ## Icon-Workflow
 
 1. Just put your SVG-Icons into `source/icons`.
@@ -475,7 +504,5 @@ If you're asking yourself »Why not …?« have a look at my [WHYNOT.md](https:/
 
 ## TODO
 
-- include JS, perhaps with bower
-- give _dist_ some love
 - give styleguide-template some default styling
 - define comment style `/** */` vs. `/* */` and `//`
