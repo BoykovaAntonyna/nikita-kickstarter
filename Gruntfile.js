@@ -72,6 +72,17 @@ module.exports = function(grunt) {
 						src: ['dist/**/*']
 					}
 				]
+			},
+			dist_js: {
+				files: [
+					{
+						filter: 'isFile',
+						src: ['dist/**/_*.js']
+					}
+				]
+			},
+			docs: {
+				dist: ['dist/jsdocs/**/*']
 			}
 		},
 		
@@ -96,7 +107,7 @@ module.exports = function(grunt) {
 					environment: 'development',
 					force: true,
 					javascriptsDir: 'build/js',
-					noLineComments: false,
+					noLineComments: true,
 					outputStyle: 'expanded',
 					raw: [
 						'sass_options = {',
@@ -113,7 +124,7 @@ module.exports = function(grunt) {
 					force: true,
 					javascriptsDir: 'dist/js',
 					noLineComments: true,
-					outputStyle: 'compressed',
+					outputStyle: 'expanded', // minifying will be done by grunt-contrib-cssmin
 					sourcemap: false
 				}
 			}
@@ -240,7 +251,7 @@ module.exports = function(grunt) {
 		htmlhint: {
 			options: {
 				force: true,
-				'attr-lowercase': true,
+				'attr-lowercase': true, // comment out e.g. if you work with facebook api 
 				'attr-value-double-quotes': true,
 				'attr-value-not-empty': true,
 				'doctype-first': true,
@@ -256,7 +267,7 @@ module.exports = function(grunt) {
 				'tagname-lowercase': true
 			},
 			all: {
-				src: ['*/*.html']
+				src: ['*/*.html', '!dist/jsdocs/**/*.html']
 			}
 		},
 		
@@ -284,6 +295,47 @@ module.exports = function(grunt) {
 						src: ['**/*.{jpg,png}']
 					}
 				]
+			}
+		},
+		
+		// Configuration for file includes
+		includes: {
+			options: {
+				duplicates: false,
+				flatten: true,
+				includeRegexp: /^\/\/\s*import\s+['"]?([^'"]+)['"]?\s*$/
+			},
+			dev: {
+				files: [
+					{
+						cwd: 'source/js',
+						dest: 'build/js',
+						expand: true,
+						ext: '.js',
+						src: ['**/*.js']
+					}
+				]
+			},
+			dist: {
+				files: [
+					{
+						cwd: 'source/js',
+						dest: 'dist/js',
+						expand: true,
+						ext: '.js',
+						src: ['**/*.js']
+					}
+				]
+			}
+		},
+		
+		// Configuration for documenting js-files
+		jsdoc : {
+			all: {
+				src: ['source/js/modules/**/*.js', 'js/README.md'],
+				options: {
+					destination: 'dist/jsdocs'
+				}
 			}
 		},
 		
@@ -329,15 +381,26 @@ module.exports = function(grunt) {
 			},
 			all: {
 				options: {
-					'-W015': true, '-W089':true
+					'-W015': true,
+					'-W089': true
 				},
 				src: [
 					'source/js/**/*.js',
-					'!source/js/shims/**/*.js',
-					'!source/js/polyfiller.js',
-					'!source/js/libs/*',
-					'!source/js/__*.js'
+					'!source/js/vendor/**/*.js'
 				]
+			}
+		},
+		
+		// Modernizr configuration
+		modernizr: {
+			build: {
+				customTests: ['source/js/vendor/plugins/_positionsticky.js', 'source/js/vendor/plugins/_csschecked.js'],
+				devFile: 'remote',
+				files: {
+					src: ['source/**/*.js','source/**/*.scss','!source/js/vendor/*.js']
+				},
+				outputFile: 'source/js/vendor/_modernizr.js',
+				uglify: false
 			}
 		},
 		
@@ -415,10 +478,11 @@ module.exports = function(grunt) {
 		// Configuration for SCSS linting
 		scsslint: {
 			allFiles: [
-				'source/sass/{mixins,blocks,extends,variables,styles.scss,_*.scss}'
+				'source/sass/{blocks,extends,mixins,variables,styles.scss,_*.scss}'
 			],
 			options: {
 				colorizeOutput: true,
+				compact: true,
 				config: '.scss-lint.yml'
 			}
 		},
@@ -571,22 +635,40 @@ module.exports = function(grunt) {
 			}
 		},
 		
+		// Configuration for uglifying JS
+		uglify: {
+			dist: {
+				options: {
+					compress: {
+						drop_console: true
+					}
+				},
+				files: [
+					{
+						cwd: 'dist/js',
+						dest: 'dist/js',
+						expand: true,
+						src: ['**/*.js', '!**/_*.js']
+					}
+				]
+			}
+		},
+		
 		// Configuration for watching changes
 		watch: {
 			options: {
 				livereload: 35730,
-				spawn: false
+				spawn: true
 			},
 			css: {
 				files: ['build/css/**/*.css']
 			},
 			scss: {
 				files: ['source/sass/**/*.scss'],
-				tasks: ['compass:dev', 'autoprefixer:dev'],
+				tasks: ['compass:dev', 'autoprefixer:dev', 'csssplit:dev'],
 				options: {
 					debounceDelay: 0,
-					livereload: false,
-					spawn: true
+					livereload: false
 				}
 			},
 			icons: {
@@ -607,14 +689,14 @@ module.exports = function(grunt) {
 			},
 			sync_js: {
 				files: ['source/js/**/*'],
-				tasks: ['sync:js'],
-				options: {
-					spawn: true
-				}
+				tasks: ['modernizr:build', 'sync:js', 'includes:dev', 'jshint']
 			},
 			templates: {
 				files: ['source/assemble/**/*.{json,hbs}'],
-				tasks: ['newer:assemble:dev', 'prettify:dev', 'htmlhint']
+				tasks: ['newer:assemble:dev', 'prettify:dev', 'htmlhint'],
+				options: {
+					spawn: false
+				}
 			}
 		}
 	});
@@ -629,11 +711,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-csssplit');
 	grunt.loadNpmTasks('grunt-group-css-media-queries');
 	grunt.loadNpmTasks('grunt-grunticon');
 	grunt.loadNpmTasks('grunt-htmlhint');
+	grunt.loadNpmTasks('grunt-includes');
+	grunt.loadNpmTasks('grunt-jsdoc');
+	grunt.loadNpmTasks('grunt-modernizr');
 	grunt.loadNpmTasks('grunt-newer');
 	grunt.loadNpmTasks('grunt-phantomas');
 	grunt.loadNpmTasks('grunt-photobox');
@@ -659,10 +745,12 @@ module.exports = function(grunt) {
 		'grunticon',
 		'string-replace',
 		'newer:imagemin:dev',
+		'modernizr:build',
 		'compass:dev',
 		'autoprefixer:dev',
 		'csssplit:dev',
 		'sync',
+		'includes:dev',
 		'newer:assemble:dev',
 		'prettify:dev',
 		'htmlhint',
@@ -674,6 +762,7 @@ module.exports = function(grunt) {
 	// Distributing task
 	grunt.registerTask('dist', [
 		'clean:dist',
+		'clean:docs',
 		'svgmin',
 		'grunticon',
 		'string-replace',
@@ -684,12 +773,17 @@ module.exports = function(grunt) {
 		'group_css_media_queries',
 		'cssmin',
 		'copy:ajax',
+		'copy:favicon',
 		'copy:fonts',
 		'copy:js',
+		'includes:dist',
+		'uglify',
+		'clean:dist_js',
 		'assemble:dist',
 		'prettify:dist',
 		'htmlhint',
-		'jshint'
+		'jshint',
+		'jsdoc'
 	]);
 	
 	// HTMLHint task
