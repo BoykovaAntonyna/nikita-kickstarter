@@ -17,7 +17,8 @@
     "assemble",
     "compass",
     "livereload",
-    "styleguide"
+    "styleguide",
+    "handlebars-helper-partial"
   ],
   "dependencies": {
     "time-grunt": "~0.2.10"
@@ -52,6 +53,8 @@
     "grunt-string-replace": "~0.2.7",
     "grunt-styleguide": "~0.2.15",
     "grunt-svgmin": "~0.3.0",
-    "grunt-sync": "~0.0.4"
+    "grunt-sync": "~0.0.4",
+    "handlebars-helper-partial": "*",
+    "handlebars-helpers": "~0.5.5"
   }
 }
