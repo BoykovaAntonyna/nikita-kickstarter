@@ -7,6 +7,11 @@ Because the output build- and dist-files aren't always exactly the same if you w
 
 Those are tasks for a release script, and should be made on a build server.
 
+## Why no extra prefix for Layout blocks? Maybe `l-` or `lb-`?
+
+Visually it's not that easy to figure the difference between a lowercase l and a 1. But this is not the main reason.
+
+Since those layout blocks are already prefixed with `b-page-` there is no reason to prefix them with an additional prefix.
 
 ## Why don't you remove the prefix from page, main, nav, header, aside, footer classes?
 
