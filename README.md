@@ -1,14 +1,18 @@
 # nikita.kickstarter
 
-This is how I start Assemble-Projects as a Frontend-Developer.
+This is our toolbelt how to start a new project from scratch.
 
 Latest Release: [![GitHub version](https://badge.fury.io/gh/nikita-kit%2Fnikita-kickstarter.png)](https://github.com/nikita-kit/nikita-kickstarter/releases)
+
+If you want to write efficient and scalable (S)CSS-code for big websites, try [nikita.css](https://github.com/nikita-kit/nikita-css).
+
 
 ## My Project-Setup
 
 - [__Grunt__](http://gruntjs.com/) – js task runner
 - [__Assemble__](http://assemble.io/) – static site generator
 - [__SASS__](http://sass-lang.com/) / [__Compass__](http://compass-style.org/) – css preprocessing
+- [__nikita.css__](https://github.com/nikita-kit/nikita-css) – (S)CSS conventions and coding guidelines
 - [__Livereload__](http://livereload.com/) – browser auto refresh
 - [__KSS__](http://warpspire.com/kss/) – living styleguide
 
@@ -187,6 +191,7 @@ $ tree -d -I node_modules
 For the HTML structure, please have a look at [nikita.css](https://github.com/nikita-kit/nikita-css). This sub project
 describes the CSS coding standards and conventions.
 
+
 ## Javascript
 
 For the Javascript setup and structure have a look at the [README.md](https://github.com/rastersysteme/project-kickstart-assemble/tree/master/source/js/README.md) laying in `source/js`.
@@ -208,6 +213,7 @@ __Attention:__ Grunticon also produces icons as png-data-uris, mainly for ie8 an
 ## Questions?
 
 If you're asking yourself »Why not …?« have a look at my [WHYNOT.md](https://github.com/rastersysteme/project-kickstart-assemble/blob/master/WHY-NOT.md) file. There I might answer some common questions. :)
+
 
 ## License
 
