@@ -4,7 +4,8 @@ This is our toolbelt how to start a new project from scratch.
 
 Latest Release: [![GitHub version](https://badge.fury.io/gh/nikita-kit%2Fnikita-kickstarter.png)](https://github.com/nikita-kit/nikita-kickstarter/releases)
 
-If you want to write efficient and scalable (S)CSS-code for big websites, try [nikita.css](https://github.com/nikita-kit/nikita-css).
+If you want to write efficient and scalable (S)CSS-code for big websites, try [nikita.css](https://github.com/nikita-kit/nikita-css).  
+If you're interested in HTML patterns, code snippets and best practices, try [nikita.html](https://github.com/nikita-kit/nikita-html).
 
 
 ## My Project-Setup
