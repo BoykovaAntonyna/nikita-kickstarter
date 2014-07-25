@@ -4,15 +4,16 @@ This is our toolbelt how to start a new project from scratch.
 
 Latest Release: [![GitHub version](https://badge.fury.io/gh/nikita-kit%2Fnikita-kickstarter.png)](https://github.com/nikita-kit/nikita-kickstarter/releases)
 
-If you want to write efficient and scalable (S)CSS-code for big websites, try [nikita.css](https://github.com/nikita-kit/nikita-css).  
 If you're interested in HTML patterns, code snippets and best practices, try [nikita.html](https://github.com/nikita-kit/nikita-html).
+If you want to write efficient and scalable (S)CSS-code for big websites, try [nikita.css](https://github.com/nikita-kit/nikita-css).  
 
 
-## My Project-Setup
+## Our Project-Setup
 
 - [__Grunt__](http://gruntjs.com/) – js task runner
 - [__Assemble__](http://assemble.io/) – static site generator
 - [__SASS__](http://sass-lang.com/) / [__Compass__](http://compass-style.org/) – css preprocessing
+- [__nikita.html__](https://github.com/nikita-kit/nikita-html) – HTML conventions and coding guidelines
 - [__nikita.css__](https://github.com/nikita-kit/nikita-css) – (S)CSS conventions and coding guidelines
 - [__Livereload__](http://livereload.com/) – browser auto refresh
 - [__KSS__](http://warpspire.com/kss/) – living styleguide
@@ -46,7 +47,7 @@ sass-globbing (1.1.1)
 scss-lint (0.25.1)
 ```
 
-For those RubyGems I included a Gemfile, so you can use [__Bundler__](http://bundler.io/) to get a consistent environment. Just type `gem install bundler` to install Bundler itself and then you can use `bundle install` to get the exact Gems.
+For those RubyGems we included a Gemfile, so you can use [__Bundler__](http://bundler.io/) to get a consistent environment. Just type `gem install bundler` to install Bundler itself and then you can use `bundle install` to get the exact Gems.
 
 If you want to use the browser-auto-refresh-feature, get [__LiveReload.js__](https://github.com/livereload/livereload-js) and install it to the root-folder of localhost.
 
@@ -189,13 +190,19 @@ $ tree -d -I node_modules
 
 ## HTML
 
-For the HTML structure, please have a look at [nikita.css](https://github.com/nikita-kit/nikita-css). This sub project
+For the HTML structure, please have a look at [nikita.html](https://github.com/nikita-kit/nikita-html). This sub project
+describes the HTML coding standards and conventions.
+
+
+## CSS
+
+For the CSS structure, please have a look at [nikita.css](https://github.com/nikita-kit/nikita-css). This sub project
 describes the CSS coding standards and conventions.
 
 
 ## Javascript
 
-For the Javascript setup and structure have a look at the [README.md](https://github.com/rastersysteme/project-kickstart-assemble/tree/master/source/js/README.md) laying in `source/js`.
+For the Javascript setup and structure have a look at the [README.md](https://github.com/nikita-kit/nikita-kickstarter/blob/master/source/js/README.md) laying in `source/js`.
 
 
 ## Icon-Workflow
@@ -213,7 +220,7 @@ __Attention:__ Grunticon also produces icons as png-data-uris, mainly for ie8 an
 
 ## Questions?
 
-If you're asking yourself »Why not …?« have a look at my [WHYNOT.md](https://github.com/rastersysteme/project-kickstart-assemble/blob/master/WHY-NOT.md) file. There I might answer some common questions. :)
+If you're asking yourself »Why not …?« have a look at my [WHYNOT.md](https://github.com/nikita-kit/nikita-kickstarter/blob/master/WHY-NOT.md) file. There we might answer some common questions. :)
 
 
 ## License

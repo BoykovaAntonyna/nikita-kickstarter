@@ -1,5 +1,32 @@
-// Colours
+// Color-Variables
 
-$main-color: #333; // _dark-grey
-$main-bg-color: #fff; // _white
-$highlight-color: #f9eaa6; // _yellow
+// Text-Color
+$text-color-01: #fff; // white
+$text-color-02: #333; // dark-grey
+$text-color-03: #999; // grey
+$text-color-04: #eee; // light-grey
+$text-color-05: #f9eaa6; // yellow
+
+// Background-Color
+$bg-color-01: #fff; // white
+$bg-color-02: #333; // dark-grey
+$bg-color-03: #999; // grey
+$bg-color-04: #eee; // light-grey
+$bg-color-05: #f9eaa6; // yellow
+
+// Link-Color
+$link-color-01: #fff; // white
+$link-color-02: #333; // dark-grey
+$link-color-03: #999; // grey
+$link-color-04: #eee; // light-grey
+$link-color-05: #f9eaa6; // yellow
+
+// Line-Color
+$line-color-01: #fff; // white
+$line-color-02: #333; // dark-grey
+$line-color-03: #999; // grey
+$line-color-04: #eee; // light-grey
+$line-color-05: #f9eaa6; // yellow
+
+// Transparent-Color
+$transparent: rgba(255, 255, 255, 0); // for IE9 animation

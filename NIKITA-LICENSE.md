@@ -1,6 +1,6 @@
 # nikita License
 
-This project was created with nikita.kit, which is available from http://github.com/nikita-kit
+This project was created with nikita.kit, which is available from http://github.com/nikita-kit.
 
 nikita.kit is licensed under [CC0](http://creativecommons.org/publicdomain/zero/1.0/): Public Domain Dedication.
 
@@ -11,6 +11,6 @@ This is very similar to public domain and means (quoted from creativecommons.org
     to the extent allowed by law.
 
     You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking
-    permission. See Other Information below.
+    permission. See other information below.
 
 Please see http://creativecommons.org/publicdomain/zero/1.0/ for further information.

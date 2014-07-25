@@ -4,7 +4,26 @@
  * Basic Formattings
  *
  */
- 
+
+html {
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+
+/**
+ * Body
+ */
+
 body {
 	overflow-y: scroll;
 	font-family: $base-font;
@@ -15,12 +34,8 @@ body {
 	text-rendering: optimizeLegibility;
 	-webkit-text-size-adjust: 100%;
 	-ms-text-size-adjust: 100%;
-	color: $main-color;
-	background: $main-bg-color;
-}
-
-[hidden] {
-	display: none !important;
+	color: $text-color-02;
+	background: $bg-color-01;
 }
 
 
@@ -44,10 +59,12 @@ h6 {
  * General Text Formattings
  */
 
+b,
 strong {
 	font-weight: 700;
 }
 
+i,
 em {
 	font-style: italic;
 }
@@ -57,7 +74,7 @@ address {
 }
 
 abbr {
-	border-bottom: 1px dotted #6e6e6e;
+	border-bottom: 1px dotted $line-color-03;
 	font-variant: small-caps;
 	letter-spacing: 1px;
 	cursor: help;
@@ -87,7 +104,7 @@ blockquote {
 
 pre,
 code {
-	background-color: #eee;
+	background-color: $bg-color-04;
 }
 
 hr {
@@ -95,12 +112,12 @@ hr {
 	margin: 0;
 	border: 0;
 	padding: 0;
-	background-color: #6e6e6e;
+	background-color: $bg-color-03;
 }
 
 mark {
-	color: $main-color;
-	background: $highlight-color;
+	color: $text-color-02;
+	background-color: $bg-color-05;
 }
 
 
@@ -111,13 +128,13 @@ mark {
 ::-moz-selection {
 	text-shadow: none;
 	color: #fff;
-	background: $main-color;
+	background-color: rgba($bg-color-02, 0.99); // rgba to adjust Chrome-Firefox differences
 }
 
 ::selection {
 	text-shadow: none;
 	color: #fff;
-	background: $main-color;
+	background-color: rgba($bg-color-02, 0.99); // rgba to adjust Chrome-Firefox differences
 }
 
 
@@ -132,4 +149,3 @@ samp,
 var {
 	font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
 }
-
