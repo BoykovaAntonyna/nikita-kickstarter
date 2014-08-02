@@ -12,6 +12,7 @@
 
 .b-page-header {
 	
+	// Media Queries
 	@include respond-to(desktop) {
 		background-color: #f30;
 	}
@@ -24,8 +25,9 @@
 		background-color: #30f;
 	}
 	
-	display: block;
-	width: 100%;
+	
+	// Global Styles
+	position: relative;
 	height: 50px;
 	
 }

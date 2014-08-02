@@ -65,7 +65,8 @@ strong {
 }
 
 i,
-em {
+em,
+dfn {
 	font-style: italic;
 }
 
@@ -98,7 +99,7 @@ sup {
 q,
 cite,
 blockquote {
-	font-family: Georgia, "Times New Roman", Times, serif;
+	font-family: $blockquote-font;
 	font-style: italic;
 }
 
@@ -147,5 +148,15 @@ code,
 kbd,
 samp,
 var {
-	font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier;
+	font-family: $monospaced-font;
+}
+
+
+/**
+ * Images
+ */
+
+img {
+	display: block;
+	max-width: 100%;
 }

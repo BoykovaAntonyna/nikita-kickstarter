@@ -1,11 +1,7 @@
 /**
  * ---------------------------------------------------------------------------------------------------- #
  *
- * Global Browser Reset
- * 
- * http://meyerweb.com/eric/tools/css/reset/
- * v2.0 | 20110126
- * License: none (public domain)
+ * Browser Reset
  *
  */
 
@@ -109,17 +105,26 @@ header,
 main,
 menu,
 nav,
-section {
+section,
+summary {
 	display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+	display: inline-block;
+	vertical-align: baseline;
+}
+
+audio:not([controls]) {
+	display: none;
+	height: 0;
 }
 
 body {
 	line-height: 1;
-}
-
-ol,
-ul {
-	list-style: none;
 }
 
 blockquote,
@@ -132,6 +137,23 @@ blockquote:after,
 q:before,
 q:after {
 	content: none;
+}
+
+img {
+	border: 0;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+pre {
+	overflow: auto;
+}
+
+svg:not(:root) {
+	overflow: hidden;
 }
 
 table {
