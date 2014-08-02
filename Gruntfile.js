@@ -483,7 +483,8 @@ module.exports = function(grunt) {
 			options: {
 				colorizeOutput: true,
 				compact: true,
-				config: '.scss-lint.yml'
+				config: '.scss-lint.yml',
+				force: true
 			}
 		},
 		
@@ -791,7 +792,7 @@ module.exports = function(grunt) {
 		'htmlhint'
 	]);
 	
-	// SCSSLint task (as long as there is no force: true; option, i put it here. otherwise it will be used in the build-task)
+	// SCSSLint task
 	grunt.registerTask('check-scss', [
 		'scsslint'
 	]);
