@@ -80,6 +80,7 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [assemble](https://github.com/assemble/assemble)
 - [connect-livereload](https://github.com/intesso/connect-livereload)
 - [grunt](https://github.com/gruntjs/grunt)
+- [grunt-accessibility](https://github.com/yargalot/grunt-accessibility)
 - [grunt-autoprefixer](https://github.com/nDmitry/grunt-autoprefixer)
 - [grunt-contrib-clean](https://github.com/gruntjs/grunt-contrib-clean)
 - [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass)
@@ -142,18 +143,11 @@ $ tree -d -I node_modules
 │   │   ├── bgs
 │   │   └── icons
 │   │       └── png-fallback
-│   ├── js
-│   │   ├── modules
-│   │   ├── templates
-│   │   └── vendor
-│   │       └── plugins
-│   ├── jsdocs
-│   │   ├── scripts
-│   │   │   └── prettify
-│   │   └── styles
-│   └── styleguide
-│       ├── css
-│       └── public
+│   └── js
+│       ├── modules
+│       ├── templates
+│       └── vendor
+│           └── plugins
 └── source
     ├── ajax-content
     ├── assemble

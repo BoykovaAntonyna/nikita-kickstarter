@@ -7,6 +7,25 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		
+		// Accessibility Configuration
+		accessibility: {
+			options : {
+				accessibilityLevel: 'WCAG2A',
+				verbose: true
+			},
+			all : {
+				files: [
+					{
+						cwd: 'build/',
+						dest: 'reports/',
+						expand: true,
+						ext: '-report.txt',
+						src: ['*.html']
+					}
+				]
+			}
+		},
+		
 		// Configuration for assemble
 		assemble: {
 			options: {
@@ -82,7 +101,7 @@ module.exports = function(grunt) {
 				]
 			},
 			docs: {
-				dist: ['dist/jsdocs/**/*']
+				dist: ['jsdocs/**/*']
 			}
 		},
 		
@@ -181,7 +200,7 @@ module.exports = function(grunt) {
 			},
 			styleguide: {
 				cwd: 'build/css/',
-				dest: 'dist/styleguide/css/',
+				dest: 'styleguide/css/',
 				expand: true,
 				filter: 'isFile',
 				flatten: true,
@@ -267,7 +286,7 @@ module.exports = function(grunt) {
 				'tagname-lowercase': true
 			},
 			all: {
-				src: ['*/*.html', '!dist/jsdocs/**/*.html']
+				src: ['*/*.html', '!jsdocs/**/*.html']
 			}
 		},
 		
@@ -332,9 +351,9 @@ module.exports = function(grunt) {
 		// Configuration for documenting js-files
 		jsdoc : {
 			all: {
-				src: ['source/js/modules/**/*.js', 'js/README.md'],
+				src: ['source/js/modules/**/*.js', 'source/js/README.md'],
 				options: {
-					destination: 'dist/jsdocs'
+					destination: 'jsdocs'
 				}
 			}
 		},
@@ -528,18 +547,18 @@ module.exports = function(grunt) {
 		// Configuration for the styleguide output
 		styleguide: {
 			options: {
-				template: {
-					src: 'source/styleguide-template/'
-				},
-				name: 'Style Guide',
 				framework: {
 					name: 'kss'
+				},
+				name: 'Style Guide',
+				template: {
+					src: 'source/styleguide-template/'
 				}
 			},
 			all: {
 				files: [
 					{
-						'dist/styleguide': 'source/sass/blocks/**/*.scss'
+						'styleguide': 'source/sass/blocks/**/*.scss'
 					}
 				]
 			}
@@ -704,6 +723,7 @@ module.exports = function(grunt) {
 	
 	// Where we tell Grunt we plan to use this plug-in.
 	grunt.loadNpmTasks('assemble');
+	grunt.loadNpmTasks('grunt-accessibility');
 	grunt.loadNpmTasks('grunt-autoprefixer');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-compass');
@@ -784,6 +804,7 @@ module.exports = function(grunt) {
 		'prettify:dist',
 		'htmlhint',
 		'jshint',
+		'accessibility',
 		'jsdoc'
 	]);
 	
@@ -800,6 +821,11 @@ module.exports = function(grunt) {
 	// JSHint task
 	grunt.registerTask('check-js', [
 		'jshint'
+	]);
+	
+	// JSHint task
+	grunt.registerTask('check-wcag2', [
+		'accessibility'
 	]);
 	
 	// Phantomas task
