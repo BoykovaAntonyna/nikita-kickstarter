@@ -61,7 +61,7 @@ module.exports = function(grunt) {
 		// Configuration for autoprefixer
 		autoprefixer: {
 			options: {
-				browsers: ['last 2 version', 'ie 8', 'ie 9']
+				browsers: ['last 2 versions', 'ie 9']
 			},
 			dev: {
 				options: {
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
 				files: [
 					{
 						filter: 'isFile',
-						src: ['build/**/*', '!build/.svn/**', '!build/**/.svn/**', '!build/photobox/**/*']
+						src: ['build/**/*']
 					}
 				]
 			},
@@ -286,7 +286,7 @@ module.exports = function(grunt) {
 				'tagname-lowercase': true
 			},
 			all: {
-				src: ['*/*.html', '!jsdocs/**/*.html']
+				src: ['*/*.html', '!jsdocs/**/*.html', '!styleguide/**/*.html']
 			}
 		},
 		
@@ -416,10 +416,34 @@ module.exports = function(grunt) {
 				customTests: ['source/js/vendor/plugins/_positionsticky.js', 'source/js/vendor/plugins/_csschecked.js'],
 				devFile: 'remote',
 				files: {
-					src: ['source/**/*.js','source/**/*.scss','!source/js/vendor/*.js']
+					src: ['source/**/*.js', 'source/**/*.scss', '!source/js/vendor/*.js']
 				},
 				outputFile: 'source/js/vendor/_modernizr.js',
 				uglify: false
+			}
+		},
+		
+		// Configuration for pagespeed
+		pagespeed: {
+			options: {
+				nokey: true,
+				url: "http://yoursite.com"
+			},
+			prod: {
+				options: {
+					locale: "de_DE",
+					strategy: "desktop",
+					threshold: 80,
+					url: "http://yoursite.com"
+				}
+			},
+			paths: {
+				options: {
+					locale: "de_DE",
+					paths: ["/yourpage1.html", "/yourpage2.html"],
+					strategy: "desktop",
+					threshold: 80
+				}
 			}
 		},
 		
@@ -742,6 +766,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-jsdoc');
 	grunt.loadNpmTasks('grunt-modernizr');
 	grunt.loadNpmTasks('grunt-newer');
+	grunt.loadNpmTasks('grunt-pagespeed');
 	grunt.loadNpmTasks('grunt-phantomas');
 	grunt.loadNpmTasks('grunt-photobox');
 	grunt.loadNpmTasks('grunt-prettify');
@@ -803,8 +828,8 @@ module.exports = function(grunt) {
 		'assemble:dist',
 		'prettify:dist',
 		'htmlhint',
-		'jshint',
 		'accessibility',
+		'jshint',
 		'jsdoc'
 	]);
 	
@@ -826,6 +851,11 @@ module.exports = function(grunt) {
 	// JSHint task
 	grunt.registerTask('check-wcag2', [
 		'accessibility'
+	]);
+	
+	// Pagespeed task
+	grunt.registerTask('measure-pagespeed', [
+		'pagespeed'
 	]);
 	
 	// Phantomas task

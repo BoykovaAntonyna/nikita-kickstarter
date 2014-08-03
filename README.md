@@ -98,6 +98,7 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [grunt-jsdoc](https://github.com/krampstudio/grunt-jsdoc)
 - [grunt-modernizr](https://github.com/Modernizr/grunt-modernizr)
 - [grunt-newer](https://github.com/tschaub/grunt-newer)
+- [grunt-pagespeed](https://github.com/jrcryer/grunt-pagespeed)
 - [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
 - [grunt-photobox](https://github.com/stefanjudis/grunt-photobox)
 - [grunt-prettify](https://github.com/jonschlinkert/grunt-prettify)
