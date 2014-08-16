@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 	
 	// Require it at the top and pass in the grunt instance
+	require('jit-grunt')(grunt);
 	require('time-grunt')(grunt);
 	
 	// All configuration goes here 
@@ -140,6 +141,12 @@ module.exports = function(grunt) {
 					sourcemap: false
 				}
 			}
+		},
+		
+		// Configuration for run tasks concurrently
+		concurrent: {
+			dev: ['compass:dev', 'newer:assemble:dev', 'modernizr'],
+			dist: ['compass:dist', 'assemble:dist', 'modernizr']
 		},
 		
 		// Configuration for livereload
@@ -344,10 +351,10 @@ module.exports = function(grunt) {
 		// Configuration for documenting js-files
 		jsdoc : {
 			all: {
-				src: ['source/js/modules/**/*.js', 'source/js/README.md'],
 				options: {
 					destination: 'jsdocs'
-				}
+				},
+				src: ['source/js/modules/**/*.js', 'source/js/README.md']
 			}
 		},
 		
@@ -358,13 +365,17 @@ module.exports = function(grunt) {
 				'asi': false,
 				'bitwise': false,
 				'boss': true,
+				'browser': true,
 				'curly': false,
 				'eqeqeq': false,
 				'eqnull': true,
 				'evil': false,
 				'forin': true,
 				'immed': false,
+				'indent': 4,
+				'jquery': true,
 				'laxbreak': true,
+				'maxerr': 50,
 				'newcap': false,
 				'noarg': true,
 				'noempty': false,
@@ -376,19 +387,15 @@ module.exports = function(grunt) {
 				'undef': false,
 				'sub': true,
 				'strict': false,
-				'white': false,
-				'indent': 4,
-				'maxerr': 50,
-				'jquery': true,
-				'browser': true
+				'white': false
 			},
 			own: {
 				options: {
 					'-W015': true
 				},
 				src: [
-					'source/js/modules/**/*.js',
-					'source/js/init/*.js'
+					'source/js/init/*.js',
+					'source/js/modules/**/*.js'
 				]
 			},
 			all: {
@@ -405,7 +412,7 @@ module.exports = function(grunt) {
 		
 		// Modernizr configuration
 		modernizr: {
-			build: {
+			all: {
 				customTests: ['source/js/vendor/plugins/_positionsticky.js', 'source/js/vendor/plugins/_csschecked.js'],
 				devFile: 'remote',
 				files: {
@@ -760,7 +767,7 @@ module.exports = function(grunt) {
 			},
 			sync_js: {
 				files: ['source/js/**/*'],
-				tasks: ['modernizr:build', 'sync:js', 'includes:dev', 'jshint']
+				tasks: ['modernizr', 'sync:js', 'includes:dev', 'jshint']
 			},
 			templates: {
 				files: ['source/assemble/**/*.{json,hbs}'],
@@ -773,36 +780,7 @@ module.exports = function(grunt) {
 	});
 	
 	// Where we tell Grunt we plan to use this plug-in.
-	grunt.loadNpmTasks('assemble');
-	grunt.loadNpmTasks('grunt-accessibility');
-	grunt.loadNpmTasks('grunt-autoprefixer');
-	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-contrib-compass');
-	grunt.loadNpmTasks('grunt-contrib-connect');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-imagemin');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-csssplit');
-	grunt.loadNpmTasks('grunt-group-css-media-queries');
-	grunt.loadNpmTasks('grunt-grunticon');
-	grunt.loadNpmTasks('grunt-htmlhint');
-	grunt.loadNpmTasks('grunt-includes');
-	grunt.loadNpmTasks('grunt-jsdoc');
-	grunt.loadNpmTasks('grunt-modernizr');
-	grunt.loadNpmTasks('grunt-newer');
-	grunt.loadNpmTasks('grunt-pagespeed');
-	grunt.loadNpmTasks('grunt-phantomas');
-	grunt.loadNpmTasks('grunt-photobox');
-	grunt.loadNpmTasks('grunt-prettify');
-	grunt.loadNpmTasks('grunt-scss-lint');
-	grunt.loadNpmTasks('grunt-string-replace');
-	grunt.loadNpmTasks('grunt-styleguide');
-	grunt.loadNpmTasks('grunt-svgmin');
-	grunt.loadNpmTasks('grunt-svgstore');
-	grunt.loadNpmTasks('grunt-sync');
+	// done by jit-grunt plugin loader
 	
 	
 	// Where we tell Grunt what to do when we type "grunt" into the terminal.
@@ -815,18 +793,16 @@ module.exports = function(grunt) {
 	// Build task
 	grunt.registerTask('build', [
 		'clean:dev',
-		'svgmin',
+		'newer:svgmin',
 		'svgstore',
 		'grunticon',
 		'string-replace',
-		'imagemin:dev',
-		'modernizr:build',
-		'compass:dev',
+		'newer:imagemin:dev',
+		'concurrent:dev',
 		'autoprefixer:dev',
 		'csssplit:dev',
 		'sync',
 		'includes:dev',
-		'assemble:dev',
 		'prettify:dev',
 		'htmlhint',
 		'jshint',
@@ -843,7 +819,7 @@ module.exports = function(grunt) {
 		'grunticon',
 		'string-replace',
 		'imagemin:dist',
-		'compass:dist',
+		'concurrent:dist',
 		'autoprefixer:dist',
 		'csssplit:dist',
 		'group_css_media_queries',
@@ -855,7 +831,6 @@ module.exports = function(grunt) {
 		'includes:dist',
 		'uglify',
 		'clean:dist_js',
-		'assemble:dist',
 		'prettify:dist',
 		'htmlhint',
 		'accessibility',

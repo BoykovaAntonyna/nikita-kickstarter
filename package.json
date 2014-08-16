@@ -1,12 +1,12 @@
 {
-  "name": "project-kickstart-assemble",
-  "description": "A Project-Setup for Assemble",
-  "homepage": "https://github.com/rastersysteme/project-kickstart-assemble",
-  "license": "MIT",
+  "name": "nikita.kickstarter",
+  "description": "The Project-Setup for nikita.kit",
+  "homepage": "https://github.com/nikita-kit/nikita-kickstarter",
+  "license": "CC0",
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",
-    "url": "git://github.com/rastersysteme/project-kickstart-assemble.git"
+    "url": "git://github.com/nikita-kit/nikita-kickstarter.git"
   },
   "author": {
     "name": "Stephan Zavodny",
@@ -30,6 +30,7 @@
     "grunt": "~0.4.5",
     "grunt-accessibility": "~1.2.1",
     "grunt-autoprefixer": "~0.6.5",
+    "grunt-concurrent": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-compass": "~0.7.2",
     "grunt-contrib-connect": "~0.5.0",
@@ -58,6 +59,7 @@
     "grunt-svgstore": "~0.3.2",
     "grunt-sync": "~0.0.4",
     "handlebars-helper-partial": "*",
-    "handlebars-helpers": "~0.5.5"
+    "handlebars-helpers": "~0.5.5",
+    "jit-grunt": "~0.8.0"
   }
 }
