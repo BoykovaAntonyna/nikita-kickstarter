@@ -1,5 +1,5 @@
 # The Temp-Folder
 
-Put your temporary layout files in here, e.g. your teaser-images or product-photos.  
+Put your temporary image files in here, e.g. your teaser-images or product-photos, which are included as `img` elements in your layouts.
 
-This folder will be copied to _build_ and _distribution_.
+The JPG nad PNG files will be processed by the imagemin-task and then copied to `build` or `dist`.

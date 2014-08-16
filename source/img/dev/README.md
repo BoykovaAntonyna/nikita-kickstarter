@@ -1,5 +1,5 @@
 # The Development-Folder
 
-Put your open layout files in here, e.g. your Photoshop-PSD, Fireworks-PNG or Illustrator-AI.  
+Put your open layout files in here, e.g. your Photoshop-PSDs, Fireworks-PNGs or Illustrator-AIs.  
 
-This folder won't be published to your build or distribution-build.
+This folder won't be published to `build` or `dist`.

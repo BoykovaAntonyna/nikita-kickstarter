@@ -8,7 +8,7 @@ If you're interested in HTML patterns, code snippets and best practices, try [ni
 If you want to write efficient and scalable (S)CSS-code for big websites, try [nikita.css](https://github.com/nikita-kit/nikita-css).  
 
 
-## Our Project-Setup
+## Project-Setup
 
 - [__Grunt__](http://gruntjs.com/) – js task runner
 - [__Assemble__](http://assemble.io/) – static site generator
@@ -30,7 +30,7 @@ These are the minimum requirements for my project setup:
 - [__SASS 3.3__](http://rubygems.org/gems/sass/versions/) – `sudo gem install sass`
 - [__SASS Globbing 1.1__](http://rubygems.org/gems/sass-globbing/versions) – `sudo gem install sass-globbing`
 - [__SCSS Lint 0.25__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
-- [__Compass 1__](http://rubygems.org/gems/compass/versions) (atm in ALPHA-state) – `sudo gem install compass --pre`
+- [__Compass 1.0__](http://rubygems.org/gems/compass/versions) – `sudo gem install compass`
 
 It's mandatory to use the latest versions of SASS and Compass if you want to work with [__CSS Source Maps__](https://developers.google.com/chrome-developer-tools/docs/css-preprocessors) in Google Chrome.
 
@@ -39,11 +39,11 @@ If you're experiencing problems with Compass, it could be related to the fact, t
 ```
 $ gem list
 
-compass (1.0.0.alpha.21)
-compass-core (1.0.0.alpha.21)
-compass-import-once (1.0.4)
-sass (3.3.10)
-sass-globbing (1.1.1)
+compass (1.0.0)
+compass-core (1.0.0)
+compass-import-once (1.0.5)
+sass (3.3.14)
+sass-globbing (1.1.0)
 scss-lint (0.25.1)
 ```
 
@@ -106,6 +106,7 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [grunt-string-replace](https://github.com/erickrdch/grunt-string-replace)
 - [grunt-styleguide](https://github.com/indieisaconcept/grunt-styleguide)
 - [grunt-svgmin](https://github.com/sindresorhus/grunt-svgmin)
+- [grunt-svgstore](https://github.com/FWeinb/grunt-svgstore)
 - [grunt-sync](https://github.com/tomusdrw/grunt-sync)
 - [grunticon](https://github.com/filamentgroup/grunticon)
 - [time-grunt](https://github.com/sindresorhus/time-grunt)
@@ -128,8 +129,7 @@ $ tree -d -I node_modules
 │   ├── css
 │   ├── fonts
 │   ├── img
-│   │   ├── bgs
-│   │   └── icons
+│   │   └── bgs
 │   │       └── png-fallback
 │   └── js
 │       ├── modules
@@ -141,8 +141,7 @@ $ tree -d -I node_modules
 │   ├── css
 │   ├── fonts
 │   ├── img
-│   │   ├── bgs
-│   │   └── icons
+│   │   └── bgs
 │   │       └── png-fallback
 │   └── js
 │       ├── modules
@@ -159,10 +158,11 @@ $ tree -d -I node_modules
     │   └── partials
     ├── fonts
     ├── img
-    │   ├── bgs
+    │   ├── bgs
+    │   │   ├── png-fallback
+    │   │   └── svgmin
     │   ├── dev
     │   ├── icons
-    │   │   ├── png-fallback
     │   │   └── svgmin
     │   └── temp
     ├── js
@@ -202,13 +202,33 @@ For the Javascript setup and structure have a look at the [README.md](https://gi
 
 ## Icon-Workflow
 
-1. Just put your SVG-Icons into `source/icons`.
-2. All icons will be processed with the svgmin-task and put into the `svgmin-folder.
+There're two possible ways to use icons.
+
+
+### SVG-Sprite
+
+You'd like to edit your icons with CSS, e.g. to change the fill-color or you have one and the same icon in different colors? Then this is your choice.
+
+1. Just put your SVG-icons into `source/img/icons`.
+2. All icons will be processed with the svgmin-task and put into the `icons/svgmin` folder.
+3. Afterwards the svgstore-task uses these icons to put together an icon-sprite which will be copied to the `assemble/partials` folder. It must be included directly after the opening `<body>` element at the top of the document (have a look at the file `lyt-default.hbs` in the `layouts` folder).
+4. To include a SVG-icon use `<svg class="your-class-name"><use xlink:href="#filename" /></svg>` in your .hbs-files. Make sure you use a class name on the SVG to size it.
+5. Now you can use `.your-class-name { fill: #f30; }` to color your icon.
+
+For further infos read the article [Icon System with SVG sprites](http://css-tricks.com/svg-sprites-use-better-icon-fonts/) by Chris Coyier.
+
+
+### Data-URIs
+
+If you have to include your icon as a background-image, e.g. because you can't simply add a `svg` element, then you should use this method.
+
+1. Just put your SVG-icons into `source/img/bgs`.
+2. All icons will be processed with the svgmin-task and put into the `bgs/svgmin` folder.
 3. Afterwards the grunticon-task uses these icons to produce
-    1. PNG-fallback-files, which will be put into the `png-fallback`-folder
-    2. SCSS-files (all icons are included as data-URIs), which will be put into `sass/grunticon`.
+    1. PNG-fallback-files, which will be put into the `bgs/png-fallback` folder
+    2. SCSS-files (all icons are included as data-URIs in the form of SASS-placeholders), which will be put into `sass/grunticon`.
 4. These SCSS-files will now be processed by the string-replace-task to get different placeholder-extends. They are saved into `sass/icons`.
-5. Now you can include your icons by using the `_grunticon.scss`-mixin. Just type `@include grunticon(name-of-your-icon);`.
+5. Now you can include your icons by using the `_grunticon.scss` mixin. Just type `@include grunticon(name-of-your-icon);`.
 
 __Attention:__ Grunticon also produces icons as png-data-uris, mainly for ie8 and older android browsers. If you use lots of icons in your project, remove `@extend %icon-data-png-#{$name};` from the mixin and only extend the svg and fallback version. Otherwise it could really hurt performance because of CSS-bloat!
 

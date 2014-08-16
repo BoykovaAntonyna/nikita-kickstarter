@@ -32,7 +32,7 @@ module.exports = function(grunt) {
 				data: 'source/assemble/data/**/*.{json,yml}',
 				helpers: 'source/assemble/helpers/**/*.js',
 				layoutdir: 'source/assemble/layouts/',
-				partials: 'source/assemble/partials/**/*.hbs'
+				partials: 'source/assemble/partials/**/*.{hbs,svg}'
 			},
 			dev: {
 				files: [
@@ -109,7 +109,11 @@ module.exports = function(grunt) {
 		compass: {
 			options: {
 				debugInfo: false,
+				fontsDir: 'source/fonts',
+				force: true,
 				imagesDir: 'source/img',
+				noLineComments: true,
+				outputStyle: 'expanded', // minifying for dist will be done by grunt-contrib-cssmin
 				raw: [
 					'http_path = "/"',
 					'Sass::Script::Number.precision = 8',
@@ -117,33 +121,22 @@ module.exports = function(grunt) {
 					'  :read_cache => true,',
 					'}'
 				].join("\n"),
-				require: ['sass-globbing'],
+				require: ['sass-globbing', 'compass/import-once'],
 				sassDir: 'source/sass'
 			},
 			dev: {
 				options: {
 					cssDir: 'build/css',
 					environment: 'development',
-					force: true,
 					javascriptsDir: 'build/js',
-					noLineComments: true,
-					outputStyle: 'expanded',
-					raw: [
-						'sass_options = {',
-						'  :sourcemap => true', // this set to 'true' has no effect, if you aren't using sass >= 3.3
-						'}'
-					].join("\n"),
-					sourcemap: true // this set to 'true' has no effect, if you aren't using sass >= 3.3
+					sourcemap: true
 				}
 			},
 			dist: {
 				options: {
 					cssDir: 'dist/css',
 					environment: 'production',
-					force: true,
 					javascriptsDir: 'dist/js',
-					noLineComments: true,
-					outputStyle: 'expanded', // minifying will be done by grunt-contrib-cssmin
 					sourcemap: false
 				}
 			}
@@ -211,9 +204,9 @@ module.exports = function(grunt) {
 		// Configuration for minifying css-files
 		cssmin: {
 			dist: {
-				expand: true,
 				cwd: 'dist/css/',
 				dest: 'dist/css/',
+				expand: true,
 				src: ['*.css']
 			}
 		},
@@ -221,8 +214,8 @@ module.exports = function(grunt) {
 		// Configuration for splitting css-files (e.g. IE9)
 		csssplit: {
 			options: {
-				suffix: '-part',
-				maxRules: 500
+				maxRules: 500,
+				suffix: '-part'
 			},
 			dev: {
 				dest: 'build/css',
@@ -250,14 +243,14 @@ module.exports = function(grunt) {
 				datapngcss: '_icons-data-png.scss',
 				datasvgcss: '_icons-data-svg.scss',
 				loadersnippet: 'grunticon-loader.js',
-				pngfolder: '../../img/icons/png-fallback',
+				pngfolder: '../../img/bgs/png-fallback',
 				previewhtml: 'preview.html',
 				urlpngcss: '_icons-fallback.scss'
 			},
 			all: {
 				files: [
 					{
-						cwd: 'source/img/icons/svgmin',
+						cwd: 'source/img/bgs/svgmin',
 						dest: 'source/sass/grunticon',
 						expand: true,
 						src: ['*.svg']
@@ -270,7 +263,7 @@ module.exports = function(grunt) {
 		htmlhint: {
 			options: {
 				force: true,
-				'attr-lowercase': true, // comment out e.g. if you work with facebook api 
+				'attr-lowercase': false, // set to false because of svg-attribute 'viewBox'
 				'attr-value-double-quotes': true,
 				'attr-value-not-empty': true,
 				'doctype-first': true,
@@ -625,7 +618,18 @@ module.exports = function(grunt) {
 					{ transformsWithOnePath: false } // Enabling this breaks Illustrator SVGs with complex text
 				]
 			},
-			all: {
+			bgs: {
+				files: [
+					{
+						cwd: 'source/img/bgs',
+						dest: 'source/img/bgs/svgmin',
+						expand: true,
+						ext: '.svg',
+						src: ['*.svg']
+					}
+				]
+			},
+			icons: {
 				files: [
 					{
 						cwd: 'source/img/icons',
@@ -635,6 +639,25 @@ module.exports = function(grunt) {
 						src: ['*.svg']
 					}
 				]
+			}
+		},
+		
+		// Configuration for building the SVG-sprite
+		svgstore: {
+			options: {
+				prefix : 'icon-',
+				formatting : {
+					indent_char: '	',
+					indent_size : 1
+				},
+				svg: {
+					style: "display: none;"
+				}
+			},
+			all: {
+				files: {
+					'source/assemble/partials/icon-sprite.svg': ['source/img/icons/svgmin/*.svg']
+				}
 			}
 		},
 		
@@ -715,13 +738,17 @@ module.exports = function(grunt) {
 					livereload: false
 				}
 			},
-			icons: {
-				files: ['source/img/icons/*.svg'],
-				tasks: ['newer:svgmin', 'grunticon', 'string-replace']
-			},
 			images: {
 				files: ['source/img/*', 'source/img/**/*.{jpg,png}', '!source/img/dev/*'],
 				tasks: ['newer:imagemin:dev']
+			},
+			svg_bgs: {
+				files: ['source/img/bgs/*.svg'],
+				tasks: ['newer:svgmin:bgs', 'grunticon', 'string-replace']
+			},
+			svg_icons: {
+				files: ['source/img/icons/*.svg'],
+				tasks: ['newer:svgmin:icons', 'svgstore', 'newer:assemble:dev']
 			},
 			sync_ajax: {
 				files: ['source/ajax-content/**/*'],
@@ -774,6 +801,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-string-replace');
 	grunt.loadNpmTasks('grunt-styleguide');
 	grunt.loadNpmTasks('grunt-svgmin');
+	grunt.loadNpmTasks('grunt-svgstore');
 	grunt.loadNpmTasks('grunt-sync');
 	
 	
@@ -787,17 +815,18 @@ module.exports = function(grunt) {
 	// Build task
 	grunt.registerTask('build', [
 		'clean:dev',
-		'newer:svgmin',
+		'svgmin',
+		'svgstore',
 		'grunticon',
 		'string-replace',
-		'newer:imagemin:dev',
+		'imagemin:dev',
 		'modernizr:build',
 		'compass:dev',
 		'autoprefixer:dev',
 		'csssplit:dev',
 		'sync',
 		'includes:dev',
-		'newer:assemble:dev',
+		'assemble:dev',
 		'prettify:dev',
 		'htmlhint',
 		'jshint',
@@ -810,6 +839,7 @@ module.exports = function(grunt) {
 		'clean:dist',
 		'clean:docs',
 		'svgmin',
+		'svgstore',
 		'grunticon',
 		'string-replace',
 		'imagemin:dist',
