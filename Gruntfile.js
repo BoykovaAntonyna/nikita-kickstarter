@@ -1,7 +1,9 @@
 module.exports = function(grunt) {
 	
 	// Require it at the top and pass in the grunt instance
-	require('jit-grunt')(grunt);
+	require('jit-grunt')(grunt, {
+		scsslint: 'grunt-scss-lint'
+	});
 	require('time-grunt')(grunt);
 	
 	// All configuration goes here 

@@ -27,9 +27,9 @@ These are the minimum requirements for my project setup:
  
 - [__Node.js & Node Package Manager__](http://nodejs.org)
 - [__Grunt Command Line Interface__](http://gruntjs.com/getting-started) – `sudo npm install -g grunt-cli`
-- [__SASS 3.3__](http://rubygems.org/gems/sass/versions/) – `sudo gem install sass`
+- [__SASS 3.4__](http://rubygems.org/gems/sass/versions/) – `sudo gem install sass`
 - [__SASS Globbing 1.1__](http://rubygems.org/gems/sass-globbing/versions) – `sudo gem install sass-globbing`
-- [__SCSS Lint 0.25__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
+- [__SCSS Lint 0.28__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
 - [__Compass 1.0__](http://rubygems.org/gems/compass/versions) – `sudo gem install compass`
 
 It's mandatory to use the latest versions of SASS and Compass if you want to work with [__CSS Source Maps__](https://developers.google.com/chrome-developer-tools/docs/css-preprocessors) in Google Chrome.
@@ -39,12 +39,12 @@ If you're experiencing problems with Compass, it could be related to the fact, t
 ```
 $ gem list
 
-compass (1.0.0)
-compass-core (1.0.0)
+compass (1.0.1)
+compass-core (1.0.1)
 compass-import-once (1.0.5)
-sass (3.3.14)
+sass (3.4.4)
 sass-globbing (1.1.0)
-scss-lint (0.25.1)
+scss-lint (0.28.0)
 ```
 
 For those RubyGems we included a Gemfile, so you can use [__Bundler__](http://bundler.io/) to get a consistent environment. Just type `gem install bundler` to install Bundler itself and then you can use `bundle install` to get the exact Gems.
