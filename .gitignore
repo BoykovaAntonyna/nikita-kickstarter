@@ -5,6 +5,7 @@ jsdocs
 node_modules
 reports
 styleguide
+Gemfile.lock
 
 .DS_Store
 .idea
