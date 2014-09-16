@@ -17,14 +17,14 @@ fi
 if [ -z "`which compass`" ]
 then
 	echo "ERROR: compass is missing!"
-	echo "Please run 'sudo gem install compass --pre'"
+	echo "Please run 'sudo gem install compass'"
 	exit 1;
 fi
 
 if [ -z "`which sass`" ]
 then
 	echo "ERROR: sass is missing!"
-	echo "Please run 'sudo gem install sass --pre'"
+	echo "Please run 'sudo gem install sass'"
 	exit 1;
 fi
 
