@@ -24,7 +24,7 @@
     "time-grunt": "~0.2.10"
   },
   "devDependencies": {
-    "assemble": "~0.4.37",
+    "assemble": "~0.4.42",
     "connect-livereload": "~0.3.2",
     "css-parse": "~1.5.3",
     "grunt": "~0.4.5",
