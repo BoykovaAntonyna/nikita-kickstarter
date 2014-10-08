@@ -4,6 +4,7 @@
   "homepage": "https://github.com/nikita-kit/nikita-kickstarter",
   "license": "CC0",
   "readmeFilename": "README.md",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/nikita-kit/nikita-kickstarter.git"

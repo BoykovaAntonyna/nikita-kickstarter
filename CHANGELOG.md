@@ -1,5 +1,6 @@
 # Development Version
 
+* package.json#private is true now, change it if you REALLY want to publish your entire project to NPM
 * faster cleaning of build and dist folder
 * use one global tmp folder for both build and dist
 * updated grunticon to 1.2.13 (because of strange tmp-folder behaviour!)
