@@ -552,7 +552,7 @@ module.exports = function(grunt) {
 		
 		// Configuration for string-replacing the grunticon output
 		'string-replace': {
-			datasvg: {
+			'grunticon-datasvg': {
 				files: {
 					'source/sass/icons/_icons-data-svg.scss': 'source/sass/grunticon/_icons-data-svg.scss'
 				},
@@ -563,7 +563,7 @@ module.exports = function(grunt) {
 					}]
 				}
 			},
-			datapng: {
+            'grunticon-datapng': {
 				files: {
 					'source/sass/icons/_icons-data-png.scss': 'source/sass/grunticon/_icons-data-png.scss'
 				},
@@ -574,7 +574,7 @@ module.exports = function(grunt) {
 					}]
 				}
 			},
-			fallback: {
+            'grunticon-fallback': {
 				files: {
 					'source/sass/icons/_icons-fallback.scss': 'source/sass/grunticon/_icons-fallback.scss'
 				},
@@ -834,8 +834,10 @@ module.exports = function(grunt) {
 		'svgmin:dev',
 		'svgstore:dev',
 		'grunticon:dev',
-		'string-replace',
-		'newer:imagemin:dev',
+		'string-replace:grunticon-datasvg',
+        'string-replace:grunticon-datapng',
+        'string-replace:grunticon-fallback',
+		'imagemin:dev',
 		'concurrent:dev',
 		'autoprefixer:dev',
 		'csssplit:dev',
@@ -855,7 +857,9 @@ module.exports = function(grunt) {
 		'svgmin:dist',
 		'svgstore:dist',
 		'grunticon:dist',
-		'string-replace',
+        'string-replace:grunticon-datasvg',
+        'string-replace:grunticon-datapng',
+        'string-replace:grunticon-fallback',
 		'imagemin:dist',
 		'concurrent:dist',
 		'autoprefixer:dist',
