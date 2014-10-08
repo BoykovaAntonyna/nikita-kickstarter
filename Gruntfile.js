@@ -258,9 +258,9 @@ module.exports = function(grunt) {
 			},
             dev: {
                 options: {
-                    pngfolder: 'build/img/bgs/png-fallback',
-                    loadersnippet: 'build/tmp/grunticon/grunticon-loader.js', /* we don't need this! */
-                    previewhtml: 'build/tmp/grunticon/preview.html'  /* we don't need this! */
+                    pngfolder: '../../../build/img/bgs/png-fallback',
+                    loadersnippet: '../../../build/tmp/grunticon/grunticon-loader.js', /* we don't need this! */
+                    previewhtml: '../../../build/tmp/grunticon/preview.html'  /* we don't need this! */
                 },
                 files: [
                     {
@@ -273,9 +273,9 @@ module.exports = function(grunt) {
             },
             dist: {
                 options: {
-                    pngfolder: 'dist/img/bgs/png-fallback',
-                    loadersnippet: 'dist/tmp/grunticon/grunticon-loader.js', /* we don't need this! */
-                    previewhtml: 'dist/tmp/grunticon/preview.html'  /* we don't need this! */
+                    pngfolder: '../../../dist/img/bgs/png-fallback',
+                    loadersnippet: '../../../dist/tmp/grunticon/grunticon-loader.js', /* we don't need this! */
+                    previewhtml: '../../../dist/tmp/grunticon/preview.html'  /* we don't need this! */
                 },
                 files: [
                     {
