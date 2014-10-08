@@ -9,8 +9,8 @@
     "url": "git://github.com/nikita-kit/nikita-kickstarter.git"
   },
   "author": {
-    "name": "Stephan Zavodny",
-    "url": "http://rastersysteme.de"
+    "name": "nikita.kit Authors",
+    "url": "https://github.com/nikita-kit/nikita-kickstarter/graphs/contributors"
   },
   "keywords": [
     "grunt",
