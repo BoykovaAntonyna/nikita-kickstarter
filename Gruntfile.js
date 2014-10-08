@@ -251,21 +251,38 @@ module.exports = function(grunt) {
 				cssprefix: '%icon-',
 				datapngcss: '_icons-data-png.scss',
 				datasvgcss: '_icons-data-svg.scss',
-				loadersnippet: 'grunticon-loader.js',
-				pngfolder: '../../img/bgs/png-fallback',
-				previewhtml: 'preview.html',
 				urlpngcss: '_icons-fallback.scss'
 			},
-			all: {
-				files: [
-					{
-						cwd: 'source/img/bgs/svgmin',
-						dest: 'source/sass/grunticon',
-						expand: true,
-						src: ['*.svg']
-					}
-				]
-			}
+            dev: {
+                options: {
+                    pngfolder: 'build/img/bgs/png-fallback',
+                    loadersnippet: 'build/tmp/grunticon/grunticon-loader.js', /* we don't need this! */
+                    previewhtml: 'build/tmp/grunticon/preview.html'  /* we don't need this! */
+                },
+                files: [
+                    {
+                        cwd: 'build/tmp/svgmin/bgs',
+                        dest: 'source/sass/grunticon',
+                        expand: true,
+                        src: ['*.svg']
+                    }
+                ]
+            },
+            dist: {
+                options: {
+                    pngfolder: 'dist/img/bgs/png-fallback',
+                    loadersnippet: 'dist/tmp/grunticon/grunticon-loader.js', /* we don't need this! */
+                    previewhtml: 'dist/tmp/grunticon/preview.html'  /* we don't need this! */
+                },
+                files: [
+                    {
+                        cwd: 'dist/tmp/svgmin/bgs',
+                        dest: 'source/sass/grunticon',
+                        expand: true,
+                        src: ['*.svg']
+                    }
+                ]
+            }
 		},
 		
 		// Configuration for validating html-files
@@ -627,26 +644,40 @@ module.exports = function(grunt) {
 					{ transformsWithOnePath: false } // Enabling this breaks Illustrator SVGs with complex text
 				]
 			},
-			bgs: {
+			dev: {
 				files: [
 					{
 						cwd: 'source/img/bgs',
-						dest: 'source/img/bgs/svgmin',
+						dest: 'build/tmp/svgmin/bgs',
 						expand: true,
 						ext: '.svg',
 						src: ['*.svg']
-					}
+					},
+                    {
+                        cwd: 'source/img/icons',
+                        dest: 'build/tmp/svgmin/icons',
+                        expand: true,
+                        ext: '.svg',
+                        src: ['*.svg']
+                    }
 				]
 			},
-			icons: {
+			dist: {
 				files: [
-					{
-						cwd: 'source/img/icons',
-						dest: 'source/img/icons/svgmin',
-						expand: true,
-						ext: '.svg',
-						src: ['*.svg']
-					}
+                    {
+                        cwd: 'source/img/bgs',
+                        dest: 'dist/tmp/svgmin/bgs',
+                        expand: true,
+                        ext: '.svg',
+                        src: ['*.svg']
+                    },
+                    {
+                        cwd: 'source/img/icons',
+                        dest: 'dist/tmp/svgmin/icons',
+                        expand: true,
+                        ext: '.svg',
+                        src: ['*.svg']
+                    }
 				]
 			}
 		},
@@ -663,11 +694,16 @@ module.exports = function(grunt) {
 					style: "display: none;"
 				}
 			},
-			all: {
+			dev: {
 				files: {
-					'source/assemble/partials/icon-sprite.svg': ['source/img/icons/svgmin/*.svg']
+					'source/assemble/partials/icon-sprite.svg': ['build/tmp/svgmin/icons/*.svg']
 				}
-			}
+			},
+            dist: {
+                files: {
+                    'source/assemble/partials/icon-sprite.svg': ['build/tmp/svgmin/icons/*.svg']
+                }
+            }
 		},
 		
 		// Configuration for syncing files
@@ -753,11 +789,11 @@ module.exports = function(grunt) {
 			},
 			svg_bgs: {
 				files: ['source/img/bgs/*.svg'],
-				tasks: ['newer:svgmin:bgs', 'grunticon', 'string-replace']
+				tasks: ['newer:svgmin:dev', 'grunticon', 'string-replace']
 			},
 			svg_icons: {
 				files: ['source/img/icons/*.svg'],
-				tasks: ['newer:svgmin:icons', 'svgstore', 'newer:assemble:dev']
+				tasks: ['newer:svgmin:dev', 'svgstore:dev', 'newer:assemble:dev']
 			},
 			sync_ajax: {
 				files: ['source/ajax-content/**/*'],
@@ -795,9 +831,9 @@ module.exports = function(grunt) {
 	// Build task
 	grunt.registerTask('build', [
 		'clean:dev',
-		'newer:svgmin',
-		'svgstore',
-		'grunticon',
+		'svgmin:dev',
+		'svgstore:dev',
+		'grunticon:dev',
 		'string-replace',
 		'newer:imagemin:dev',
 		'concurrent:dev',
@@ -816,9 +852,9 @@ module.exports = function(grunt) {
 	grunt.registerTask('dist', [
 		'clean:dist',
 		'clean:docs',
-		'svgmin',
-		'svgstore',
-		'grunticon',
+		'svgmin:dist',
+		'svgstore:dist',
+		'grunticon:dist',
 		'string-replace',
 		'imagemin:dist',
 		'concurrent:dist',

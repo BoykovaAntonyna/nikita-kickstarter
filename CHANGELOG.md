@@ -1,5 +1,7 @@
 # Development Version
 
+* replaced svgmin:bgs + svgmin:icons with svgmin:dist + svgmin:dev
+* use build/tmp and dist/tmp folder for temporary svgmin/grunticon svg files
 * Added `Gemfile.lock` to `.gitignore`
 * Hint in `setup-dev-env.sh` changed to version without `--pre` for sass and compass
 * Updated assemble to 0.4.42
