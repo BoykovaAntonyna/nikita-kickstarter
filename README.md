@@ -28,6 +28,7 @@ These are the minimum requirements for my project setup:
  
 - [__Node.js & Node Package Manager__](http://nodejs.org)
 - [__Grunt Command Line Interface__](http://gruntjs.com/getting-started) – `sudo npm install -g grunt-cli`
+- [__Bower__](http://bower.io) – `sudo npm install -g bower`
 - [__SASS 3.4__](http://rubygems.org/gems/sass/versions/) – `sudo gem install sass`
 - [__SASS Globbing 1.1__](http://rubygems.org/gems/sass-globbing/versions) – `sudo gem install sass-globbing`
 - [__SCSS Lint 0.28__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
@@ -59,7 +60,7 @@ Open your preferred command line tool and choose your project directory.
 
 Either use `./setup-dev-env.sh`. This will start a shell script to check requirements, then runs `npm install` automatically to install Grunt and [Grunt plugins](#grunt-plugins-used) required for the build script.  
 
-Or use `npm install` if your are on Windows (you have to check the requirements manually). This will install Grunt and [Grunt plugins](#grunt-plugins-used) required for the build script.
+Or use `npm install` and `bower install` if your are on Windows (you have to check the requirements manually). This will install Grunt and [Grunt plugins](#grunt-plugins-used) required for the build script.
 
 1. `grunt` or `grunt build` – start build script
 2. [http://localhost:9002/](http://localhost:9002/) or [http://0.0.0.0:9002/](http://0.0.0.0:9002/) – watch your build-directory in the browser (livereload is running on port 9002)

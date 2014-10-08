@@ -1,3 +1,7 @@
+# 0.8.1
+
+* added `bower install` info to the README.md
+
 # 0.8.0
 
 * added nikita.css as bower package
