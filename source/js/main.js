@@ -1,4 +1,4 @@
 // import vendor/_modernizr.js
-// import vendor/_require.js
+// import ../../bower_components/requirejs/require.js
 // import _requireconfig.js
 // import _app.js

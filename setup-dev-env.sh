@@ -43,3 +43,4 @@ then
 fi
 
 npm install
+node_modules/.bin/bower install --config.interactive=false # since we don't want to know if we might want to submit some statistics to the bower team!

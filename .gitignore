@@ -3,6 +3,7 @@ dist
 docs
 jsdocs
 node_modules
+bower_components
 reports
 styleguide
 Gemfile.lock

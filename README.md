@@ -15,6 +15,7 @@ If you want to write efficient and scalable (S)CSS-code for big websites, try [n
 - [__SASS__](http://sass-lang.com/) / [__Compass__](http://compass-style.org/) – css preprocessing
 - [__nikita.html__](https://github.com/nikita-kit/nikita-html) – HTML conventions and coding guidelines
 - [__nikita.css__](https://github.com/nikita-kit/nikita-css) – (S)CSS conventions and coding guidelines
+- [__Bower__](http://bower.io/) – package manager for frontend libraries
 - [__Livereload__](http://livereload.com/) – browser auto refresh
 - [__KSS__](http://warpspire.com/kss/) – living styleguide
 
@@ -89,6 +90,7 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [grunt-contrib-cssmin](https://github.com/gruntjs/grunt-contrib-cssmin)
 - [grunt-contrib-imagemin](https://github.com/gruntjs/grunt-contrib-imagemin)
 - [grunt-contrib-jshint](https://github.com/gruntjs/grunt-contrib-jshint)
+- [grunt-contrib-symlink](https://github.com/gruntjs/grunt-contrib-symlink)
 - [grunt-contrib-uglify](https://github.com/gruntjs/grunt-contrib-uglify)
 - [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
 - [grunt-csssplit](https://github.com/project-collins/grunt-csssplit)
@@ -124,8 +126,10 @@ My kickstart-setup provides the three main folders `source/`, `build/` and `dist
 ```
 $ tree -d -I node_modules
 .
+├── bower_components
 ├── build
 │   ├── ajax-content
+│   ├── bower_components
 │   ├── css
 │   ├── fonts
 │   ├── img
@@ -138,6 +142,7 @@ $ tree -d -I node_modules
 │           └── plugins
 ├── dist
 │   ├── ajax-content
+│   ├── bower_components
 │   ├── css
 │   ├── fonts
 │   ├── img
@@ -159,11 +164,8 @@ $ tree -d -I node_modules
     ├── fonts
     ├── img
     │   ├── bgs
-    │   │   ├── png-fallback
-    │   │   └── svgmin
     │   ├── dev
     │   ├── icons
-    │   │   └── svgmin
     │   └── temp
     ├── js
     │   ├── modules

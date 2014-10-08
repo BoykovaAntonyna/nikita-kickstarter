@@ -207,7 +207,13 @@ module.exports = function(grunt) {
 				filter: 'isFile',
 				flatten: true,
 				src: ['**/*.css']
-			}
+			},
+            bower_components: {
+                cwd: 'bower_components/',
+                dest: 'dist/bower_components/',
+                expand: true,
+                src: ['**/*']
+            }
 		},
 
 		// Configuration for minifying css-files
@@ -767,6 +773,16 @@ module.exports = function(grunt) {
 			}
 		},
 
+        symlink: {
+            options: {
+                overwrite: false
+            },
+            dev: {
+                src: 'bower_components/',
+                dest: 'build/bower_components/'
+            }
+        },
+
 		// Configuration for watching changes
 		watch: {
 			options: {
@@ -843,6 +859,7 @@ module.exports = function(grunt) {
 		'concurrent:dev',
 		'autoprefixer:dev',
 		'csssplit:dev',
+        'symlink:dev',
 		'sync',
 		'includes:dev',
 		'prettify:dev',
@@ -873,6 +890,7 @@ module.exports = function(grunt) {
 		'copy:favicon',
 		'copy:fonts',
 		'copy:js',
+        'copy:bower_components',
 		'includes:dist',
 		'uglify',
 		'prettify:dist',
