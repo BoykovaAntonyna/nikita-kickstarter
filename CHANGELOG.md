@@ -1,5 +1,6 @@
 # Development Version
 
+* use one global tmp folder for both build and dist
 * updated grunticon to 1.2.13 (because of strange tmp-folder behaviour!)
 * removed `partials/icon-sprite.svg` from source folder, is stored in tmp folder now
 * always use sass cache in dev, disable it for dist

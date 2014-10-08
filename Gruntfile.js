@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 				data: 'source/assemble/data/**/*.{json,yml}',
 				helpers: 'source/assemble/helpers/**/*.js',
 				layoutdir: 'source/assemble/layouts/',
-				partials: ['source/assemble/partials/**/*.hbs', 'build/tmp/icon-sprite.svg', 'dist/tmp/icon-sprite.svg']
+				partials: ['source/assemble/partials/**/*.hbs', 'tmp/icon-sprite.svg']
 			},
 			dev: {
 				files: [
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Configuration for autoprefixer
 		autoprefixer: {
 			options: {
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 				src: 'dist/css/*.css'
 			}
 		},
-		
+
 		// Configuration for deleting files
 		clean: {
 			dev: {
@@ -105,9 +105,12 @@ module.exports = function(grunt) {
 			},
 			docs: {
 				dist: ['jsdocs/**/*']
-			}
+			},
+            tmp: {
+                tmp: ['tmp/**/*']
+            }
 		},
-		
+
 		// Configuration for compass
 		compass: {
 			options: {
@@ -147,13 +150,13 @@ module.exports = function(grunt) {
                 }
 			}
 		},
-		
+
 		// Configuration for run tasks concurrently
 		concurrent: {
 			dev: ['compass:dev', 'assemble:dev', 'modernizr'],
 			dist: ['compass:dist', 'assemble:dist', 'modernizr']
 		},
-		
+
 		// Configuration for livereload
 		connect: {
 			livereload: {
@@ -176,7 +179,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		
+
 		// Configuration for copying files
 		copy: {
 			ajax: {
@@ -212,7 +215,7 @@ module.exports = function(grunt) {
 				src: ['**/*.css']
 			}
 		},
-		
+
 		// Configuration for minifying css-files
 		cssmin: {
 			dist: {
@@ -222,7 +225,7 @@ module.exports = function(grunt) {
 				src: ['*.css']
 			}
 		},
-		
+
 		// Configuration for splitting css-files (e.g. IE9)
 		csssplit: {
 			options: {
@@ -238,7 +241,7 @@ module.exports = function(grunt) {
 				src: 'dist/css/styles.css'
 			}
 		},
-		
+
 		// Configuration for grouping media queries
 		group_css_media_queries: {
 			dist: {
@@ -247,24 +250,25 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		
+
 		// Configuration for managing SVG-icons
 		grunticon: {
 			options: {
 				cssprefix: '%icon-',
 				datapngcss: '_icons-data-png.scss',
 				datasvgcss: '_icons-data-svg.scss',
-				urlpngcss: '_icons-fallback.scss'
+				urlpngcss: '_icons-fallback.scss',
+                tmpDir: 'tmp/grunticon-tmp',
 			},
             dev: {
                 options: {
                     pngfolder: '../../../build/img/bgs/png-fallback',
-                    loadersnippet: '../../../build/tmp/grunticon/grunticon-loader.js', /* we don't need this! */
-                    previewhtml: '../../../build/tmp/grunticon/preview.html'  /* we don't need this! */
+                    loadersnippet: '../../../tmp/grunticon/grunticon-loader.js', /* we don't need this! */
+                    previewhtml: '../../../tmp/grunticon/preview.html'  /* we don't need this! */
                 },
                 files: [
                     {
-                        cwd: 'build/tmp/svgmin/bgs',
+                        cwd: 'tmp/svgmin/bgs',
                         dest: 'source/sass/grunticon',
                         expand: true,
                         src: ['*.svg']
@@ -274,12 +278,12 @@ module.exports = function(grunt) {
             dist: {
                 options: {
                     pngfolder: '../../../dist/img/bgs/png-fallback',
-                    loadersnippet: '../../../dist/tmp/grunticon/grunticon-loader.js', /* we don't need this! */
-                    previewhtml: '../../../dist/tmp/grunticon/preview.html'  /* we don't need this! */
+                    loadersnippet: '../../../tmp/grunticon/grunticon-loader.js', /* we don't need this! */
+                    previewhtml: '../../../tmp/grunticon/preview.html'  /* we don't need this! */
                 },
                 files: [
                     {
-                        cwd: 'dist/tmp/svgmin/bgs',
+                        cwd: 'tmp/svgmin/bgs',
                         dest: 'source/sass/grunticon',
                         expand: true,
                         src: ['*.svg']
@@ -287,7 +291,7 @@ module.exports = function(grunt) {
                 ]
             }
 		},
-		
+
 		// Configuration for validating html-files
 		htmlhint: {
 			options: {
@@ -311,7 +315,7 @@ module.exports = function(grunt) {
 				src: ['*/*.html', '!jsdocs/**/*.html', '!styleguide/**/*.html']
 			}
 		},
-		
+
 		// Configuration for optimizing image-files
 		imagemin: {
 			options: {
@@ -338,7 +342,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Configuration for file includes
 		includes: {
 			options: {
@@ -369,7 +373,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Configuration for documenting js-files
 		jsdoc : {
 			all: {
@@ -379,7 +383,7 @@ module.exports = function(grunt) {
 				src: ['source/js/modules/**/*.js', 'source/js/README.md']
 			}
 		},
-		
+
 		// Configuration for validating js-files
 		jshint: {
 			options: {
@@ -431,7 +435,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Modernizr configuration
 		modernizr: {
 			all: {
@@ -444,7 +448,7 @@ module.exports = function(grunt) {
 				uglify: false
 			}
 		},
-		
+
 		// Configuration for pagespeed
 		pagespeed: {
 			options: {
@@ -468,7 +472,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		
+
 		// Configuration for measuring frontend performance
 		phantomas: {
 			all : {
@@ -479,7 +483,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		
+
 		// Configuration for photobox
 		photobox: {
 			all: {
@@ -490,7 +494,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		
+
 		// Configuration for prettifying the html-code generated by assemble
 		prettify: {
 			options: {
@@ -539,7 +543,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Configuration for SCSS linting
 		scsslint: {
 			allFiles: [
@@ -552,7 +556,7 @@ module.exports = function(grunt) {
 				force: true
 			}
 		},
-		
+
 		// Configuration for string-replacing the grunticon output
 		'string-replace': {
 			'grunticon-datasvg': {
@@ -589,7 +593,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		
+
 		// Configuration for the styleguide output
 		styleguide: {
 			options: {
@@ -597,8 +601,8 @@ module.exports = function(grunt) {
 					name: 'kss'
 				},
 				name: 'Style Guide',
-				template: {
-					src: 'source/styleguide-template/'
+				tmplate: {
+					src: 'source/styleguide-tmplate/'
 				}
 			},
 			all: {
@@ -609,7 +613,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Configuration for optimizing SVG-files
 		svgmin: {
 			options: {
@@ -651,14 +655,14 @@ module.exports = function(grunt) {
 				files: [
 					{
 						cwd: 'source/img/bgs',
-						dest: 'build/tmp/svgmin/bgs',
+						dest: 'tmp/svgmin/bgs',
 						expand: true,
 						ext: '.svg',
 						src: ['*.svg']
 					},
                     {
                         cwd: 'source/img/icons',
-                        dest: 'build/tmp/svgmin/icons',
+                        dest: 'tmp/svgmin/icons',
                         expand: true,
                         ext: '.svg',
                         src: ['*.svg']
@@ -669,14 +673,14 @@ module.exports = function(grunt) {
 				files: [
                     {
                         cwd: 'source/img/bgs',
-                        dest: 'dist/tmp/svgmin/bgs',
+                        dest: 'tmp/svgmin/bgs',
                         expand: true,
                         ext: '.svg',
                         src: ['*.svg']
                     },
                     {
                         cwd: 'source/img/icons',
-                        dest: 'dist/tmp/svgmin/icons',
+                        dest: 'tmp/svgmin/icons',
                         expand: true,
                         ext: '.svg',
                         src: ['*.svg']
@@ -684,7 +688,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Configuration for building the SVG-sprite
 		svgstore: {
 			options: {
@@ -699,16 +703,16 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				files: {
-					'build/tmp/icon-sprite.svg': ['build/tmp/svgmin/icons/*.svg']
+					'tmp/icon-sprite.svg': ['tmp/svgmin/icons/*.svg']
 				}
 			},
             dist: {
                 files: {
-                    'build/tmp/icon-sprite.svg': ['build/tmp/svgmin/icons/*.svg']
+                    'tmp/icon-sprite.svg': ['tmp/svgmin/icons/*.svg']
                 }
             }
 		},
-		
+
 		// Configuration for syncing files
 		// Task does not remove any files and directories in 'dest' that are no longer in 'cwd'. :'(
 		sync: {
@@ -749,7 +753,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Configuration for uglifying JS
 		uglify: {
 			dist: {
@@ -768,7 +772,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-		
+
 		// Configuration for watching changes
 		watch: {
 			options: {
@@ -810,7 +814,7 @@ module.exports = function(grunt) {
 				files: ['source/js/**/*'],
 				tasks: ['modernizr', 'sync:js', 'includes:dev', 'jshint']
 			},
-			templates: {
+			tmplates: {
 				files: ['source/assemble/**/*.{json,hbs}'],
 				tasks: ['newer:assemble:dev', 'prettify:dev', 'htmlhint'],
 				options: {
@@ -834,6 +838,7 @@ module.exports = function(grunt) {
 	// Build task
 	grunt.registerTask('build', [
 		'clean:dev',
+        'clean:tmp',
 		'svgmin:dev',
 		'svgstore:dev',
 		'grunticon:dev',
@@ -856,6 +861,7 @@ module.exports = function(grunt) {
 	// Distributing task
 	grunt.registerTask('dist', [
 		'clean:dist',
+        'clean:tmp',
 		'clean:docs',
 		'svgmin:dist',
 		'svgstore:dist',
