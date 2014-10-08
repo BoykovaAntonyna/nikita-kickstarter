@@ -115,13 +115,6 @@ module.exports = function(grunt) {
 				force: true,
 				noLineComments: true,
 				outputStyle: 'expanded', // minifying for dist will be done by grunt-contrib-cssmin
-				raw: [
-					'http_path = "/"',
-					'Sass::Script::Number.precision = 8',
-					'sass_options = {',
-					'  :read_cache => true,',
-					'}'
-				].join("\n"),
 				require: ['sass-globbing', 'compass/import-once'],
 				sassDir: 'source/sass'
 			},
@@ -129,15 +122,29 @@ module.exports = function(grunt) {
 				options: {
 					cssDir: 'build/css',
 					environment: 'development',
-					sourcemap: true
-				}
+					sourcemap: true,
+                    raw: [
+                        'http_path = "/"',
+                        'Sass::Script::Number.precision = 8',
+                        'sass_options = {',
+                        '  :cache => true,',
+                        '}'
+                    ].join("\n"),
+                }
 			},
 			dist: {
 				options: {
 					cssDir: 'dist/css',
 					environment: 'production',
-					sourcemap: false
-				}
+					sourcemap: false,
+                    raw: [
+                        'http_path = "/"',
+                        'Sass::Script::Number.precision = 8',
+                        'sass_options = {',
+                        '  :cache => false,',
+                        '}'
+                    ].join("\n"),
+                }
 			}
 		},
 		
