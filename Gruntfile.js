@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 				data: 'source/assemble/data/**/*.{json,yml}',
 				helpers: 'source/assemble/helpers/**/*.js',
 				layoutdir: 'source/assemble/layouts/',
-				partials: 'source/assemble/partials/**/*.{hbs,svg}'
+				partials: ['source/assemble/partials/**/*.hbs', 'build/tmp/icon-sprite.svg', 'dist/tmp/icon-sprite.svg']
 			},
 			dev: {
 				files: [
@@ -699,12 +699,12 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				files: {
-					'source/assemble/partials/icon-sprite.svg': ['build/tmp/svgmin/icons/*.svg']
+					'build/tmp/icon-sprite.svg': ['build/tmp/svgmin/icons/*.svg']
 				}
 			},
             dist: {
                 files: {
-                    'source/assemble/partials/icon-sprite.svg': ['build/tmp/svgmin/icons/*.svg']
+                    'build/tmp/icon-sprite.svg': ['build/tmp/svgmin/icons/*.svg']
                 }
             }
 		},

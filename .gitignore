@@ -6,7 +6,6 @@ node_modules
 reports
 styleguide
 Gemfile.lock
-source/assemble/partials/icon-sprite.svg
 
 .DS_Store
 .idea
