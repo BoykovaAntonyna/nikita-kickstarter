@@ -82,24 +82,14 @@ module.exports = function(grunt) {
 			dev: {
 				files: [
 					{
-						filter: 'isFile',
-						src: ['build/**/*']
+						src: ['build']
 					}
 				]
 			},
 			dist: {
 				files: [
 					{
-						filter: 'isFile',
-						src: ['dist/**/*']
-					}
-				]
-			},
-			dist_js: {
-				files: [
-					{
-						filter: 'isFile',
-						src: ['dist/**/_*.js']
+						src: ['dist']
 					}
 				]
 			},
@@ -107,7 +97,11 @@ module.exports = function(grunt) {
 				dist: ['jsdocs/**/*']
 			},
             tmp: {
-                tmp: ['tmp/**/*']
+                files: [
+                    {
+                        src: ['tmp']
+                    }
+                ]
             }
 		},
 
@@ -881,7 +875,6 @@ module.exports = function(grunt) {
 		'copy:js',
 		'includes:dist',
 		'uglify',
-		'clean:dist_js',
 		'prettify:dist',
 		'htmlhint',
 		'accessibility',
