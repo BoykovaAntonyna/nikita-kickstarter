@@ -1,5 +1,6 @@
 # Development Version
 
+* updated grunticon to 1.2.13 (because of strange tmp-folder behaviour!)
 * removed `partials/icon-sprite.svg` from source folder, is stored in tmp folder now
 * always use sass cache in dev, disable it for dist
 * removed unused `compass.fonts_dir` and `compass.javascripts_dir`
