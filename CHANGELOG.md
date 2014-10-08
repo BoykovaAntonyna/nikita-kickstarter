@@ -1,5 +1,6 @@
 # Development version
 
+* removed info about pre-release version of compass
 * removed source/img/bgs/svgmin/.gitignore
 * removed source/img/icons/svgmin/.gitignore
 

@@ -36,7 +36,7 @@ These are the minimum requirements for my project setup:
 
 It's mandatory to use the latest versions of SASS and Compass if you want to work with [__CSS Source Maps__](https://developers.google.com/chrome-developer-tools/docs/css-preprocessors) in Google Chrome.
 
-If you're experiencing problems with Compass, it could be related to the fact, that it is in pre-release state. Here's an example of my working configuration:  
+Here's an example of my working configuration:
 
 ```
 $ gem list
