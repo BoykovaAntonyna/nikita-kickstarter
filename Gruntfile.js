@@ -112,9 +112,7 @@ module.exports = function(grunt) {
 		compass: {
 			options: {
 				debugInfo: false,
-				fontsDir: 'source/fonts',
 				force: true,
-				imagesDir: 'source/img',
 				noLineComments: true,
 				outputStyle: 'expanded', // minifying for dist will be done by grunt-contrib-cssmin
 				raw: [
@@ -131,7 +129,6 @@ module.exports = function(grunt) {
 				options: {
 					cssDir: 'build/css',
 					environment: 'development',
-					javascriptsDir: 'build/js',
 					sourcemap: true
 				}
 			},
@@ -139,7 +136,6 @@ module.exports = function(grunt) {
 				options: {
 					cssDir: 'dist/css',
 					environment: 'production',
-					javascriptsDir: 'dist/js',
 					sourcemap: false
 				}
 			}
@@ -147,7 +143,7 @@ module.exports = function(grunt) {
 		
 		// Configuration for run tasks concurrently
 		concurrent: {
-			dev: ['compass:dev', 'newer:assemble:dev', 'modernizr'],
+			dev: ['compass:dev', 'assemble:dev', 'modernizr'],
 			dist: ['compass:dist', 'assemble:dist', 'modernizr']
 		},
 		
