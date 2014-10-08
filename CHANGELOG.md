@@ -1,6 +1,7 @@
 # Development version
 
 * removed source/img/bgs/svgmin/.gitignore
+* removed source/img/icons/svgmin/.gitignore
 
 # 0.8.1
 
