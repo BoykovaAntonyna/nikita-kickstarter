@@ -1,3 +1,7 @@
+# Development version
+
+* removed source/img/bgs/svgmin/.gitignore
+
 # 0.8.1
 
 * added `bower install` info to the README.md
