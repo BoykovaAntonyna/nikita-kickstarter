@@ -1,5 +1,6 @@
 # Development Version
 
+* added nikita.css as bower package
 * added bower as package manager
 * package.json#private is true now, change it if you REALLY want to publish your entire project to NPM
 * faster cleaning of build and dist folder
