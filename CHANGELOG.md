@@ -1,4 +1,4 @@
-# Development Version
+# 0.8.0
 
 * added nikita.css as bower package
 * added bower as package manager
