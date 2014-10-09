@@ -147,8 +147,10 @@ module.exports = function(grunt) {
 		
 		// Configuration for run tasks concurrently
 		concurrent: {
-			dev: ['compass:dev', 'assemble:dev', 'modernizr'],
-			dist: ['compass:dist', 'assemble:dist', 'modernizr']
+			dev1: ['grunticon:dev', 'imagemin:dev'],
+			dev2: ['compass:dev', 'assemble:dev', 'modernizr'],
+			dist1: ['grunticon:dist', 'imagemin:dist'],
+			dist2: ['compass:dist', 'assemble:dist', 'modernizr']
 		},
 		
 		// Configuration for livereload
@@ -182,6 +184,12 @@ module.exports = function(grunt) {
 				expand: true,
 				src: ['**/*']
 			},
+			bower_components: {
+				cwd: 'bower_components/',
+				dest: 'dist/bower_components/',
+				expand: true,
+				src: ['**/*']
+			},
 			favicon: {
 				cwd: 'source/img/',
 				dest: 'dist/img/',
@@ -207,12 +215,6 @@ module.exports = function(grunt) {
 				filter: 'isFile',
 				flatten: true,
 				src: ['**/*.css']
-			},
-			bower_components: {
-				cwd: 'bower_components/',
-				dest: 'dist/bower_components/',
-				expand: true,
-				src: ['**/*']
 			}
 		},
 		
@@ -651,7 +653,7 @@ module.exports = function(grunt) {
 					{ transformsWithOnePath: false } // Enabling this breaks Illustrator SVGs with complex text
 				]
 			},
-			dev: {
+			dev_bg: {
 				files: [
 					{
 						cwd: 'source/img/bgs',
@@ -659,7 +661,11 @@ module.exports = function(grunt) {
 						expand: true,
 						ext: '.svg',
 						src: ['*.svg']
-					},
+					}
+				]
+			},
+			dev_ico: {
+				files: [
 					{
 						cwd: 'source/img/icons',
 						dest: 'tmp/svgmin/icons',
@@ -669,7 +675,7 @@ module.exports = function(grunt) {
 					}
 				]
 			},
-			dist: {
+			dist_bg: {
 				files: [
 					{
 						cwd: 'source/img/bgs',
@@ -677,7 +683,11 @@ module.exports = function(grunt) {
 						expand: true,
 						ext: '.svg',
 						src: ['*.svg']
-					},
+					}
+				]
+			},
+			dist_ico: {
+				files: [
 					{
 						cwd: 'source/img/icons',
 						dest: 'tmp/svgmin/icons',
@@ -790,9 +800,6 @@ module.exports = function(grunt) {
 				livereload: 35730,
 				spawn: true
 			},
-			css: {
-				files: ['build/css/**/*.css']
-			},
 			scss: {
 				files: ['source/sass/**/*.scss'],
 				tasks: ['compass:dev', 'autoprefixer:dev', 'csssplit:dev'],
@@ -802,16 +809,16 @@ module.exports = function(grunt) {
 				}
 			},
 			images: {
-				files: ['source/img/*', 'source/img/**/*.{jpg,png}', '!source/img/dev/*'],
+				files: ['source/img/*', 'source/img/**/*.{jpg,png,gif}', '!source/img/dev/*'],
 				tasks: ['newer:imagemin:dev']
 			},
 			svg_bgs: {
 				files: ['source/img/bgs/*.svg'],
-				tasks: ['newer:svgmin:dev', 'grunticon', 'string-replace']
+				tasks: ['newer:svgmin:dev_bg', 'grunticon:dev', 'string-replace']
 			},
 			svg_icons: {
 				files: ['source/img/icons/*.svg'],
-				tasks: ['newer:svgmin:dev', 'svgstore:dev', 'newer:assemble:dev']
+				tasks: ['newer:svgmin:dev_ico', 'svgstore:dev', 'newer:assemble:dev']
 			},
 			sync_ajax: {
 				files: ['source/ajax-content/**/*'],
@@ -823,11 +830,11 @@ module.exports = function(grunt) {
 			},
 			sync_js: {
 				files: ['source/js/**/*'],
-				tasks: ['modernizr', 'sync:js', 'includes:dev', 'jshint']
+				tasks: ['modernizr', 'sync:js', 'includes:dev']
 			},
 			tmplates: {
 				files: ['source/assemble/**/*.{json,hbs}'],
-				tasks: ['newer:assemble:dev', 'prettify:dev', 'htmlhint'],
+				tasks: ['newer:assemble:dev', 'prettify:dev'],
 				options: {
 					spawn: false
 				}
@@ -850,22 +857,18 @@ module.exports = function(grunt) {
 	grunt.registerTask('build', [
 		'clean:dev',
 		'clean:tmp',
-		'svgmin:dev',
+		'svgmin:dev_bg',
+		'svgmin:dev_ico',
 		'svgstore:dev',
-		'grunticon:dev',
-		'string-replace:grunticon-datasvg',
-		'string-replace:grunticon-datapng',
-		'string-replace:grunticon-fallback',
-		'imagemin:dev',
-		'concurrent:dev',
+		'concurrent:dev1',
+		'string-replace',
+		'concurrent:dev2',
 		'autoprefixer:dev',
 		'csssplit:dev',
 		'symlink:dev',
 		'sync',
 		'includes:dev',
 		'prettify:dev',
-		'htmlhint',
-		'jshint',
 		'connect:livereload',
 		'watch'
 	]);
@@ -875,14 +878,12 @@ module.exports = function(grunt) {
 		'clean:dist',
 		'clean:tmp',
 		'clean:docs',
-		'svgmin:dist',
+		'svgmin:dist_bg',
+		'svgmin:dist_ico',
 		'svgstore:dist',
-		'grunticon:dist',
-		'string-replace:grunticon-datasvg',
-		'string-replace:grunticon-datapng',
-		'string-replace:grunticon-fallback',
-		'imagemin:dist',
-		'concurrent:dist',
+		'concurrent:dist1',
+		'string-replace',
+		'concurrent:dist2',
 		'autoprefixer:dist',
 		'csssplit:dist',
 		'group_css_media_queries',
@@ -894,11 +895,7 @@ module.exports = function(grunt) {
 		'copy:bower_components',
 		'includes:dist',
 		'uglify',
-		'prettify:dist',
-		'htmlhint',
-		'accessibility',
-		'jshint',
-		'jsdoc'
+		'prettify:dist'
 	]);
 	
 	// HTMLHint task
@@ -916,7 +913,7 @@ module.exports = function(grunt) {
 		'jshint'
 	]);
 	
-	// JSHint task
+	// Accessibility task
 	grunt.registerTask('check-wcag2', [
 		'accessibility'
 	]);
@@ -942,6 +939,11 @@ module.exports = function(grunt) {
 	grunt.registerTask('build-styleguide', [
 		'styleguide',
 		'copy:styleguide'
+	]);
+	
+	// JSDoc task
+	grunt.registerTask('build-jsdoc', [
+		'jsdoc'
 	]);
 	
 };

@@ -1,3 +1,7 @@
+# Development version
+
+* performance optimization
+
 # 0.9.0
 
 * the grunticon-mixin got a new syntax and was therefore renamed, now you have to use `@include svg-background(name);`
