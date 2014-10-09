@@ -80,10 +80,12 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 ## Grunt-Plugins used
 
 - [assemble](https://github.com/assemble/assemble)
+- [bower](https://github.com/bower/bower)
 - [connect-livereload](https://github.com/intesso/connect-livereload)
 - [grunt](https://github.com/gruntjs/grunt)
 - [grunt-accessibility](https://github.com/yargalot/grunt-accessibility)
 - [grunt-autoprefixer](https://github.com/nDmitry/grunt-autoprefixer)
+- [grunt-concurrent](https://github.com/sindresorhus/grunt-concurrent)
 - [grunt-contrib-clean](https://github.com/gruntjs/grunt-contrib-clean)
 - [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass)
 - [grunt-contrib-connect](https://github.com/gruntjs/grunt-contrib-connect)
@@ -112,6 +114,9 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [grunt-svgstore](https://github.com/FWeinb/grunt-svgstore)
 - [grunt-sync](https://github.com/tomusdrw/grunt-sync)
 - [grunticon](https://github.com/filamentgroup/grunticon)
+- [handlebars-helper-partial](https://github.com/helpers/handlebars-helper-partial)
+- [handlebars-helpers](https://github.com/assemble/handlebars-helpers)
+- [jit-grunt](https://github.com/shootaroo/jit-grunt)
 - [time-grunt](https://github.com/sindresorhus/time-grunt)
 
 
@@ -213,7 +218,7 @@ There're two possible ways to use icons.
 You'd like to edit your icons with CSS, e.g. to change the fill-color or you have one and the same icon in different colors? Then this is your choice.
 
 1. Just put your SVG-icons into `source/img/icons`.
-2. All icons will be processed with the svgmin-task and put into the `icons/svgmin` folder.
+2. All icons will be processed with the svgmin-task and put into the `tmp/svgmin/icons` folder.
 3. Afterwards the svgstore-task uses these icons to put together an icon-sprite which will be copied to the `assemble/partials` folder. It must be included directly after the opening `<body>` element at the top of the document (have a look at the file `lyt-default.hbs` in the `layouts` folder).
 4. To include a SVG-icon use `<svg class="your-class-name"><use xlink:href="#filename" /></svg>` in your .hbs-files. Make sure you use a class name on the SVG to size it.
 5. Now you can use `.your-class-name { fill: #f30; }` to color your icon.
@@ -226,12 +231,12 @@ For further infos read the article [Icon System with SVG sprites](http://css-tri
 If you have to include your icon as a background-image, e.g. because you can't simply add a `svg` element, then you should use this method.
 
 1. Just put your SVG-icons into `source/img/bgs`.
-2. All icons will be processed with the svgmin-task and put into the `bgs/svgmin` folder.
+2. All icons will be processed with the svgmin-task and put into the `tmp/svgmin/bgs` folder.
 3. Afterwards the grunticon-task uses these icons to produce
-    1. PNG-fallback-files, which will be put into the `bgs/png-fallback` folder
+    1. PNG-fallback-files, which will be put into the `img/bgs/png-fallback` folder under `build/` or `dist/`
     2. SCSS-files (all icons are included as data-URIs in the form of SASS-placeholders), which will be put into `sass/grunticon`.
 4. These SCSS-files will now be processed by the string-replace-task to get different placeholder-extends. They are saved into `sass/icons`.
-5. Now you can include your icons by using the `_grunticon.scss` mixin. Just type `@include grunticon(name-of-your-icon);`.
+5. Now you can include your icons by using the `_svg-background.scss` mixin. Just type `@include svg-background(name-of-your-icon);`.
 
 __Attention:__ Grunticon also produces icons as png-data-uris, mainly for ie8 and older android browsers. If you use lots of icons in your project, remove `@extend %icon-data-png-#{$name};` from the mixin and only extend the svg and fallback version. Otherwise it could really hurt performance because of CSS-bloat!
 

@@ -60,7 +60,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
+		
 		// Configuration for autoprefixer
 		autoprefixer: {
 			options: {
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 				src: 'dist/css/*.css'
 			}
 		},
-
+		
 		// Configuration for deleting files
 		clean: {
 			dev: {
@@ -96,15 +96,15 @@ module.exports = function(grunt) {
 			docs: {
 				dist: ['jsdocs/**/*']
 			},
-            tmp: {
-                files: [
-                    {
-                        src: ['tmp']
-                    }
-                ]
-            }
+			tmp: {
+				files: [
+					{
+						src: ['tmp']
+					}
+				]
+			}
 		},
-
+		
 		// Configuration for compass
 		compass: {
 			options: {
@@ -120,37 +120,37 @@ module.exports = function(grunt) {
 					cssDir: 'build/css',
 					environment: 'development',
 					sourcemap: true,
-                    raw: [
-                        'http_path = "/"',
-                        'Sass::Script::Number.precision = 8',
-                        'sass_options = {',
-                        '  :cache => true,',
-                        '}'
-                    ].join("\n"),
-                }
+					raw: [
+						'http_path = "/"',
+						'Sass::Script::Number.precision = 8',
+						'sass_options = {',
+						'  :cache => true,',
+						'}'
+					].join("\n"),
+				}
 			},
 			dist: {
 				options: {
 					cssDir: 'dist/css',
 					environment: 'production',
 					sourcemap: false,
-                    raw: [
-                        'http_path = "/"',
-                        'Sass::Script::Number.precision = 8',
-                        'sass_options = {',
-                        '  :cache => false,',
-                        '}'
-                    ].join("\n"),
-                }
+					raw: [
+						'http_path = "/"',
+						'Sass::Script::Number.precision = 8',
+						'sass_options = {',
+						'  :cache => false,',
+						'}'
+					].join("\n"),
+				}
 			}
 		},
-
+		
 		// Configuration for run tasks concurrently
 		concurrent: {
 			dev: ['compass:dev', 'assemble:dev', 'modernizr'],
 			dist: ['compass:dist', 'assemble:dist', 'modernizr']
 		},
-
+		
 		// Configuration for livereload
 		connect: {
 			livereload: {
@@ -173,7 +173,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
+		
 		// Configuration for copying files
 		copy: {
 			ajax: {
@@ -208,14 +208,14 @@ module.exports = function(grunt) {
 				flatten: true,
 				src: ['**/*.css']
 			},
-            bower_components: {
-                cwd: 'bower_components/',
-                dest: 'dist/bower_components/',
-                expand: true,
-                src: ['**/*']
-            }
+			bower_components: {
+				cwd: 'bower_components/',
+				dest: 'dist/bower_components/',
+				expand: true,
+				src: ['**/*']
+			}
 		},
-
+		
 		// Configuration for minifying css-files
 		cssmin: {
 			dist: {
@@ -225,7 +225,7 @@ module.exports = function(grunt) {
 				src: ['*.css']
 			}
 		},
-
+		
 		// Configuration for splitting css-files (e.g. IE9)
 		csssplit: {
 			options: {
@@ -241,7 +241,7 @@ module.exports = function(grunt) {
 				src: 'dist/css/styles.css'
 			}
 		},
-
+		
 		// Configuration for grouping media queries
 		group_css_media_queries: {
 			dist: {
@@ -250,7 +250,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
+		
 		// Configuration for managing SVG-icons
 		grunticon: {
 			options: {
@@ -258,40 +258,40 @@ module.exports = function(grunt) {
 				datapngcss: '_icons-data-png.scss',
 				datasvgcss: '_icons-data-svg.scss',
 				urlpngcss: '_icons-fallback.scss',
-                tmpDir: 'tmp/grunticon-tmp',
+				tmpDir: 'tmp/grunticon-tmp',
 			},
-            dev: {
-                options: {
-                    pngfolder: '../../../build/img/bgs/png-fallback',
-                    loadersnippet: '../../../tmp/grunticon/grunticon-loader.js', /* we don't need this! */
-                    previewhtml: '../../../tmp/grunticon/preview.html'  /* we don't need this! */
-                },
-                files: [
-                    {
-                        cwd: 'tmp/svgmin/bgs',
-                        dest: 'source/sass/grunticon',
-                        expand: true,
-                        src: ['*.svg']
-                    }
-                ]
-            },
-            dist: {
-                options: {
-                    pngfolder: '../../../dist/img/bgs/png-fallback',
-                    loadersnippet: '../../../tmp/grunticon/grunticon-loader.js', /* we don't need this! */
-                    previewhtml: '../../../tmp/grunticon/preview.html'  /* we don't need this! */
-                },
-                files: [
-                    {
-                        cwd: 'tmp/svgmin/bgs',
-                        dest: 'source/sass/grunticon',
-                        expand: true,
-                        src: ['*.svg']
-                    }
-                ]
-            }
+			dev: {
+				options: {
+					pngfolder: '../../../build/img/bgs/png-fallback',
+					loadersnippet: '../../../tmp/grunticon/grunticon-loader.js', /* we don't need this! */
+					previewhtml: '../../../tmp/grunticon/preview.html'  /* we don't need this! */
+				},
+				files: [
+					{
+						cwd: 'tmp/svgmin/bgs',
+						dest: 'source/sass/grunticon',
+						expand: true,
+						src: ['*.svg']
+					}
+				]
+			},
+			dist: {
+				options: {
+					pngfolder: '../../../dist/img/bgs/png-fallback',
+					loadersnippet: '../../../tmp/grunticon/grunticon-loader.js', /* we don't need this! */
+					previewhtml: '../../../tmp/grunticon/preview.html'  /* we don't need this! */
+				},
+				files: [
+					{
+						cwd: 'tmp/svgmin/bgs',
+						dest: 'source/sass/grunticon',
+						expand: true,
+						src: ['*.svg']
+					}
+				]
+			}
 		},
-
+		
 		// Configuration for validating html-files
 		htmlhint: {
 			options: {
@@ -315,7 +315,7 @@ module.exports = function(grunt) {
 				src: ['*/*.html', '!jsdocs/**/*.html', '!styleguide/**/*.html']
 			}
 		},
-
+		
 		// Configuration for optimizing image-files
 		imagemin: {
 			options: {
@@ -342,7 +342,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
+		
 		// Configuration for file includes
 		includes: {
 			options: {
@@ -373,7 +373,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
+		
 		// Configuration for documenting js-files
 		jsdoc : {
 			all: {
@@ -383,7 +383,7 @@ module.exports = function(grunt) {
 				src: ['source/js/modules/**/*.js', 'source/js/README.md']
 			}
 		},
-
+		
 		// Configuration for validating js-files
 		jshint: {
 			options: {
@@ -435,7 +435,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
+		
 		// Modernizr configuration
 		modernizr: {
 			all: {
@@ -448,7 +448,7 @@ module.exports = function(grunt) {
 				uglify: false
 			}
 		},
-
+		
 		// Configuration for pagespeed
 		pagespeed: {
 			options: {
@@ -472,7 +472,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
+		
 		// Configuration for measuring frontend performance
 		phantomas: {
 			all : {
@@ -483,7 +483,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
+		
 		// Configuration for photobox
 		photobox: {
 			all: {
@@ -494,7 +494,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
+		
 		// Configuration for prettifying the html-code generated by assemble
 		prettify: {
 			options: {
@@ -543,7 +543,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
+		
 		// Configuration for SCSS linting
 		scsslint: {
 			allFiles: [
@@ -556,7 +556,7 @@ module.exports = function(grunt) {
 				force: true
 			}
 		},
-
+		
 		// Configuration for string-replacing the grunticon output
 		'string-replace': {
 			'grunticon-datasvg': {
@@ -570,7 +570,7 @@ module.exports = function(grunt) {
 					}]
 				}
 			},
-            'grunticon-datapng': {
+			'grunticon-datapng': {
 				files: {
 					'source/sass/icons/_icons-data-png.scss': 'source/sass/grunticon/_icons-data-png.scss'
 				},
@@ -581,7 +581,7 @@ module.exports = function(grunt) {
 					}]
 				}
 			},
-            'grunticon-fallback': {
+			'grunticon-fallback': {
 				files: {
 					'source/sass/icons/_icons-fallback.scss': 'source/sass/grunticon/_icons-fallback.scss'
 				},
@@ -593,7 +593,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
+		
 		// Configuration for the styleguide output
 		styleguide: {
 			options: {
@@ -613,7 +613,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
+		
 		// Configuration for optimizing SVG-files
 		svgmin: {
 			options: {
@@ -660,35 +660,35 @@ module.exports = function(grunt) {
 						ext: '.svg',
 						src: ['*.svg']
 					},
-                    {
-                        cwd: 'source/img/icons',
-                        dest: 'tmp/svgmin/icons',
-                        expand: true,
-                        ext: '.svg',
-                        src: ['*.svg']
-                    }
+					{
+						cwd: 'source/img/icons',
+						dest: 'tmp/svgmin/icons',
+						expand: true,
+						ext: '.svg',
+						src: ['*.svg']
+					}
 				]
 			},
 			dist: {
 				files: [
-                    {
-                        cwd: 'source/img/bgs',
-                        dest: 'tmp/svgmin/bgs',
-                        expand: true,
-                        ext: '.svg',
-                        src: ['*.svg']
-                    },
-                    {
-                        cwd: 'source/img/icons',
-                        dest: 'tmp/svgmin/icons',
-                        expand: true,
-                        ext: '.svg',
-                        src: ['*.svg']
-                    }
+					{
+						cwd: 'source/img/bgs',
+						dest: 'tmp/svgmin/bgs',
+						expand: true,
+						ext: '.svg',
+						src: ['*.svg']
+					},
+					{
+						cwd: 'source/img/icons',
+						dest: 'tmp/svgmin/icons',
+						expand: true,
+						ext: '.svg',
+						src: ['*.svg']
+					}
 				]
 			}
 		},
-
+		
 		// Configuration for building the SVG-sprite
 		svgstore: {
 			options: {
@@ -706,13 +706,13 @@ module.exports = function(grunt) {
 					'tmp/icon-sprite.svg': ['tmp/svgmin/icons/*.svg']
 				}
 			},
-            dist: {
-                files: {
-                    'tmp/icon-sprite.svg': ['tmp/svgmin/icons/*.svg']
-                }
-            }
+			dist: {
+				files: {
+					'tmp/icon-sprite.svg': ['tmp/svgmin/icons/*.svg']
+				}
+			}
 		},
-
+		
 		// Configuration for syncing files
 		// Task does not remove any files and directories in 'dest' that are no longer in 'cwd'. :'(
 		sync: {
@@ -753,7 +753,7 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
+		
 		// Configuration for uglifying JS
 		uglify: {
 			dist: {
@@ -772,17 +772,18 @@ module.exports = function(grunt) {
 				]
 			}
 		},
-
-        symlink: {
-            options: {
-                overwrite: false
-            },
-            dev: {
-                src: 'bower_components/',
-                dest: 'build/bower_components/'
-            }
-        },
-
+		
+		// Configuration for symlink files
+		symlink: {
+			options: {
+				overwrite: false
+			},
+			dev: {
+				src: 'bower_components/',
+				dest: 'build/bower_components/'
+			}
+		},
+		
 		// Configuration for watching changes
 		watch: {
 			options: {
@@ -848,18 +849,18 @@ module.exports = function(grunt) {
 	// Build task
 	grunt.registerTask('build', [
 		'clean:dev',
-        'clean:tmp',
+		'clean:tmp',
 		'svgmin:dev',
 		'svgstore:dev',
 		'grunticon:dev',
 		'string-replace:grunticon-datasvg',
-        'string-replace:grunticon-datapng',
-        'string-replace:grunticon-fallback',
+		'string-replace:grunticon-datapng',
+		'string-replace:grunticon-fallback',
 		'imagemin:dev',
 		'concurrent:dev',
 		'autoprefixer:dev',
 		'csssplit:dev',
-        'symlink:dev',
+		'symlink:dev',
 		'sync',
 		'includes:dev',
 		'prettify:dev',
@@ -872,14 +873,14 @@ module.exports = function(grunt) {
 	// Distributing task
 	grunt.registerTask('dist', [
 		'clean:dist',
-        'clean:tmp',
+		'clean:tmp',
 		'clean:docs',
 		'svgmin:dist',
 		'svgstore:dist',
 		'grunticon:dist',
-        'string-replace:grunticon-datasvg',
-        'string-replace:grunticon-datapng',
-        'string-replace:grunticon-fallback',
+		'string-replace:grunticon-datasvg',
+		'string-replace:grunticon-datapng',
+		'string-replace:grunticon-fallback',
 		'imagemin:dist',
 		'concurrent:dist',
 		'autoprefixer:dist',
@@ -890,7 +891,7 @@ module.exports = function(grunt) {
 		'copy:favicon',
 		'copy:fonts',
 		'copy:js',
-        'copy:bower_components',
+		'copy:bower_components',
 		'includes:dist',
 		'uglify',
 		'prettify:dist',

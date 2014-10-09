@@ -423,7 +423,7 @@
 		@extend %ellipsis;
 		position: relative;
 		padding: 5px 30px 5px 10px;
-		@include grunticon(select-arrow-down);
+		@include svg-background(select-arrow-down);
 		background-position: right 10px top 50%;
 		cursor: pointer;
 		

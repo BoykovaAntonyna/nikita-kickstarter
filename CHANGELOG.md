@@ -1,5 +1,7 @@
-# Development version
+# 0.9.0
 
+* the grunticon-mixin got a new syntax and was therefore renamed, now you have to use `@include svg-background(name);`
+* removed _ib.scss extend
 * removed info about pre-release version of compass
 * removed source/img/bgs/svgmin/.gitignore
 * removed source/img/icons/svgmin/.gitignore
