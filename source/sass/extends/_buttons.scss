@@ -1,25 +1,4 @@
-// Button-UI-Component
-
-/**
- * Button-Element
- */
- 
-button::-moz-focus-inner {
-	border: 0;
-	padding: 0;
-}
-
-button {
-	@extend %btn;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	overflow: visible;
-	margin: 0;
-	border: 0;
-	padding: 0;
-	text-transform: none;
-	background-color: transparent;
-}
+// Button-Extends
 
 
 // Standard Button-Placeholder
@@ -44,8 +23,8 @@ button {
 }
 
 
-// Button – V.1
-%btn-1 {
+// Form-Button
+%btn-form {
 	border: 1px solid $line-color-06;
 	padding: 5px 20px;
 	@include rem(font-size, 16px);

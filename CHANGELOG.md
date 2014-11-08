@@ -1,5 +1,24 @@
-# Development version
+# 0.10.0
 
+* adjusted README.md
+* added libsass (grunt-sass) and removed rubysass (grunt-contrib-compass) to compile sass faster
+* disabled data-png and png-fallback in svg-background mixin (discontinued IE8 and lower support)
+* renamed sass/icons to sass/svg-bg-extends
+* adjusted output in string-replace-task and syntax in svg-background-mixin for a better matching
+* added `--port` parameter to override default port 9002
+* added `--livereload-port` parameter to override the default port assignment to `--port + 1`
+* added clickable links after webserver is started
+* added explanation for the javascript part
+* properly return App instance when returning app.js module
+* added initial requirejs workflow
+* added reports-folder, moved reports of accessibility, photobox and phantomas into it
+* added {{autolink}} handlebars helper
+* register partials helper for assemble in gruntfile
+* `button`-normalizing migrates from `_buttons.scss` to `_basics.scss`
+* empty folders like `fonts` will be copied with a .gitkeep file
+* appicons, touchicons and favicons are now located in source/img/appicons
+* updated grunt-autoprefixer to 1.0.1
+* updated grunt-modernizr to 0.6.0
 * performance optimization
 
 # 0.9.0

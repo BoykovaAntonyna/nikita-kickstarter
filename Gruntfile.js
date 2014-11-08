@@ -6,6 +6,16 @@ module.exports = function(grunt) {
 	});
 	require('time-grunt')(grunt);
 	
+	if (!grunt.option('port'))
+	{
+		grunt.option('port', 9002);
+	}
+	
+	if (!grunt.option('livereload-port'))
+	{
+		grunt.option('livereload-port', grunt.option('port') + 1);
+	}
+	
 	// All configuration goes here 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -33,7 +43,7 @@ module.exports = function(grunt) {
 		assemble: {
 			options: {
 				data: 'source/assemble/data/**/*.{json,yml}',
-				helpers: 'source/assemble/helpers/**/*.js',
+				helpers: ['handlebars-helper-partial', 'source/assemble/helpers/**/*.js'],
 				layoutdir: 'source/assemble/layouts/',
 				partials: ['source/assemble/partials/**/*.hbs', 'tmp/icon-sprite.svg']
 			},
@@ -105,52 +115,27 @@ module.exports = function(grunt) {
 			}
 		},
 		
-		// Configuration for compass
-		compass: {
+		// Configuration for concatenating js files
+		concat: {
 			options: {
-				debugInfo: false,
-				force: true,
-				noLineComments: true,
-				outputStyle: 'expanded', // minifying for dist will be done by grunt-contrib-cssmin
-				require: ['sass-globbing', 'compass/import-once'],
-				sassDir: 'source/sass'
+				separator: ';'
 			},
 			dev: {
-				options: {
-					cssDir: 'build/css',
-					environment: 'development',
-					sourcemap: true,
-					raw: [
-						'http_path = "/"',
-						'Sass::Script::Number.precision = 8',
-						'sass_options = {',
-						'  :cache => true,',
-						'}'
-					].join("\n"),
-				}
+				dest: 'build/js/main.js',
+				src: ['bower_components/requirejs/require.js', 'source/js/_requireconfig.js']
 			},
 			dist: {
-				options: {
-					cssDir: 'dist/css',
-					environment: 'production',
-					sourcemap: false,
-					raw: [
-						'http_path = "/"',
-						'Sass::Script::Number.precision = 8',
-						'sass_options = {',
-						'  :cache => false,',
-						'}'
-					].join("\n"),
-				}
+				dest: 'dist/js/main.js',
+				src: ['bower_components/requirejs/require.js', 'source/js/_requireconfig.js', 'tmp/main.js']
 			}
 		},
 		
 		// Configuration for run tasks concurrently
 		concurrent: {
 			dev1: ['grunticon:dev', 'imagemin:dev'],
-			dev2: ['compass:dev', 'assemble:dev', 'modernizr'],
+			dev2: ['sass:dev', 'assemble:dev', 'modernizr'],
 			dist1: ['grunticon:dist', 'imagemin:dist'],
-			dist2: ['compass:dist', 'assemble:dist', 'modernizr']
+			dist2: ['sass:dist', 'assemble:dist', 'modernizr']
 		},
 		
 		// Configuration for livereload
@@ -159,11 +144,15 @@ module.exports = function(grunt) {
 				options: {
 					base: 'build',
 					hostname: '0.0.0.0',
-					port: 9002,
+					port: grunt.option('port'),
 					middleware: function(connect, options) {
+						grunt.log.writeln('');
+						grunt.log.writeln('Launching webserver now:');
+						grunt.log.writeln(' - index at http://0.0.0.0:' + grunt.option('port') + '/');
+						grunt.log.writeln('');
 						return [
 							require('connect-livereload')({
-								port: 35730
+								port: grunt.option('livereload-port')
 							}),
 							connect.static(options.base),
 							connect.directory(options.base)
@@ -191,8 +180,8 @@ module.exports = function(grunt) {
 				src: ['**/*']
 			},
 			favicon: {
-				cwd: 'source/img/',
-				dest: 'dist/img/',
+				cwd: 'source/img/appicons/',
+				dest: 'dist/img/appicons/',
 				expand: true,
 				src: ['**/*.ico']
 			},
@@ -207,6 +196,12 @@ module.exports = function(grunt) {
 				dest: 'dist/js/',
 				expand: true,
 				src: ['**/*']
+			},
+			modernizr: {
+				cwd: 'tmp/',
+				dest: 'dist/js/',
+				expand: true,
+				src: ['modernizr.js']
 			},
 			styleguide: {
 				cwd: 'build/css/',
@@ -241,6 +236,73 @@ module.exports = function(grunt) {
 			dist: {
 				dest: 'dist/css',
 				src: 'dist/css/styles.css'
+			}
+		},
+		
+		// Configuration for writing index files of directory contents (sass-globbing alernative for libsass)
+		fileindex: {
+			globbing: {
+				options: {
+					format: function (list, options, dest) {
+						var i = 0;
+						var imports = [];
+						
+						for (i; i < list.length; i++) {
+							var listEl = list[i];
+							var listElName = listEl.replace(/_([^_]*)$/, ""+'$1').replace(/\.scss|\.sass/gi, "");
+							imports += '@import "' + listElName + '";\n';
+						}
+						
+						return '//\n// List of all SASS imports\n// (automatically created by fileindex)\n// \n// No need to add your sass partials manually! ;)\n// \n\n' + imports;
+					}
+				},
+				files: [
+					{
+						cwd: 'source/sass/',
+						dest: 'source/sass/styles.scss',
+						src: [
+							// Webfonts
+							'_webfonts.scss',
+							
+							// Browser-Reset
+							'_reset.scss',
+							
+							// SASS Variables
+							'variables/**/*.scss',
+							
+							// nikita.css Mixins
+							'../../bower_components/nikita.css/mixins/_centering.scss',
+							'../../bower_components/nikita.css/mixins/_fixed-ratiobox.scss',
+							'../../bower_components/nikita.css/mixins/_font-smoothing.scss',
+							'../../bower_components/nikita.css/mixins/_layering.scss',
+							'../../bower_components/nikita.css/mixins/_px-to-rem.scss',
+							'../../bower_components/nikita.css/mixins/_respond-to.scss',
+							'../../bower_components/nikita.css/mixins/_triangle.scss',
+							
+							// SASS Mixins
+							'mixins/**/*.scss',
+							
+							// nikita.css Extends
+							'../../bower_components/nikita.css/extends/_a11y.scss',
+							'../../bower_components/nikita.css/extends/_cf.scss',
+							'../../bower_components/nikita.css/extends/_ellipsis.scss',
+							'../../bower_components/nikita.css/extends/_hide-text.scss',
+							'../../bower_components/nikita.css/extends/_ib.scss',
+							
+							// SASS Extends
+							'extends/**/*.scss',
+							
+							// SVG Background Extends
+							'svg-bg-extends/**/*.scss',
+							
+							// Basic Formatting
+							'_basics.scss',
+							
+							// Blocks
+							'blocks/**/*.scss'
+						]
+					}
+				]
 			}
 		},
 		
@@ -345,37 +407,6 @@ module.exports = function(grunt) {
 			}
 		},
 		
-		// Configuration for file includes
-		includes: {
-			options: {
-				duplicates: false,
-				flatten: true,
-				includeRegexp: /^\/\/\s*import\s+['"]?([^'"]+)['"]?\s*$/
-			},
-			dev: {
-				files: [
-					{
-						cwd: 'source/js',
-						dest: 'build/js',
-						expand: true,
-						ext: '.js',
-						src: ['**/*.js']
-					}
-				]
-			},
-			dist: {
-				files: [
-					{
-						cwd: 'source/js',
-						dest: 'dist/js',
-						expand: true,
-						ext: '.js',
-						src: ['**/*.js']
-					}
-				]
-			}
-		},
-		
 		// Configuration for documenting js-files
 		jsdoc : {
 			all: {
@@ -417,23 +448,13 @@ module.exports = function(grunt) {
 				'strict': false,
 				'white': false
 			},
-			own: {
-				options: {
-					'-W015': true
-				},
-				src: [
-					'source/js/init/*.js',
-					'source/js/modules/**/*.js'
-				]
-			},
 			all: {
 				options: {
 					'-W015': true,
 					'-W089': true
 				},
 				src: [
-					'source/js/**/*.js',
-					'!source/js/vendor/**/*.js'
+					'source/js/**/*.js'
 				]
 			}
 		},
@@ -441,12 +462,12 @@ module.exports = function(grunt) {
 		// Modernizr configuration
 		modernizr: {
 			all: {
-				customTests: ['source/js/vendor/plugins/_positionsticky.js', 'source/js/vendor/plugins/_csschecked.js'],
+				customTests: ['source/js/modernizr/*.js'],
 				devFile: 'remote',
 				files: {
-					src: ['source/**/*.js', 'source/**/*.scss', '!source/js/vendor/*.js']
+					src: ['source/**/*.js', 'source/**/*.scss']
 				},
-				outputFile: 'source/js/vendor/_modernizr.js',
+				outputFile: 'tmp/modernizr.js',
 				uglify: false
 			}
 		},
@@ -479,9 +500,9 @@ module.exports = function(grunt) {
 		phantomas: {
 			all : {
 				options : {
-					indexPath: 'build/phantomas/',
+					indexPath: 'reports/performance/',
 					numberOfRuns: 10,
-					url: 'http://0.0.0.0:9002/'
+					url: 'http://0.0.0.0:' + grunt.option('port') + '/'
 				}
 			}
 		},
@@ -490,9 +511,9 @@ module.exports = function(grunt) {
 		photobox: {
 			all: {
 				options: {
-					indexPath: 'build/photobox/',
+					indexPath: 'reports/screenshots/',
 					screenSizes: [ '320', '568', '768', '1024', '1280' ],
-					urls: [ 'http://0.0.0.0:9002/index.html' ]
+					urls: [ 'http://0.0.0.0:' + grunt.option('port') + '/index.html' ]
 				}
 			}
 		},
@@ -546,6 +567,41 @@ module.exports = function(grunt) {
 			}
 		},
 		
+		// Configuration for requirejs
+		requirejs: {
+			compile: {
+				options: {
+					baseUrl: "source/js/",
+					mainConfigFile: "source/js/_requireconfig.js",
+					out: "tmp/main.js"
+				}
+			}
+		},
+		
+		// Configuration for SASS
+		sass: {
+			dev: {
+				options: {
+					outputStyle: 'nested',
+					sourceMap: true
+				},
+				files: {
+					'build/css/styles.css': 'source/sass/styles.scss',
+					'build/css/universal.css': 'source/sass/universal.scss'
+				}
+			},
+			dist: {
+				options: {
+					outputStyle: 'nested', // minifying by cssmin-task
+					sourceMap: false
+				},
+				files: {
+					'dist/css/styles.css': 'source/sass/styles.scss',
+					'dist/css/universal.css': 'source/sass/universal.scss'
+				}
+			}
+		},
+		
 		// Configuration for SCSS linting
 		scsslint: {
 			allFiles: [
@@ -563,34 +619,34 @@ module.exports = function(grunt) {
 		'string-replace': {
 			'grunticon-datasvg': {
 				files: {
-					'source/sass/icons/_icons-data-svg.scss': 'source/sass/grunticon/_icons-data-svg.scss'
+					'source/sass/svg-bg-extends/_bg-data-svg.scss': 'source/sass/grunticon/_icons-data-svg.scss'
 				},
 				options: {
 					replacements: [{
 						pattern: /%icon-/g,
-						replacement: '%icon-data-svg-'
+						replacement: '%bg-data-svg-'
 					}]
 				}
 			},
 			'grunticon-datapng': {
 				files: {
-					'source/sass/icons/_icons-data-png.scss': 'source/sass/grunticon/_icons-data-png.scss'
+					'source/sass/svg-bg-extends/_bg-data-png.scss': 'source/sass/grunticon/_icons-data-png.scss'
 				},
 				options: {
 					replacements: [{
 						pattern: /%icon-/g,
-						replacement: '%icon-data-png-'
+						replacement: '%bg-data-png-'
 					}]
 				}
 			},
 			'grunticon-fallback': {
 				files: {
-					'source/sass/icons/_icons-fallback.scss': 'source/sass/grunticon/_icons-fallback.scss'
+					'source/sass/svg-bg-extends/_bg-fallback.scss': 'source/sass/grunticon/_icons-fallback.scss'
 				},
 				options: {
 					replacements: [{
 						pattern: /%icon-/g,
-						replacement: '%icon-fallback-'
+						replacement: '%bg-fallback-'
 					}]
 				}
 			}
@@ -604,7 +660,7 @@ module.exports = function(grunt) {
 				},
 				name: 'Style Guide',
 				tmplate: {
-					src: 'source/styleguide-tmplate/'
+					src: 'source/styleguide-template/'
 				}
 			},
 			all: {
@@ -758,7 +814,16 @@ module.exports = function(grunt) {
 					{
 						cwd: 'source/js/',
 						dest: 'build/js/',
-						src: '**/*'
+						src: ['**/*', '!_requireconfig.js']
+					}
+				]
+			},
+			modernizr: {
+ 				files: [
+					{
+						cwd: 'tmp/',
+						dest: 'build/js/',
+						src: 'modernizr.js'
 					}
 				]
 			}
@@ -797,12 +862,12 @@ module.exports = function(grunt) {
 		// Configuration for watching changes
 		watch: {
 			options: {
-				livereload: 35730,
+				livereload: grunt.option('livereload-port'),
 				spawn: true
 			},
 			scss: {
 				files: ['source/sass/**/*.scss'],
-				tasks: ['compass:dev', 'autoprefixer:dev', 'csssplit:dev'],
+				tasks: ['sass:dev', 'autoprefixer:dev', 'csssplit:dev'],
 				options: {
 					debounceDelay: 0,
 					livereload: false
@@ -829,15 +894,16 @@ module.exports = function(grunt) {
 				tasks: ['sync:fonts']
 			},
 			sync_js: {
-				files: ['source/js/**/*'],
-				tasks: ['modernizr', 'sync:js', 'includes:dev']
+				files: ['source/js/**/*', '!source/js/_requireconfig.js'],
+				tasks: ['modernizr', 'sync:js']
 			},
-			tmplates: {
+			sync_requirejs: {
+				files: ['source/js/_requireconfig.js'],
+				tasks: ['modernizr', 'requirejs', 'concat:dev']
+			},
+			templates: {
 				files: ['source/assemble/**/*.{json,hbs}'],
-				tasks: ['newer:assemble:dev', 'prettify:dev'],
-				options: {
-					spawn: false
-				}
+				tasks: ['newer:assemble:dev', 'prettify:dev']
 			}
 		}
 	});
@@ -853,8 +919,8 @@ module.exports = function(grunt) {
 		'build'
 	]);
 	
-	// Build task
-	grunt.registerTask('build', [
+	// Development task
+	grunt.registerTask('dev', [
 		'clean:dev',
 		'clean:tmp',
 		'svgmin:dev_bg',
@@ -862,13 +928,19 @@ module.exports = function(grunt) {
 		'svgstore:dev',
 		'concurrent:dev1',
 		'string-replace',
+		'fileindex',
 		'concurrent:dev2',
 		'autoprefixer:dev',
 		'csssplit:dev',
 		'symlink:dev',
+		'concat:dev',
 		'sync',
-		'includes:dev',
-		'prettify:dev',
+		'prettify:dev'
+	]);
+	
+	// Build task
+	grunt.registerTask('build', [
+		'dev',
 		'connect:livereload',
 		'watch'
 	]);
@@ -883,17 +955,20 @@ module.exports = function(grunt) {
 		'svgstore:dist',
 		'concurrent:dist1',
 		'string-replace',
+		'fileindex',
 		'concurrent:dist2',
 		'autoprefixer:dist',
 		'csssplit:dist',
 		'group_css_media_queries',
 		'cssmin',
+		'requirejs',
+		'concat:dist',
 		'copy:ajax',
+		'copy:bower_components',
 		'copy:favicon',
 		'copy:fonts',
 		'copy:js',
-		'copy:bower_components',
-		'includes:dist',
+		'copy:modernizr',
 		'uglify',
 		'prettify:dist'
 	]);
@@ -925,12 +1000,14 @@ module.exports = function(grunt) {
 	
 	// Phantomas task
 	grunt.registerTask('measure-performance', [
+		'dev',
 		'connect:livereload',
 		'phantomas'
 	]);
 	
 	// Photobox task
 	grunt.registerTask('take-screenshots', [
+		'dev',
 		'connect:livereload',
 		'photobox'
 	]);

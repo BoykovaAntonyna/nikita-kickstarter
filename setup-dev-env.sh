@@ -14,27 +14,6 @@ then
 	exit 1;
 fi
 
-if [ -z "`which compass`" ]
-then
-	echo "ERROR: compass is missing!"
-	echo "Please run 'sudo gem install compass'"
-	exit 1;
-fi
-
-if [ -z "`which sass`" ]
-then
-	echo "ERROR: sass is missing!"
-	echo "Please run 'sudo gem install sass'"
-	exit 1;
-fi
-
-if [ -z "`sass -r sass-globbing -v 2>/dev/null`" ]
-then
-	echo "ERROR: sass-globbing is missing"
-	echo "Please run 'sudo gem install sass-globbing'"
-	exit 1
-fi
-
 if [ -z "`scss-lint --version 2>/dev/null`" ]
 then
 	echo "ERROR: scss-lint is missing"

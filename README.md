@@ -12,59 +12,45 @@ If you want to write efficient and scalable (S)CSS-code for big websites, try [n
 
 - [__Grunt__](http://gruntjs.com/) – js task runner
 - [__Assemble__](http://assemble.io/) – static site generator
-- [__SASS__](http://sass-lang.com/) / [__Compass__](http://compass-style.org/) – css preprocessing
+- [__SASS__](http://sass-lang.com/) + [__LibSass__](http://libsass.org/) – css preprocessing
 - [__nikita.html__](https://github.com/nikita-kit/nikita-html) – HTML conventions and coding guidelines
 - [__nikita.css__](https://github.com/nikita-kit/nikita-css) – (S)CSS conventions and coding guidelines
+- [__nikita.js__](https://github.com/nikita-kit/nikita-js) – JS conventions and coding guidelines
 - [__Bower__](http://bower.io/) – package manager for frontend libraries
+- [__SCSS-Lint__](http://rubygems.org/gems/scss-lint/versions) – linter for SCSS files
 - [__Livereload__](http://livereload.com/) – browser auto refresh
 - [__KSS__](http://warpspire.com/kss/) – living styleguide
 
-Grunt depends on [node.js](http://nodejs.org), Sass and Compass depends on [Ruby](http://www.ruby-lang.org). Some of the [Grunt plugins](#grunt-plugins-used) depend on command line tools to be installed on your (build) system.
+Grunt depends on [node.js](http://nodejs.org), SCSS-Lint depends on [Ruby](http://www.ruby-lang.org). Some of the [Grunt plugins](#grunt-plugins-used) depend on command line tools to be installed on your (build) system.
 
 
 ## Requirements
 
-These are the minimum requirements for my project setup:  
+These are the minimum requirements for the project setup:  
  
 - [__Node.js & Node Package Manager__](http://nodejs.org)
 - [__Grunt Command Line Interface__](http://gruntjs.com/getting-started) – `sudo npm install -g grunt-cli`
 - [__Bower__](http://bower.io) – `sudo npm install -g bower`
-- [__SASS 3.4__](http://rubygems.org/gems/sass/versions/) – `sudo gem install sass`
-- [__SASS Globbing 1.1__](http://rubygems.org/gems/sass-globbing/versions) – `sudo gem install sass-globbing`
-- [__SCSS Lint 0.28__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
-- [__Compass 1.0__](http://rubygems.org/gems/compass/versions) – `sudo gem install compass`
-
-It's mandatory to use the latest versions of SASS and Compass if you want to work with [__CSS Source Maps__](https://developers.google.com/chrome-developer-tools/docs/css-preprocessors) in Google Chrome.
-
-Here's an example of my working configuration:
-
-```
-$ gem list
-
-compass (1.0.1)
-compass-core (1.0.1)
-compass-import-once (1.0.5)
-sass (3.4.4)
-sass-globbing (1.1.0)
-scss-lint (0.28.0)
-```
-
-For those RubyGems we included a Gemfile, so you can use [__Bundler__](http://bundler.io/) to get a consistent environment. Just type `gem install bundler` to install Bundler itself and then you can use `bundle install` to get the exact Gems.
+- [__SCSS Lint 0.29__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
 
 If you want to use the browser-auto-refresh-feature, get [__LiveReload.js__](https://github.com/livereload/livereload-js) and install it to the root-folder of localhost.
 
 
 ## Getting started
 
-Open your preferred command line tool and choose your project directory.  
+Open your preferred command line tool and choose your project directory.
 
-Either use `./setup-dev-env.sh`. This will start a shell script to check requirements, then runs `npm install` automatically to install Grunt and [Grunt plugins](#grunt-plugins-used) required for the build script.  
+Either use `./setup-dev-env.sh`. This will start a shell script to check requirements, then runs `npm install` and `bower install` automatically to install Grunt and [Grunt plugins](#grunt-plugins-used) required for the build script plus Bower and [Bower packages](#bower-packages-used).
 
-Or use `npm install` and `bower install` if your are on Windows (you have to check the requirements manually). This will install Grunt and [Grunt plugins](#grunt-plugins-used) required for the build script.
+Or use `npm install` and `bower install` if your are on Windows (you have to check the requirements manually). This will install Grunt and [Grunt plugins](#grunt-plugins-used) required for the build script plus Bower and [Bower packages](#bower-packages-used).
 
 1. `grunt` or `grunt build` – start build script
 2. [http://localhost:9002/](http://localhost:9002/) or [http://0.0.0.0:9002/](http://0.0.0.0:9002/) – watch your build-directory in the browser (livereload is running on port 9002)
 3. `grunt dist` – start distribution build script
+
+If you want to specify a different port, you can start the script with the `--port` option:
+
+`grunt --port=9010` will launch the webserver on [http://0.0.0.0:9010/](http://0.0.0.0:9010/)
 
 
 ## Grunt-Devtools
@@ -75,6 +61,11 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 2. Global install via `npm install -g grunt-devtools`.
 3. Run `grunt-devtools` in a directory with a Gruntfile.
 4. Open Chrome Devtools and find the __Grunt tab__. Your grunt tasks should now be accessible from within Chrome.
+
+
+## Grunt-Notifications
+
+You don't like to stare permanently on your console? So wouldn’t it be great if your system could notify you when your fresh build is ready to consume or when anything bad happened? Meet [grunt-notify](https://github.com/dylang/grunt-notify), an automatic desktop notification service for Grunt using Growl for OS X or Windows, Mountain Lion and Mavericks Notification Center and Notify-Send. Just install this plugin via npm and load it in your Gruntfile.
 
 
 ## Grunt-Plugins used
@@ -120,9 +111,16 @@ If you dont't like the command line you can use an alternative called [grunt-dev
 - [time-grunt](https://github.com/sindresorhus/time-grunt)
 
 
-## Grunt-Notifications
+## Bower-Packages used
 
-You don't like to stare permanently on your console? So wouldn’t it be great if your system could notify you when your fresh build is ready to consume or when anything bad happened? Meet [grunt-notify](https://github.com/dylang/grunt-notify), an automatic desktop notification service for Grunt using Growl for OS X or Windows, Mountain Lion and Mavericks Notification Center and Notify-Send. Just install this plugin via npm and load it in your Gruntfile.
+- [backbone](https://github.com/components/backbone)
+- [jquery](http://jquery.com/)
+- [jsb](https://github.com/DracoBlue/jsb)
+- [logging.js](https://github.com/DracoBlue/logging-js)
+- [nikita.css](https://github.com/nikita-kit/nikita-css)
+- [requirejs](https://github.com/jrburke/requirejs)
+- [requirejs-text](https://github.com/requirejs/text)
+- [underscore](https://github.com/jashkenas/underscore)
 
 
 ## Project structure
@@ -142,10 +140,6 @@ $ tree -d -I node_modules
 │   │   └── bgs
 │   │       └── png-fallback
 │   └── js
-│       ├── modules
-│       ├── templates
-│       └── vendor
-│           └── plugins
 ├── dist
 │   ├── ajax-content
 │   ├── bower_components
@@ -155,10 +149,6 @@ $ tree -d -I node_modules
 │   │   └── bgs
 │   │       └── png-fallback
 │   └── js
-│       ├── modules
-│       ├── templates
-│       └── vendor
-│           └── plugins
 └── source
     ├── ajax-content
     ├── assemble
@@ -169,22 +159,19 @@ $ tree -d -I node_modules
     │   └── partials
     ├── fonts
     ├── img
+    │   ├── appicons
     │   ├── bgs
     │   ├── dev
     │   ├── icons
     │   └── temp
     ├── js
-    │   ├── modules
-    │   ├── templates
-    │   └── vendor
-    │       └── plugins
+    │   └── modernizr
     ├── sass
     │   ├── blocks
     │   ├── extends
-    │   │   └── ui-components
     │   ├── grunticon
-    │   ├── icons
     │   ├── mixins
+    │   ├── svg-bg-extends
     │   └── variables
     └── styleguide-template
         └── public
@@ -205,7 +192,30 @@ describes the CSS coding standards and conventions.
 
 ## Javascript
 
-For the Javascript setup and structure have a look at the [README.md](https://github.com/nikita-kit/nikita-kickstarter/blob/master/source/js/README.md) laying in `source/js`.
+For the JS structure, please have a look at [nikita.js](https://github.com/nikita-kit/nikita-js). This sub project
+describes the JS coding standards and conventions.
+
+The page will contain two parts of javascript.
+
+The first part is in `assemble/layouts/lyt-default.hbs` at the beginning:
+
+``` html
+<script src="js/modernizr.js"></script>
+```
+
+It ensures that the html5shiv is loaded and modernizr is ready. The modernizr file is generated automagically with all
+modernizr features, which are used in your `sass/**/*.sass` and `js/**/*.js` files. The `js/modernizr` folder contains
+custom tests for modernizr. Those will be added to the `modernizr.js`, too.
+
+The second part is at the end of the file (before the closing `</body>` tag:
+
+``` html
+<script data-main="app" src="js/main.js"></script>
+```
+
+The `data-main` attribute ensures, that the app.js will be loaded (as soon as main.js is ready). The `js/main.js` file is generated by using the
+project specific `js/_requireconfig.js` and the generic requirejs.js from bower components. For dist mode the main.js
+file contains everything, which is `require`d or `include`d in the `js/_requireconfig.js`.
 
 
 ## Icon-Workflow

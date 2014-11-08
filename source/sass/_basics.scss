@@ -160,3 +160,25 @@ img {
 	display: block;
 	max-width: 100%;
 }
+
+
+/**
+ * Buttons
+ */
+
+button::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+button {
+	@extend %btn;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	overflow: visible;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	text-transform: none;
+	background-color: transparent;
+}

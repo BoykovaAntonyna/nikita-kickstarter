@@ -1,21 +1,12 @@
-/**
- * require.js config
- */
-
-requirejs.config({
-	baseUrl: requireBaseUrl,
-	noGlobal: true,
-	paths: {
-		text: '../../vendor/plugins/text',
-		radio: '../../vendor/radio',
-		hogan: '../../vendor/hogan',
-		swiper: '../../vendor/swiper',
-		domReady: '../common',
-		tmpl: '../../templates'
+requirejs({
+	"baseUrl": "./js/",
+	"noGlobal": true,
+	"paths": {
+		"logging": "../../bower_components/logging.js/logging"
 	},
-	shim: {
-		hogan: {
-			exports: 'Hogan'
-		}
-	}
-});
+	"shim": {
+	},
+	"include": [
+		'app'
+	]
+})
