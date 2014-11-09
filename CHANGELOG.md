@@ -1,3 +1,7 @@
+# Development version
+
+* minor documentation fixes
+
 # 0.10.0
 
 * adjusted README.md

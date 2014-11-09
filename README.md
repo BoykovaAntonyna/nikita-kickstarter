@@ -12,7 +12,7 @@ If you want to write efficient and scalable (S)CSS-code for big websites, try [n
 
 - [__Grunt__](http://gruntjs.com/) – js task runner
 - [__Assemble__](http://assemble.io/) – static site generator
-- [__SASS__](http://sass-lang.com/) + [__LibSass__](http://libsass.org/) – css preprocessing
+- [__SASS__](http://sass-lang.com/) with [__LibSass__](http://libsass.org/) – css preprocessing
 - [__nikita.html__](https://github.com/nikita-kit/nikita-html) – HTML conventions and coding guidelines
 - [__nikita.css__](https://github.com/nikita-kit/nikita-css) – (S)CSS conventions and coding guidelines
 - [__nikita.js__](https://github.com/nikita-kit/nikita-js) – JS conventions and coding guidelines
@@ -31,7 +31,7 @@ These are the minimum requirements for the project setup:
 - [__Node.js & Node Package Manager__](http://nodejs.org)
 - [__Grunt Command Line Interface__](http://gruntjs.com/getting-started) – `sudo npm install -g grunt-cli`
 - [__Bower__](http://bower.io) – `sudo npm install -g bower`
-- [__SCSS Lint 0.29__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
+- [__SCSS Lint__](http://rubygems.org/gems/scss-lint/versions) – `sudo gem install scss-lint`
 
 If you want to use the browser-auto-refresh-feature, get [__LiveReload.js__](https://github.com/livereload/livereload-js) and install it to the root-folder of localhost.
 
@@ -49,7 +49,6 @@ Or use `npm install` and `bower install` if your are on Windows (you have to che
 3. `grunt dist` – start distribution build script
 
 If you want to specify a different port, you can start the script with the `--port` option:
-
 `grunt --port=9010` will launch the webserver on [http://0.0.0.0:9010/](http://0.0.0.0:9010/)
 
 
@@ -78,7 +77,7 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 - [grunt-autoprefixer](https://github.com/nDmitry/grunt-autoprefixer)
 - [grunt-concurrent](https://github.com/sindresorhus/grunt-concurrent)
 - [grunt-contrib-clean](https://github.com/gruntjs/grunt-contrib-clean)
-- [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass)
+- [grunt-contrib-concat](https://github.com/gruntjs/grunt-contrib-concat)
 - [grunt-contrib-connect](https://github.com/gruntjs/grunt-contrib-connect)
 - [grunt-contrib-copy](https://github.com/gruntjs/grunt-contrib-copy)
 - [grunt-contrib-cssmin](https://github.com/gruntjs/grunt-contrib-cssmin)
@@ -88,9 +87,10 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 - [grunt-contrib-uglify](https://github.com/gruntjs/grunt-contrib-uglify)
 - [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
 - [grunt-csssplit](https://github.com/project-collins/grunt-csssplit)
+- [grunt-fileindex](https://github.com/Bartvds/grunt-fileindex)
 - [grunt-group-css-media-queries](https://github.com/Se7enSky/grunt-group-css-media-queries)
+- [grunt-grunticon](https://github.com/filamentgroup/grunticon)
 - [grunt-htmlhint](https://github.com/yaniswang/grunt-htmlhint)
-- [grunt-includes](https://github.com/vanetix/grunt-includes)
 - [grunt-jsdoc](https://github.com/krampstudio/grunt-jsdoc)
 - [grunt-modernizr](https://github.com/Modernizr/grunt-modernizr)
 - [grunt-newer](https://github.com/tschaub/grunt-newer)
@@ -98,13 +98,14 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 - [grunt-phantomas](https://github.com/stefanjudis/grunt-phantomas)
 - [grunt-photobox](https://github.com/stefanjudis/grunt-photobox)
 - [grunt-prettify](https://github.com/jonschlinkert/grunt-prettify)
+- [grunt-sass](https://github.com/sindresorhus/grunt-sass)
 - [grunt-scss-lint](https://github.com/ahmednuaman/grunt-scss-lint)
 - [grunt-string-replace](https://github.com/erickrdch/grunt-string-replace)
 - [grunt-styleguide](https://github.com/indieisaconcept/grunt-styleguide)
 - [grunt-svgmin](https://github.com/sindresorhus/grunt-svgmin)
 - [grunt-svgstore](https://github.com/FWeinb/grunt-svgstore)
 - [grunt-sync](https://github.com/tomusdrw/grunt-sync)
-- [grunticon](https://github.com/filamentgroup/grunticon)
+- [handlebars-helper-autolink](https://github.com/helpers/handlebars-helper-autolink)
 - [handlebars-helper-partial](https://github.com/helpers/handlebars-helper-partial)
 - [handlebars-helpers](https://github.com/assemble/handlebars-helpers)
 - [jit-grunt](https://github.com/shootaroo/jit-grunt)
