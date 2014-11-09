@@ -1,5 +1,7 @@
-# Development version
+# 0.11.0
 
+* added grunt-gitinfo to output gitinfos in dist-task
+* added missing requirejs devDependencies to package.json
 * minor documentation fixes
 
 # 0.10.0

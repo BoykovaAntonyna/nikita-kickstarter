@@ -48,6 +48,9 @@ module.exports = function(grunt) {
 				partials: ['source/assemble/partials/**/*.hbs', 'tmp/icon-sprite.svg']
 			},
 			dev: {
+				options: {
+					production: false
+				},
 				files: [
 					{
 						cwd: 'source/assemble/pages/',
@@ -59,6 +62,10 @@ module.exports = function(grunt) {
 				]
 			},
 			dist: {
+				options: {
+					data: 'tmp/gitinfos.json',
+					production: true
+				},
 				files: [
 					{
 						cwd: 'source/assemble/pages/',
@@ -134,8 +141,7 @@ module.exports = function(grunt) {
 		concurrent: {
 			dev1: ['grunticon:dev', 'imagemin:dev'],
 			dev2: ['sass:dev', 'assemble:dev', 'modernizr'],
-			dist1: ['grunticon:dist', 'imagemin:dist'],
-			dist2: ['sass:dist', 'assemble:dist', 'modernizr']
+			dist: ['grunticon:dist', 'imagemin:dist'],
 		},
 		
 		// Configuration for livereload
@@ -304,6 +310,11 @@ module.exports = function(grunt) {
 					}
 				]
 			}
+		},
+		
+		// Configuration for gitinfo (will be populated with values from Git)
+		gitinfo: {
+			
 		},
 		
 		// Configuration for grouping media queries
@@ -525,6 +536,7 @@ module.exports = function(grunt) {
 				indent: 1,
 				indent_char: '	',
 				indent_inner_html: false,
+				max_preserve_newlines: 1,
 				preserve_newlines: true,
 				unformatted: [
 					"a",
@@ -953,10 +965,14 @@ module.exports = function(grunt) {
 		'svgmin:dist_bg',
 		'svgmin:dist_ico',
 		'svgstore:dist',
-		'concurrent:dist1',
+		'concurrent:dist',
 		'string-replace',
 		'fileindex',
-		'concurrent:dist2',
+		'sass:dist',
+		'gitinfo',
+		'write-gitinfos',
+		'assemble:dist',
+		'modernizr',
 		'autoprefixer:dist',
 		'csssplit:dist',
 		'group_css_media_queries',
@@ -972,6 +988,15 @@ module.exports = function(grunt) {
 		'uglify',
 		'prettify:dist'
 	]);
+	
+	// Gitinfos task
+	grunt.registerTask('write-gitinfos', 'Write gitinfos to a temp. file', function () {
+		grunt.task.requires('gitinfo');
+		
+		grunt.file.write('tmp/gitinfos.json', JSON.stringify({
+			gitinfo: grunt.config('gitinfo')
+		}));
+	});
 	
 	// HTMLHint task
 	grunt.registerTask('check-html', [

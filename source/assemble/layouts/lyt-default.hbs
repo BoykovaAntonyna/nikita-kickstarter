@@ -66,6 +66,10 @@
 	</head>
 	
 	<body>
+		{{#if production}}
+		{{partial 'gitinfos'}}
+		{{/if}}
+		
 		{{partial 'icon-sprite'}}
 		
 		{{> body }}
