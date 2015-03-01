@@ -1,3 +1,20 @@
+# 0.12.0
+
+* updated to grunt-sass 0.18.0 to get node-sass 2.0.0 (to fix 32bit compatibility issue)
+* load `svg-sprite.svg` from svgstore with ajax
+* made the `--target` of `grunt build` and `grunt dist` configurable
+* `bower_components` is now always located at `/` and not at `source/bower_components` as symlink
+* removed `copy:bower_components` from dist. If you need it: depend on the things in `_requireconfig.js` or `@import` them to your `styles.scss`
+* added paths variables for `source, build, dist, tmp` to easily configure changing folders
+* grunt-contrib-clean: added `force: true` option to allow cleaning folders outside cwd
+* escaping gitinfos
+* removed IE9 dependencies to gain build speed: removed px-to-rem mixin and statements inside the SCSS files, removed CSS-splitting task, removed IE9 from autoprefixer
+* removed sass-globbing (+ fileindex) dependency, added own globbing task instead
+* moved tmp files of grunticon/svg-backgrounds into tmp folder
+* added cachebuster for .css and .js files (+ requirejs modules!)
+* updated grunt-plugins: grunt-autoprefixer, grunt-concurrent, grunt-contrib-clean, grunt-contrib-connect, grunt-contrib-copy, grunt-contrib-cssmin, grunt-contrib-imagemin, grunt-contrib-jshint, grunt-contrib-uglify, grunt-contrib-watch, grunt-sass
+* removed grunt-plugins: grunt-contrib-symlink, grunt-csssplit, grunt-fileindex, grunt-styleguide
+
 # 0.11.0
 
 * added grunt-gitinfo to output gitinfos in dist-task

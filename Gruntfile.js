@@ -16,9 +16,18 @@ module.exports = function(grunt) {
 		grunt.option('livereload-port', grunt.option('port') + 1);
 	}
 	
+	var paths = {
+		src: 'source',
+		dev: grunt.option('target') || 'build',
+		dist: grunt.option('target') || 'dist',
+		tmp: 'tmp'
+	};
+	
 	// All configuration goes here 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		
+		paths: paths,
 		
 		// Accessibility Configuration
 		accessibility: {
@@ -29,8 +38,8 @@ module.exports = function(grunt) {
 			all : {
 				files: [
 					{
-						cwd: 'build/',
-						dest: 'reports/',
+						cwd: '<%= paths.dev %>/',
+						dest: 'reports/accessibility/',
 						expand: true,
 						ext: '-report.txt',
 						src: ['*.html']
@@ -42,10 +51,11 @@ module.exports = function(grunt) {
 		// Configuration for assemble
 		assemble: {
 			options: {
-				data: 'source/assemble/data/**/*.{json,yml}',
-				helpers: ['handlebars-helper-partial', 'source/assemble/helpers/**/*.js'],
-				layoutdir: 'source/assemble/layouts/',
-				partials: ['source/assemble/partials/**/*.hbs', 'tmp/icon-sprite.svg']
+				data: '<%= paths.src %>/assemble/data/**/*.{json,yml}',
+				helpers: ['handlebars-helper-partial', '<%= paths.src %>/assemble/helpers/**/*.js'],
+				layoutdir: '<%= paths.src %>/assemble/layouts/',
+				partials: '<%= paths.src %>/assemble/partials/**/*.hbs',
+				currentTimestamp: (new Date()).getTime()
 			},
 			dev: {
 				options: {
@@ -53,8 +63,8 @@ module.exports = function(grunt) {
 				},
 				files: [
 					{
-						cwd: 'source/assemble/pages/',
-						dest: 'build/',
+						cwd: '<%= paths.src %>/assemble/pages/',
+						dest: '<%= paths.dev %>/',
 						expand: true,
 						flatten: true,
 						src: ['**/*.hbs']
@@ -63,13 +73,13 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				options: {
-					data: 'tmp/gitinfos.json',
+					data: '<%= paths.tmp %>/gitinfos.json',
 					production: true
 				},
 				files: [
 					{
-						cwd: 'source/assemble/pages/',
-						dest: 'dist/',
+						cwd: '<%= paths.src %>/assemble/pages/',
+						dest: '<%= paths.dist %>/',
 						expand: true,
 						flatten: true,
 						src: ['**/*.hbs']
@@ -81,32 +91,35 @@ module.exports = function(grunt) {
 		// Configuration for autoprefixer
 		autoprefixer: {
 			options: {
-				browsers: ['last 2 versions', 'ie 9']
+				browsers: ['last 2 versions']
 			},
 			dev: {
 				options: {
 					map: true
 				},
-				src: 'build/css/*.css'
+				src: '<%= paths.dev %>/css/*.css'
 			},
 			dist: {
-				src: 'dist/css/*.css'
+				src: '<%= paths.dist %>/css/*.css'
 			}
 		},
 		
 		// Configuration for deleting files
 		clean: {
+			options: {
+				force: true
+			},
 			dev: {
 				files: [
 					{
-						src: ['build']
+						src: ['<%= paths.dev %>']
 					}
 				]
 			},
 			dist: {
 				files: [
 					{
-						src: ['dist']
+						src: ['<%= paths.dist %>']
 					}
 				]
 			},
@@ -116,7 +129,7 @@ module.exports = function(grunt) {
 			tmp: {
 				files: [
 					{
-						src: ['tmp']
+						src: ['<%= paths.tmp %>']
 					}
 				]
 			}
@@ -125,15 +138,25 @@ module.exports = function(grunt) {
 		// Configuration for concatenating js files
 		concat: {
 			options: {
-				separator: ';'
+				separator: ';',
+				process: function(src, filepath)
+				{
+					// Add cachebuster for every required file
+					if (filepath == '<%= paths.src %>/js/_requireconfig.js')
+					{
+						return 'require({"urlArgs": "cb=' + (new Date()).getTime()+ '"});' + "\n\n" + src;
+					}
+					
+					return src;
+				}
 			},
 			dev: {
-				dest: 'build/js/main.js',
-				src: ['bower_components/requirejs/require.js', 'source/js/_requireconfig.js']
+				dest: '<%= paths.dev %>/js/main.js',
+				src: ['bower_components/requirejs/require.js', '<%= paths.src %>/js/_requireconfig.js']
 			},
 			dist: {
-				dest: 'dist/js/main.js',
-				src: ['bower_components/requirejs/require.js', 'source/js/_requireconfig.js', 'tmp/main.js']
+				dest: '<%= paths.dist %>/js/main.js',
+				src: ['bower_components/requirejs/require.js', '<%= paths.src %>/js/_requireconfig.js', '<%= paths.tmp %>/main.js']
 			}
 		},
 		
@@ -148,7 +171,7 @@ module.exports = function(grunt) {
 		connect: {
 			livereload: {
 				options: {
-					base: 'build',
+					base: ['', '<%= paths.dev %>'],
 					hostname: '0.0.0.0',
 					port: grunt.option('port'),
 					middleware: function(connect, options) {
@@ -160,13 +183,14 @@ module.exports = function(grunt) {
 							require('connect-livereload')({
 								port: grunt.option('livereload-port')
 							}),
-							connect.static(options.base),
-							connect.directory(options.base)
+							connect.static(options.base[0]),
+							connect.static(options.base[1]),
+							connect.directory(options.base[1])
 						]
 					}
 				},
 				files: {
-					src: ['*/*.html']
+					src: ['**/*.html']
 				}
 			}
 		},
@@ -174,141 +198,44 @@ module.exports = function(grunt) {
 		// Configuration for copying files
 		copy: {
 			ajax: {
-				cwd: 'source/ajax-content/',
-				dest: 'dist/ajax-content/',
-				expand: true,
-				src: ['**/*']
-			},
-			bower_components: {
-				cwd: 'bower_components/',
-				dest: 'dist/bower_components/',
+				cwd: '<%= paths.src %>/ajax-content/',
+				dest: '<%= paths.dist %>/ajax-content/',
 				expand: true,
 				src: ['**/*']
 			},
 			favicon: {
-				cwd: 'source/img/appicons/',
-				dest: 'dist/img/appicons/',
+				cwd: '<%= paths.src %>/img/appicons/',
+				dest: '<%= paths.dist %>/img/appicons/',
 				expand: true,
 				src: ['**/*.ico']
 			},
 			fonts: {
-				cwd: 'source/fonts/',
-				dest: 'dist/fonts/',
+				cwd: '<%= paths.src %>/fonts/',
+				dest: '<%= paths.dist %>/fonts/',
 				expand: true,
 				src: ['**/*']
 			},
 			js: {
-				cwd: 'source/js/',
-				dest: 'dist/js/',
+				cwd: '<%= paths.src %>/js/',
+				dest: '<%= paths.dist %>/js/',
 				expand: true,
 				src: ['**/*']
 			},
 			modernizr: {
-				cwd: 'tmp/',
-				dest: 'dist/js/',
+				cwd: '<%= paths.tmp %>/',
+				dest: '<%= paths.dist %>/js/',
 				expand: true,
 				src: ['modernizr.js']
-			},
-			styleguide: {
-				cwd: 'build/css/',
-				dest: 'styleguide/css/',
-				expand: true,
-				filter: 'isFile',
-				flatten: true,
-				src: ['**/*.css']
 			}
 		},
 		
 		// Configuration for minifying css-files
 		cssmin: {
 			dist: {
-				cwd: 'dist/css/',
-				dest: 'dist/css/',
+				cwd: '<%= paths.dist %>/css/',
+				dest: '<%= paths.dist %>/css/',
 				expand: true,
 				src: ['*.css']
-			}
-		},
-		
-		// Configuration for splitting css-files (e.g. IE9)
-		csssplit: {
-			options: {
-				maxRules: 500,
-				suffix: '-part'
-			},
-			dev: {
-				dest: 'build/css',
-				src: 'build/css/styles.css'
-			},
-			dist: {
-				dest: 'dist/css',
-				src: 'dist/css/styles.css'
-			}
-		},
-		
-		// Configuration for writing index files of directory contents (sass-globbing alernative for libsass)
-		fileindex: {
-			globbing: {
-				options: {
-					format: function (list, options, dest) {
-						var i = 0;
-						var imports = [];
-						
-						for (i; i < list.length; i++) {
-							var listEl = list[i];
-							var listElName = listEl.replace(/_([^_]*)$/, ""+'$1').replace(/\.scss|\.sass/gi, "");
-							imports += '@import "' + listElName + '";\n';
-						}
-						
-						return '//\n// List of all SASS imports\n// (automatically created by fileindex)\n// \n// No need to add your sass partials manually! ;)\n// \n\n' + imports;
-					}
-				},
-				files: [
-					{
-						cwd: 'source/sass/',
-						dest: 'source/sass/styles.scss',
-						src: [
-							// Webfonts
-							'_webfonts.scss',
-							
-							// Browser-Reset
-							'_reset.scss',
-							
-							// SASS Variables
-							'variables/**/*.scss',
-							
-							// nikita.css Mixins
-							'../../bower_components/nikita.css/mixins/_centering.scss',
-							'../../bower_components/nikita.css/mixins/_fixed-ratiobox.scss',
-							'../../bower_components/nikita.css/mixins/_font-smoothing.scss',
-							'../../bower_components/nikita.css/mixins/_layering.scss',
-							'../../bower_components/nikita.css/mixins/_px-to-rem.scss',
-							'../../bower_components/nikita.css/mixins/_respond-to.scss',
-							'../../bower_components/nikita.css/mixins/_triangle.scss',
-							
-							// SASS Mixins
-							'mixins/**/*.scss',
-							
-							// nikita.css Extends
-							'../../bower_components/nikita.css/extends/_a11y.scss',
-							'../../bower_components/nikita.css/extends/_cf.scss',
-							'../../bower_components/nikita.css/extends/_ellipsis.scss',
-							'../../bower_components/nikita.css/extends/_hide-text.scss',
-							'../../bower_components/nikita.css/extends/_ib.scss',
-							
-							// SASS Extends
-							'extends/**/*.scss',
-							
-							// SVG Background Extends
-							'svg-bg-extends/**/*.scss',
-							
-							// Basic Formatting
-							'_basics.scss',
-							
-							// Blocks
-							'blocks/**/*.scss'
-						]
-					}
-				]
 			}
 		},
 		
@@ -321,7 +248,7 @@ module.exports = function(grunt) {
 		group_css_media_queries: {
 			dist: {
 				files: {
-					'dist/css/styles.css': ['dist/css/styles.css']
+					'<%= paths.dist %>/css/styles.css': ['<%= paths.dist %>/css/styles.css']
 				}
 			}
 		},
@@ -333,18 +260,18 @@ module.exports = function(grunt) {
 				datapngcss: '_icons-data-png.scss',
 				datasvgcss: '_icons-data-svg.scss',
 				urlpngcss: '_icons-fallback.scss',
-				tmpDir: 'tmp/grunticon-tmp',
+				tmpDir: '<%= paths.tmp %>/grunticon-tmp'
 			},
 			dev: {
 				options: {
-					pngfolder: '../../../build/img/bgs/png-fallback',
-					loadersnippet: '../../../tmp/grunticon/grunticon-loader.js', /* we don't need this! */
-					previewhtml: '../../../tmp/grunticon/preview.html'  /* we don't need this! */
+					pngfolder: '../../../<%= paths.dev %>/img/bgs/png-fallback',
+					loadersnippet: '../../../<%= paths.tmp %>/grunticon/grunticon-loader.js', /* we don't need this! */
+					previewhtml: '../../../<%= paths.tmp %>/grunticon/preview.html'  /* we don't need this! */
 				},
 				files: [
 					{
-						cwd: 'tmp/svgmin/bgs',
-						dest: 'source/sass/grunticon',
+						cwd: '<%= paths.tmp %>/svgmin/bgs',
+						dest: '<%= paths.tmp %>/grunticon',
 						expand: true,
 						src: ['*.svg']
 					}
@@ -352,14 +279,14 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				options: {
-					pngfolder: '../../../dist/img/bgs/png-fallback',
-					loadersnippet: '../../../tmp/grunticon/grunticon-loader.js', /* we don't need this! */
-					previewhtml: '../../../tmp/grunticon/preview.html'  /* we don't need this! */
+					pngfolder: '../../../<%= paths.dist %>/img/bgs/png-fallback',
+					loadersnippet: '../../../<%= paths.tmp %>/grunticon/grunticon-loader.js', /* we don't need this! */
+					previewhtml: '../../../<%= paths.tmp %>/grunticon/preview.html'  /* we don't need this! */
 				},
 				files: [
 					{
-						cwd: 'tmp/svgmin/bgs',
-						dest: 'source/sass/grunticon',
+						cwd: '<%= paths.tmp %>/svgmin/bgs',
+						dest: '<%= paths.tmp %>/grunticon',
 						expand: true,
 						src: ['*.svg']
 					}
@@ -387,7 +314,7 @@ module.exports = function(grunt) {
 				'tagname-lowercase': true
 			},
 			all: {
-				src: ['*/*.html', '!jsdocs/**/*.html', '!styleguide/**/*.html']
+				src: ['*/*.html', '!jsdocs/**/*.html']
 			}
 		},
 		
@@ -399,8 +326,8 @@ module.exports = function(grunt) {
 			dev: {
 				files: [
 					{
-						cwd: 'source/img/',
-						dest: 'build/img/',
+						cwd: '<%= paths.src %>/img/',
+						dest: '<%= paths.dev %>/img/',
 						expand: true,
 						src: ['**/*.{jpg,png,gif}']
 					}
@@ -409,8 +336,8 @@ module.exports = function(grunt) {
 			dist: {
 				files: [
 					{
-						cwd: 'source/img/',
-						dest: 'dist/img/',
+						cwd: '<%= paths.src %>/img/',
+						dest: '<%= paths.dist %>/img/',
 						expand: true,
 						src: ['**/*.{jpg,png,gif}']
 					}
@@ -424,7 +351,7 @@ module.exports = function(grunt) {
 				options: {
 					destination: 'jsdocs'
 				},
-				src: ['source/js/modules/**/*.js', 'source/js/README.md']
+				src: ['<%= paths.src %>/js/modules/**/*.js', '<%= paths.src %>/js/README.md']
 			}
 		},
 		
@@ -465,7 +392,7 @@ module.exports = function(grunt) {
 					'-W089': true
 				},
 				src: [
-					'source/js/**/*.js'
+					'<%= paths.src %>/js/**/*.js'
 				]
 			}
 		},
@@ -473,12 +400,12 @@ module.exports = function(grunt) {
 		// Modernizr configuration
 		modernizr: {
 			all: {
-				customTests: ['source/js/modernizr/*.js'],
+				customTests: ['<%= paths.src %>/js/modernizr/*.js'],
 				devFile: 'remote',
 				files: {
-					src: ['source/**/*.js', 'source/**/*.scss']
+					src: ['<%= paths.src %>/**/*.js', '<%= paths.src %>/**/*.scss']
 				},
-				outputFile: 'tmp/modernizr.js',
+				outputFile: '<%= paths.tmp %>/modernizr.js',
 				uglify: false
 			}
 		},
@@ -555,8 +482,8 @@ module.exports = function(grunt) {
 				},
 				files: [
 					{
-						cwd: 'build/',
-						dest: 'build/',
+						cwd: '<%= paths.dev %>/',
+						dest: '<%= paths.dev %>/',
 						expand: true,
 						ext: '.html',
 						src: ['*.html']
@@ -569,8 +496,8 @@ module.exports = function(grunt) {
 				},
 				files: [
 					{
-						cwd: 'dist/',
-						dest: 'dist/',
+						cwd: '<%= paths.dist %>/',
+						dest: '<%= paths.dist %>/',
 						expand: true,
 						ext: '.html',
 						src: ['*.html']
@@ -583,9 +510,9 @@ module.exports = function(grunt) {
 		requirejs: {
 			compile: {
 				options: {
-					baseUrl: "source/js/",
-					mainConfigFile: "source/js/_requireconfig.js",
-					out: "tmp/main.js"
+					baseUrl: "<%= paths.src %>/js/",
+					mainConfigFile: "<%= paths.src %>/js/_requireconfig.js",
+					out: "<%= paths.tmp %>/main.js"
 				}
 			}
 		},
@@ -595,21 +522,23 @@ module.exports = function(grunt) {
 			dev: {
 				options: {
 					outputStyle: 'nested',
-					sourceMap: true
+					sourceMap: true,
+					includePaths: ['<%= paths.src %>/sass', '']
 				},
 				files: {
-					'build/css/styles.css': 'source/sass/styles.scss',
-					'build/css/universal.css': 'source/sass/universal.scss'
+					'<%= paths.dev %>/css/styles.css': '<%= paths.tmp %>/styles.scss',
+					'<%= paths.dev %>/css/universal.css': '<%= paths.src %>/sass/universal.scss'
 				}
 			},
 			dist: {
 				options: {
 					outputStyle: 'nested', // minifying by cssmin-task
-					sourceMap: false
+					sourceMap: false,
+					includePaths: ['<%= paths.src %>/sass', '']
 				},
 				files: {
-					'dist/css/styles.css': 'source/sass/styles.scss',
-					'dist/css/universal.css': 'source/sass/universal.scss'
+					'<%= paths.dist %>/css/styles.css': '<%= paths.tmp %>/styles.scss',
+					'<%= paths.dist %>/css/universal.css': '<%= paths.src %>/sass/universal.scss'
 				}
 			}
 		},
@@ -617,7 +546,7 @@ module.exports = function(grunt) {
 		// Configuration for SCSS linting
 		scsslint: {
 			allFiles: [
-				'source/sass/{blocks,extends,mixins,variables,styles.scss,_*.scss}'
+				'<%= paths.src %>/sass/{blocks,extends,mixins,variables,styles.scss,_*.scss}'
 			],
 			options: {
 				colorizeOutput: true,
@@ -631,7 +560,7 @@ module.exports = function(grunt) {
 		'string-replace': {
 			'grunticon-datasvg': {
 				files: {
-					'source/sass/svg-bg-extends/_bg-data-svg.scss': 'source/sass/grunticon/_icons-data-svg.scss'
+					'<%= paths.tmp %>/svg-bg-extends/_bg-data-svg.scss': '<%= paths.tmp %>/grunticon/_icons-data-svg.scss'
 				},
 				options: {
 					replacements: [{
@@ -642,7 +571,7 @@ module.exports = function(grunt) {
 			},
 			'grunticon-datapng': {
 				files: {
-					'source/sass/svg-bg-extends/_bg-data-png.scss': 'source/sass/grunticon/_icons-data-png.scss'
+					'<%= paths.tmp %>/svg-bg-extends/_bg-data-png.scss': '<%= paths.tmp %>/grunticon/_icons-data-png.scss'
 				},
 				options: {
 					replacements: [{
@@ -653,7 +582,7 @@ module.exports = function(grunt) {
 			},
 			'grunticon-fallback': {
 				files: {
-					'source/sass/svg-bg-extends/_bg-fallback.scss': 'source/sass/grunticon/_icons-fallback.scss'
+					'<%= paths.tmp %>/svg-bg-extends/_bg-fallback.scss': '<%= paths.tmp %>/grunticon/_icons-fallback.scss'
 				},
 				options: {
 					replacements: [{
@@ -661,26 +590,6 @@ module.exports = function(grunt) {
 						replacement: '%bg-fallback-'
 					}]
 				}
-			}
-		},
-		
-		// Configuration for the styleguide output
-		styleguide: {
-			options: {
-				framework: {
-					name: 'kss'
-				},
-				name: 'Style Guide',
-				tmplate: {
-					src: 'source/styleguide-template/'
-				}
-			},
-			all: {
-				files: [
-					{
-						'styleguide': 'source/sass/blocks/**/*.scss'
-					}
-				]
 			}
 		},
 		
@@ -724,19 +633,30 @@ module.exports = function(grunt) {
 			dev_bg: {
 				files: [
 					{
-						cwd: 'source/img/bgs',
-						dest: 'tmp/svgmin/bgs',
+						cwd: '<%= paths.src %>/img/bgs/',
+						dest: '<%= paths.tmp %>/svgmin/bgs/',
 						expand: true,
 						ext: '.svg',
 						src: ['*.svg']
 					}
 				]
 			},
+			dev_file: {
+				files: [
+					{
+						cwd: '<%= paths.src %>/img/',
+						dest: '<%= paths.dev %>/img/',
+						expand: true,
+						ext: '.svg',
+						src: ['*.svg', 'temp/*.svg']
+					}
+				]
+			},
 			dev_ico: {
 				files: [
 					{
-						cwd: 'source/img/icons',
-						dest: 'tmp/svgmin/icons',
+						cwd: '<%= paths.src %>/img/icons/',
+						dest: '<%= paths.tmp %>/svgmin/icons/',
 						expand: true,
 						ext: '.svg',
 						src: ['*.svg']
@@ -746,19 +666,30 @@ module.exports = function(grunt) {
 			dist_bg: {
 				files: [
 					{
-						cwd: 'source/img/bgs',
-						dest: 'tmp/svgmin/bgs',
+						cwd: '<%= paths.src %>/img/bgs/',
+						dest: '<%= paths.tmp %>/svgmin/bgs/',
 						expand: true,
 						ext: '.svg',
 						src: ['*.svg']
 					}
 				]
 			},
+			dist_file: {
+				files: [
+					{
+						cwd: '<%= paths.src %>/img/',
+						dest: '<%= paths.dist %>/img/',
+						expand: true,
+						ext: '.svg',
+						src: ['*.svg', 'temp/*.svg']
+					}
+				]
+			},
 			dist_ico: {
 				files: [
 					{
-						cwd: 'source/img/icons',
-						dest: 'tmp/svgmin/icons',
+						cwd: '<%= paths.src %>/img/icons/',
+						dest: '<%= paths.tmp %>/svgmin/icons/',
 						expand: true,
 						ext: '.svg',
 						src: ['*.svg']
@@ -781,12 +712,12 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				files: {
-					'tmp/icon-sprite.svg': ['tmp/svgmin/icons/*.svg']
+					'<%= paths.dev %>/img/icons/icon-sprite.svg': ['<%= paths.tmp %>/svgmin/icons/*.svg']
 				}
 			},
 			dist: {
 				files: {
-					'tmp/icon-sprite.svg': ['tmp/svgmin/icons/*.svg']
+					'<%= paths.dist %>/img/icons/icon-sprite.svg': ['<%= paths.tmp %>/svgmin/icons/*.svg']
 				}
 			}
 		},
@@ -797,8 +728,8 @@ module.exports = function(grunt) {
 			ajax: {
 				files: [
 					{
-						cwd: 'source/ajax-content/',
-						dest: 'build/ajax-content/',
+						cwd: '<%= paths.src %>/ajax-content/',
+						dest: '<%= paths.dev %>/ajax-content/',
 						src: '**/*'
 					}
 				]
@@ -806,8 +737,8 @@ module.exports = function(grunt) {
 			favicon: {
 				files: [
 					{
-						cwd: 'source/img/',
-						dest: 'build/img/',
+						cwd: '<%= paths.src %>/img/appicons/',
+						dest: '<%= paths.dev %>/img/appicons/',
 						src: '**/*.ico'
 					}
 				]
@@ -815,8 +746,8 @@ module.exports = function(grunt) {
 			fonts: {
 				files: [
 					{
-						cwd: 'source/fonts/',
-						dest: 'build/fonts/',
+						cwd: '<%= paths.src %>/fonts/',
+						dest: '<%= paths.dev %>/fonts/',
 						src: '**/*'
 					}
 				]
@@ -824,8 +755,8 @@ module.exports = function(grunt) {
 			js: {
 				files: [
 					{
-						cwd: 'source/js/',
-						dest: 'build/js/',
+						cwd: '<%= paths.src %>/js/',
+						dest: '<%= paths.dev %>/js/',
 						src: ['**/*', '!_requireconfig.js']
 					}
 				]
@@ -833,8 +764,8 @@ module.exports = function(grunt) {
 			modernizr: {
  				files: [
 					{
-						cwd: 'tmp/',
-						dest: 'build/js/',
+						cwd: '<%= paths.tmp %>/',
+						dest: '<%= paths.dev %>/js/',
 						src: 'modernizr.js'
 					}
 				]
@@ -851,23 +782,12 @@ module.exports = function(grunt) {
 				},
 				files: [
 					{
-						cwd: 'dist/js',
-						dest: 'dist/js',
+						cwd: '<%= paths.dist %>/js',
+						dest: '<%= paths.dist %>/js',
 						expand: true,
 						src: ['**/*.js', '!**/_*.js']
 					}
 				]
-			}
-		},
-		
-		// Configuration for symlink files
-		symlink: {
-			options: {
-				overwrite: false
-			},
-			dev: {
-				src: 'bower_components/',
-				dest: 'build/bower_components/'
 			}
 		},
 		
@@ -878,43 +798,43 @@ module.exports = function(grunt) {
 				spawn: true
 			},
 			scss: {
-				files: ['source/sass/**/*.scss'],
-				tasks: ['sass:dev', 'autoprefixer:dev', 'csssplit:dev'],
-				options: {
-					debounceDelay: 0,
-					livereload: false
-				}
+				files: ['<%= paths.src %>/sass/**/*.scss'],
+				tasks: ['sass:dev', 'autoprefixer:dev']
 			},
 			images: {
-				files: ['source/img/*', 'source/img/**/*.{jpg,png,gif}', '!source/img/dev/*'],
+				files: ['<%= paths.src %>/img/*', '<%= paths.src %>/img/**/*.{jpg,png,gif}', '!<%= paths.src %>/img/dev/*'],
 				tasks: ['newer:imagemin:dev']
 			},
 			svg_bgs: {
-				files: ['source/img/bgs/*.svg'],
+				files: ['<%= paths.src %>/img/bgs/*.svg'],
 				tasks: ['newer:svgmin:dev_bg', 'grunticon:dev', 'string-replace']
 			},
+			svg_files: {
+				files: ['<%= paths.src %>/img/*.svg'],
+				tasks: ['newer:svgmin:dev_file']
+			},
 			svg_icons: {
-				files: ['source/img/icons/*.svg'],
-				tasks: ['newer:svgmin:dev_ico', 'svgstore:dev', 'newer:assemble:dev']
+				files: ['<%= paths.src %>/img/icons/*.svg'],
+				tasks: ['newer:svgmin:dev_ico', 'svgstore:dev']
 			},
 			sync_ajax: {
-				files: ['source/ajax-content/**/*'],
+				files: ['<%= paths.src %>/ajax-content/**/*'],
 				tasks: ['sync:ajax']
 			},
 			sync_fonts: {
-				files: ['source/fonts/**/*'],
+				files: ['<%= paths.src %>/fonts/**/*'],
 				tasks: ['sync:fonts']
 			},
 			sync_js: {
-				files: ['source/js/**/*', '!source/js/_requireconfig.js'],
+				files: ['<%= paths.src %>/js/**/*', '!<%= paths.src %>/js/_requireconfig.js'],
 				tasks: ['modernizr', 'sync:js']
 			},
 			sync_requirejs: {
-				files: ['source/js/_requireconfig.js'],
+				files: ['<%= paths.src %>/js/_requireconfig.js'],
 				tasks: ['modernizr', 'requirejs', 'concat:dev']
 			},
 			templates: {
-				files: ['source/assemble/**/*.{json,hbs}'],
+				files: ['<%= paths.src %>/assemble/**/*.{json,hbs}'],
 				tasks: ['newer:assemble:dev', 'prettify:dev']
 			}
 		}
@@ -936,15 +856,14 @@ module.exports = function(grunt) {
 		'clean:dev',
 		'clean:tmp',
 		'svgmin:dev_bg',
+		'svgmin:dev_file',
 		'svgmin:dev_ico',
 		'svgstore:dev',
 		'concurrent:dev1',
 		'string-replace',
-		'fileindex',
+		'generate-tmp-styles-scss',
 		'concurrent:dev2',
 		'autoprefixer:dev',
-		'csssplit:dev',
-		'symlink:dev',
 		'concat:dev',
 		'sync',
 		'prettify:dev'
@@ -963,24 +882,23 @@ module.exports = function(grunt) {
 		'clean:tmp',
 		'clean:docs',
 		'svgmin:dist_bg',
+		'svgmin:dist_file',
 		'svgmin:dist_ico',
 		'svgstore:dist',
 		'concurrent:dist',
 		'string-replace',
-		'fileindex',
+		'generate-tmp-styles-scss',
 		'sass:dist',
 		'gitinfo',
 		'write-gitinfos',
 		'assemble:dist',
 		'modernizr',
 		'autoprefixer:dist',
-		'csssplit:dist',
 		'group_css_media_queries',
 		'cssmin',
 		'requirejs',
 		'concat:dist',
 		'copy:ajax',
-		'copy:bower_components',
 		'copy:favicon',
 		'copy:fonts',
 		'copy:js',
@@ -993,9 +911,51 @@ module.exports = function(grunt) {
 	grunt.registerTask('write-gitinfos', 'Write gitinfos to a temp. file', function () {
 		grunt.task.requires('gitinfo');
 		
-		grunt.file.write('tmp/gitinfos.json', JSON.stringify({
+		grunt.file.write(paths.tmp+'/gitinfos.json', JSON.stringify({
 			gitinfo: grunt.config('gitinfo')
 		}));
+	});
+	
+	// task to generate styles.scss without sass-globbing
+	grunt.registerTask('generate-tmp-styles-scss', 'Generate styles tmp file', function () {
+		var resultContent = grunt.file.read(paths.src+'/sass/styles.scss');
+		
+		// get rid of ../../-prefix, since libsass does not support them in @import-statements+includePaths option
+		resultContent = resultContent.replace(/\"\.\.\/\.\.\//g, '"');
+		
+		var importMatches = resultContent.match(/^@import.+\*.*$/mg);
+		
+		if (importMatches) {
+			importMatches.forEach(function(initialMatch) {
+				// remove all " or '
+				var match = initialMatch.replace(/["']/g,'');
+				// remove the preceeding @import
+				match = match.replace(/^@import/g,'');
+				// lets get rid of the final ;
+				match = match.replace(/;$/g,'');
+				// remove all whitespaces
+				match = match.trim();
+				
+				// get all files, which match this pattern
+				var files = grunt.file.expand(
+					{
+						'cwd': paths.src+'/sass/',
+						'filter': 'isFile'
+					},
+					match
+				);
+				
+				var replaceContent = [];
+				
+				files.forEach(function(matchedFile)
+				{
+					replaceContent.push('@import "' + matchedFile + '";');
+				});
+				
+				resultContent = resultContent.replace(initialMatch, replaceContent.join("\n"));
+			});
+		}
+		grunt.file.write(paths.tmp+'/styles.scss', resultContent);
 	});
 	
 	// HTMLHint task
@@ -1035,12 +995,6 @@ module.exports = function(grunt) {
 		'dev',
 		'connect:livereload',
 		'photobox'
-	]);
-	
-	// Styleguide task
-	grunt.registerTask('build-styleguide', [
-		'styleguide',
-		'copy:styleguide'
 	]);
 	
 	// JSDoc task

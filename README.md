@@ -19,7 +19,6 @@ If you want to write efficient and scalable (S)CSS-code for big websites, try [n
 - [__Bower__](http://bower.io/) – package manager for frontend libraries
 - [__SCSS-Lint__](http://rubygems.org/gems/scss-lint/versions) – linter for SCSS files
 - [__Livereload__](http://livereload.com/) – browser auto refresh
-- [__KSS__](http://warpspire.com/kss/) – living styleguide
 
 Grunt depends on [node.js](http://nodejs.org), SCSS-Lint depends on [Ruby](http://www.ruby-lang.org). Some of the [Grunt plugins](#grunt-plugins-used) depend on command line tools to be installed on your (build) system.
 
@@ -84,11 +83,8 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 - [grunt-contrib-imagemin](https://github.com/gruntjs/grunt-contrib-imagemin)
 - [grunt-contrib-jshint](https://github.com/gruntjs/grunt-contrib-jshint)
 - [grunt-contrib-requirejs](https://github.com/gruntjs/grunt-contrib-requirejs)
-- [grunt-contrib-symlink](https://github.com/gruntjs/grunt-contrib-symlink)
 - [grunt-contrib-uglify](https://github.com/gruntjs/grunt-contrib-uglify)
 - [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
-- [grunt-csssplit](https://github.com/project-collins/grunt-csssplit)
-- [grunt-fileindex](https://github.com/Bartvds/grunt-fileindex)
 - [grunt-gitinfo](https://github.com/damkraw/grunt-gitinfo)
 - [grunt-group-css-media-queries](https://github.com/Se7enSky/grunt-group-css-media-queries)
 - [grunt-grunticon](https://github.com/filamentgroup/grunticon)
@@ -103,7 +99,6 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 - [grunt-sass](https://github.com/sindresorhus/grunt-sass)
 - [grunt-scss-lint](https://github.com/ahmednuaman/grunt-scss-lint)
 - [grunt-string-replace](https://github.com/erickrdch/grunt-string-replace)
-- [grunt-styleguide](https://github.com/indieisaconcept/grunt-styleguide)
 - [grunt-svgmin](https://github.com/sindresorhus/grunt-svgmin)
 - [grunt-svgstore](https://github.com/FWeinb/grunt-svgstore)
 - [grunt-sync](https://github.com/tomusdrw/grunt-sync)
@@ -128,7 +123,7 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 
 ## Project structure
 
-My kickstart-setup provides the three main folders `source/`, `build/` and `dist/`. All source-files will be put to the `source`-folder like templates, fonts, images, js- and sass-files. These files will be processed by several grunt tasks – e.g. compass: sass -> css – and then stored in the `build`-folder. From there you can view the generated html-files in the browser. The `dist`-folder is built up like the `build`-folder. The main difference between `build/` and `dist/` is, that `dist/` has combined and minified css/js files, no unnecessary files or code-comments. The `build`-folder is for debugging your files, the `dist-`folder should be used for production.
+The kickstart-setup provides the three main folders `source/`, `build/` and `dist/`. All source-files will be put to the `source`-folder like templates, fonts, images, js- and sass-files. These files will be processed by several grunt tasks – e.g. grunt-sass: sass -> css – and then stored in the `build`-folder. From there you can view the generated html-files in the browser. The `dist`-folder is built up like the `build`-folder. The main difference between `build/` and `dist/` is, that `dist/` has combined and minified css/js files, no unnecessary files or code-comments. The `build`-folder is for debugging your files, the `dist-`folder should be used for production.
 
 ```
 $ tree -d -I node_modules
@@ -140,44 +135,48 @@ $ tree -d -I node_modules
 │   ├── css
 │   ├── fonts
 │   ├── img
+│   │   ├── appicons
 │   │   └── bgs
-│   │       └── png-fallback
 │   └── js
+│       └── modernizr
 ├── dist
 │   ├── ajax-content
 │   ├── bower_components
 │   ├── css
 │   ├── fonts
 │   ├── img
+│   │   ├── appicons
 │   │   └── bgs
-│   │       └── png-fallback
 │   └── js
-└── source
-    ├── ajax-content
-    ├── assemble
-    │   ├── data
-    │   ├── helpers
-    │   ├── layouts
-    │   ├── pages
-    │   └── partials
-    ├── fonts
-    ├── img
-    │   ├── appicons
-    │   ├── bgs
-    │   ├── dev
-    │   ├── icons
-    │   └── temp
-    ├── js
-    │   └── modernizr
-    ├── sass
-    │   ├── blocks
-    │   ├── extends
-    │   ├── grunticon
-    │   ├── mixins
-    │   ├── svg-bg-extends
-    │   └── variables
-    └── styleguide-template
-        └── public
+│       └── modernizr
+├── source
+│   ├── ajax-content
+│   ├── assemble
+│   │   ├── data
+│   │   ├── helpers
+│   │   ├── layouts
+│   │   ├── pages
+│   │   └── partials
+│   ├── fonts
+│   ├── img
+│   │   ├── appicons
+│   │   ├── bgs
+│   │   ├── dev
+│   │   ├── icons
+│   │   └── temp
+│   ├── js
+│   │   └── modernizr
+│   └── sass
+│       ├── blocks
+│       ├── extends
+│       ├── mixins
+│       └── variables
+└── tmp
+    ├── grunticon
+    ├── svg-bg-extends
+    └── svgmin
+        ├── bgs
+        └── icons
 ```
 
 
@@ -228,7 +227,7 @@ You'd like to edit your icons with CSS, e.g. to change the fill-color or you hav
 
 1. Just put your SVG-icons into `source/img/icons`.
 2. All icons will be processed with the svgmin-task and put into the `tmp/svgmin/icons` folder.
-3. Afterwards the svgstore-task uses these icons to put together an icon-sprite which will be copied to the `assemble/partials` folder. It must be included directly after the opening `<body>` element at the top of the document (have a look at the file `lyt-default.hbs` in the `layouts` folder).
+3. Afterwards the svgstore-task uses these icons to put together an `icon-sprite.svg` which will be copied to the `img/icons` folder. It must be injected with ajax directly after the opening `<body>` element at the top of the document (have a look at the file `lyt-default.hbs` in the `layouts` folder).
 4. To include a SVG-icon use `<svg class="your-class-name"><use xlink:href="#filename" /></svg>` in your .hbs-files. Make sure you use a class name on the SVG to size it.
 5. Now you can use `.your-class-name { fill: #f30; }` to color your icon.
 
