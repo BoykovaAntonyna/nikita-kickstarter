@@ -1,3 +1,8 @@
+# DEV
+
+* set `attr-value-double-quotes` and `attr-value-not-empty` to false and added `space-tab-mixed-disabled` in htmlhint options
+* pinned handlebars-helper-partial in package.json to version 0.1.2 (there are conficts with 0.2.0)
+
 # 0.12.0
 
 * updated to grunt-sass 0.18.0 to get node-sass 2.0.0 (to fix 32bit compatibility issue)

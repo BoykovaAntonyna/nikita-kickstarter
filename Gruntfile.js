@@ -299,13 +299,14 @@ module.exports = function(grunt) {
 			options: {
 				force: true,
 				'attr-lowercase': false, // set to false because of svg-attribute 'viewBox'
-				'attr-value-double-quotes': true,
-				'attr-value-not-empty': true,
+				'attr-value-double-quotes': false, // set to false because of json inside data-attributes
+				'attr-value-not-empty': false, // in HTML5 you don't need to set a value, e.g. itemscope
 				'doctype-first': true,
 				'doctype-html5': true,
 				'id-class-value': true,
 				'id-unique': true,
 				'img-alt-require': true,
+				'space-tab-mixed-disabled': true,
 				'spec-char-escape': true,
 				'src-not-empty': true,
 				'style-disabled': true,
