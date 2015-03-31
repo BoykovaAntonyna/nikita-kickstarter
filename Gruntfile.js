@@ -2,7 +2,8 @@ module.exports = function(grunt) {
 	
 	// Require it at the top and pass in the grunt instance
 	require('jit-grunt')(grunt, {
-		scsslint: 'grunt-scss-lint'
+		scsslint: 'grunt-scss-lint',
+		svgcss: 'grunt-svg-css'
 	});
 	require('time-grunt')(grunt);
 	
@@ -162,9 +163,9 @@ module.exports = function(grunt) {
 		
 		// Configuration for run tasks concurrently
 		concurrent: {
-			dev1: ['grunticon:dev', 'imagemin:dev'],
+			dev1: ['svgcss', 'imagemin:dev'],
 			dev2: ['sass:dev', 'assemble:dev', 'modernizr'],
-			dist: ['grunticon:dist', 'imagemin:dist'],
+			dist: ['svgcss', 'imagemin:dist'],
 		},
 		
 		// Configuration for livereload
@@ -250,47 +251,6 @@ module.exports = function(grunt) {
 				files: {
 					'<%= paths.dist %>/css/styles.css': ['<%= paths.dist %>/css/styles.css']
 				}
-			}
-		},
-		
-		// Configuration for managing SVG-icons
-		grunticon: {
-			options: {
-				cssprefix: '%icon-',
-				datapngcss: '_icons-data-png.scss',
-				datasvgcss: '_icons-data-svg.scss',
-				urlpngcss: '_icons-fallback.scss',
-				tmpDir: '<%= paths.tmp %>/grunticon-tmp'
-			},
-			dev: {
-				options: {
-					pngfolder: '../../../<%= paths.dev %>/img/bgs/png-fallback',
-					loadersnippet: '../../../<%= paths.tmp %>/grunticon/grunticon-loader.js', /* we don't need this! */
-					previewhtml: '../../../<%= paths.tmp %>/grunticon/preview.html'  /* we don't need this! */
-				},
-				files: [
-					{
-						cwd: '<%= paths.tmp %>/svgmin/bgs',
-						dest: '<%= paths.tmp %>/grunticon',
-						expand: true,
-						src: ['*.svg']
-					}
-				]
-			},
-			dist: {
-				options: {
-					pngfolder: '../../../<%= paths.dist %>/img/bgs/png-fallback',
-					loadersnippet: '../../../<%= paths.tmp %>/grunticon/grunticon-loader.js', /* we don't need this! */
-					previewhtml: '../../../<%= paths.tmp %>/grunticon/preview.html'  /* we don't need this! */
-				},
-				files: [
-					{
-						cwd: '<%= paths.tmp %>/svgmin/bgs',
-						dest: '<%= paths.tmp %>/grunticon',
-						expand: true,
-						src: ['*.svg']
-					}
-				]
 			}
 		},
 		
@@ -557,39 +517,30 @@ module.exports = function(grunt) {
 			}
 		},
 		
-		// Configuration for string-replacing the grunticon output
+		// Configuration for string-replacing the svgcss output
 		'string-replace': {
-			'grunticon-datasvg': {
+			'svgcss-datasvg': {
 				files: {
-					'<%= paths.tmp %>/svg-bg-extends/_bg-data-svg.scss': '<%= paths.tmp %>/grunticon/_icons-data-svg.scss'
+					'<%= paths.tmp %>/svg-bg-extends/_bg-data-svg.scss': '<%= paths.tmp %>/svgcss/_icons-data-svg.scss'
 				},
 				options: {
 					replacements: [{
-						pattern: /%icon-/g,
+						pattern: /.%bg-data-svg-/g,
 						replacement: '%bg-data-svg-'
 					}]
 				}
+			}
+		},
+		
+		// Configuration for creating SVG-Data-URIs
+		svgcss: {
+			options: {
+				previewhtml: null,
+				cssprefix: "%bg-data-svg-"
 			},
-			'grunticon-datapng': {
+			all: {
 				files: {
-					'<%= paths.tmp %>/svg-bg-extends/_bg-data-png.scss': '<%= paths.tmp %>/grunticon/_icons-data-png.scss'
-				},
-				options: {
-					replacements: [{
-						pattern: /%icon-/g,
-						replacement: '%bg-data-png-'
-					}]
-				}
-			},
-			'grunticon-fallback': {
-				files: {
-					'<%= paths.tmp %>/svg-bg-extends/_bg-fallback.scss': '<%= paths.tmp %>/grunticon/_icons-fallback.scss'
-				},
-				options: {
-					replacements: [{
-						pattern: /%icon-/g,
-						replacement: '%bg-fallback-'
-					}]
+					'<%= paths.tmp %>/svgcss/_icons-data-svg.scss': ['<%= paths.tmp %>/svgmin/bgs/*.svg']
 				}
 			}
 		},
@@ -626,7 +577,7 @@ module.exports = function(grunt) {
 					{ removeUnusedNS: true },
 					{ removeUselessStrokeAndFill: false }, // Enabling this may cause small details to be removed
 					{ removeViewBox: false }, // Keep the viewBox because that's where illustrator hides the SVG dimensions
-					{ removeXMLProcInst: false }, // Enabling this breaks grunticon because it removes the XML header
+					{ removeXMLProcInst: false }, // Enabling this breaks svgcss because it removes the XML header
 					{ sortAttrs: true },
 					{ transformsWithOnePath: false } // Enabling this breaks Illustrator SVGs with complex text
 				]
@@ -808,7 +759,7 @@ module.exports = function(grunt) {
 			},
 			svg_bgs: {
 				files: ['<%= paths.src %>/img/bgs/*.svg'],
-				tasks: ['newer:svgmin:dev_bg', 'grunticon:dev', 'string-replace']
+				tasks: ['newer:svgmin:dev_bg', 'svgcss', 'string-replace']
 			},
 			svg_files: {
 				files: ['<%= paths.src %>/img/*.svg'],
@@ -930,10 +881,13 @@ module.exports = function(grunt) {
 			importMatches.forEach(function(initialMatch) {
 				// remove all " or '
 				var match = initialMatch.replace(/["']/g,'');
+				
 				// remove the preceeding @import
 				match = match.replace(/^@import/g,'');
+				
 				// lets get rid of the final ;
 				match = match.replace(/;$/g,'');
+				
 				// remove all whitespaces
 				match = match.trim();
 				
