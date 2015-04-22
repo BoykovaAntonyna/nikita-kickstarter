@@ -1,3 +1,7 @@
+# DEV
+
+* updated grunt-svgmin to 2.0.1
+
 # 0.13.0
 
 * removed grunticon and replaced it with svgcss #8

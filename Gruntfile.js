@@ -552,6 +552,7 @@ module.exports = function(grunt) {
 					{ cleanupAttrs: true },
 					{ cleanupEnableBackground: true },
 					{ cleanupIDs: true },
+					{ cleanupListOfValues: true },
 					{ cleanupNumericValues: true },
 					{ collapseGroups: true },
 					{ convertColors: true },
@@ -563,6 +564,7 @@ module.exports = function(grunt) {
 					{ moveElemsAttrsToGroup: true },
 					{ moveGroupAttrsToElems: true },
 					{ removeComments: true },
+					{ removeDesc: true },
 					{ removeDoctype: true },
 					{ removeEditorsNSData: true },
 					{ removeEmptyAttrs: true },
@@ -575,6 +577,7 @@ module.exports = function(grunt) {
 					{ removeTitle: true },
 					{ removeUnknownsAndDefaults: true },
 					{ removeUnusedNS: true },
+					{ removeUselessDefs: true },
 					{ removeUselessStrokeAndFill: false }, // Enabling this may cause small details to be removed
 					{ removeViewBox: false }, // Keep the viewBox because that's where illustrator hides the SVG dimensions
 					{ removeXMLProcInst: false }, // Enabling this breaks svgcss because it removes the XML header
