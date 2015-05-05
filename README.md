@@ -87,7 +87,6 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 - [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
 - [grunt-gitinfo](https://github.com/damkraw/grunt-gitinfo)
 - [grunt-group-css-media-queries](https://github.com/Se7enSky/grunt-group-css-media-queries)
-- [grunt-grunticon](https://github.com/filamentgroup/grunticon)
 - [grunt-htmlhint](https://github.com/yaniswang/grunt-htmlhint)
 - [grunt-jsdoc](https://github.com/krampstudio/grunt-jsdoc)
 - [grunt-modernizr](https://github.com/Modernizr/grunt-modernizr)
@@ -99,6 +98,7 @@ You don't like to stare permanently on your console? So wouldn’t it be great i
 - [grunt-sass](https://github.com/sindresorhus/grunt-sass)
 - [grunt-scss-lint](https://github.com/ahmednuaman/grunt-scss-lint)
 - [grunt-string-replace](https://github.com/erickrdch/grunt-string-replace)
+- [grunt-svg-css](https://github.com/psyrendust/grunt-svg-css)
 - [grunt-svgmin](https://github.com/sindresorhus/grunt-svgmin)
 - [grunt-svgstore](https://github.com/FWeinb/grunt-svgstore)
 - [grunt-sync](https://github.com/tomusdrw/grunt-sync)
@@ -172,11 +172,10 @@ $ tree -d -I node_modules
 │       ├── mixins
 │       └── variables
 └── tmp
-    ├── grunticon
+    ├── svgcss
     ├── svg-bg-extends
     └── svgmin
-        ├── bgs
-        └── icons
+        └── bgs
 ```
 
 
@@ -240,13 +239,9 @@ If you have to include your icon as a background-image, e.g. because you can't s
 
 1. Just put your SVG-icons into `source/img/bgs`.
 2. All icons will be processed with the svgmin-task and put into the `tmp/svgmin/bgs` folder.
-3. Afterwards the grunticon-task uses these icons to produce
-    1. PNG-fallback-files, which will be put into the `img/bgs/png-fallback` folder under `build/` or `dist/`
-    2. SCSS-files (all icons are included as data-URIs in the form of SASS-placeholders), which will be put into `sass/grunticon`.
-4. These SCSS-files will now be processed by the string-replace-task to get different placeholder-extends. They are saved into `sass/icons`.
+3. Afterwards the svgcss-task uses these icons to produce SCSS-files (all icons are included as data-URIs in the form of SASS-placeholders), which will be put into `tmp/svgcss` folder.
+4. These SCSS-files will now be processed by the string-replace-task to get different placeholder-extends. They are saved into `tmp/svg-bg-extends` folder.
 5. Now you can include your icons by using the `_svg-background.scss` mixin. Just type `@include svg-background(name-of-your-icon);`.
-
-__Attention:__ Grunticon also produces icons as png-data-uris, mainly for ie8 and older android browsers. If you use lots of icons in your project, remove `@extend %icon-data-png-#{$name};` from the mixin and only extend the svg and fallback version. Otherwise it could really hurt performance because of CSS-bloat!
 
 
 ## Questions?

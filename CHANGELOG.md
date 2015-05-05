@@ -1,6 +1,10 @@
-# DEV
+# 0.14.0
 
+* updated grunt-accessibility to 3.5.1
+* updated grunt-autoprefixer to 3.0.0
+* updated grunt-contrib-uglify to 0.9.1
 * updated grunt-svgmin to 2.0.1
+* removed unnecessary folders
 
 # 0.13.0
 

@@ -34,15 +34,20 @@ module.exports = function(grunt) {
 		accessibility: {
 			options : {
 				accessibilityLevel: 'WCAG2A',
+				reportType: 'txt',
+				reportLocation : '<%= paths.dev %>/reports/accessibility',
+				reportLevels: {
+					notice: true,
+					warning: true,
+					error: true
+				},
 				verbose: true
 			},
 			all : {
 				files: [
 					{
 						cwd: '<%= paths.dev %>/',
-						dest: 'reports/accessibility/',
 						expand: true,
-						ext: '-report.txt',
 						src: ['*.html']
 					}
 				]
