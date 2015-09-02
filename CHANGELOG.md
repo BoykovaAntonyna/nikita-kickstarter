@@ -1,3 +1,7 @@
+# 0.14.1
+
+* updated grunt-contrib-uglify to 0.9.2
+
 # 0.14.0
 
 * updated grunt-accessibility to 3.5.1
